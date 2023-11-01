@@ -1,0 +1,51 @@
+! cat-flap;
+// Defines entrypoint
+
+use test;
+
+var test_N < 3 >;
+
+use 'utils.cat' as u;
+// Create a variable called 'u' with a reference to the file 'utils.cat'
+
+use test;
+use test;
+use test;
+
+var str <
+    "hello<#test_N>" * test_N
+>;
+
+u.Baggy;
+// Execute the 'Baggy' function from 'utils'
+
+// Class example
+< box Box1 >.<
+
+>
+
+#owo
+This is a comment
+#uwu
+
+'''
+This is a comment
+'''
+
+<--
+This is a comment
+-->
+
+-region_name->
+Code inside a region
+<-region_name-
+
+// Class example
+< box Box2 >.<
+
+>
+
+// Code can be here
+
+// Create an instance of 'Box1'
+create Box1;

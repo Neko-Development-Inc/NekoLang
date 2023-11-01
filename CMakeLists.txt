@@ -3,4 +3,9 @@ project(NekoLang)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(NekoLang main.cpp)
+add_executable(NekoLang main.cpp
+        compiler/compiler.cpp
+        compiler/compiler.h
+        runtime/runtime.cpp
+        runtime/runtime.h
+        utils/utils.h)

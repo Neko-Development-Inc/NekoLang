@@ -1,0 +1,8 @@
+< fun Baggy (
+        i -> 0,
+        s -> 'default'
+) >.<
+    print(i + s);
+    println(i + s);
+>
+Baggy(123, 'def')
