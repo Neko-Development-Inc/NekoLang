@@ -2,6 +2,7 @@
 #ifndef COMPILER_H
 #define COMPILER_H
 
+#include "../common/opcodes.h"
 #include "../utils/utils.h"
 
 namespace compiler {
@@ -25,4 +26,4 @@ public:
 };
 } // compiler
 
-#endif
+#endif //COMPILER_H

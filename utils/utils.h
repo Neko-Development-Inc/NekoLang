@@ -14,4 +14,4 @@ inline void println(int i) {
     cout << i << endl;
 }
 
-#endif
+#endif //UTILS_H

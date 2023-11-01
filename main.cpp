@@ -2,21 +2,21 @@
 
 #include "compiler/compiler.h"
 #include "runtime/runtime.h"
+#include "common/opcodes.h"
 
 using namespace compiler;
 using namespace runtime;
+using namespace opcodes;
 
 int main() {
 
     Compiler c;
-    println(c.test1());
-    println(c.test2());
-    println(c.test3());
 
     Runtime r;
-    println(r.test1());
-    println(r.test2());
-    println(r.test3());
+
+    Opcodes o('x');
+    println(string("NOP: ").append(to_string(o[o.NOP])));
+    println(string("RETURN: ").append(to_string(o[o.RETURN])));
 
     return 0;
 }

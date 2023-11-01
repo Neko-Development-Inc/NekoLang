@@ -8,4 +8,6 @@ add_executable(NekoLang main.cpp
         compiler/compiler.h
         runtime/runtime.cpp
         runtime/runtime.h
+        common/opcodes.cpp
+        common/opcodes.h
         utils/utils.h)

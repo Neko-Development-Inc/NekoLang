@@ -2,6 +2,7 @@
 #ifndef RUNTIME_H
 #define RUNTIME_H
 
+#include "../common/opcodes.h"
 #include "../utils/utils.h"
 
 namespace runtime {
@@ -25,4 +26,4 @@ public:
 };
 } // runtime
 
-#endif
+#endif //RUNTIME_H
