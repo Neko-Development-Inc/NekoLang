@@ -5,23 +5,19 @@
 #include "../common/opcodes.h"
 #include "../utils/utils.h"
 
+using namespace opcodes;
+
 namespace compiler {
 class Compiler {
 
 private:
-    int abc1, abc2, abc3;
+    Opcodes& opcodes;
 
 public:
-    Compiler() {
-        abc1 = abc2 = abc3 = 0;
-    }
-    ~Compiler() {
-        abc1 = abc2 = abc3 = 0;
-    };
+    explicit Compiler(Opcodes& opcodes) :
+        opcodes(reinterpret_cast<Opcodes &>(opcodes)) { }
 
-    int test1();
-    int test2();
-    int test3();
+    void test();
 
 };
 } // compiler

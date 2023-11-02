@@ -9,19 +9,13 @@ namespace runtime {
 class Runtime {
 
 private:
-    int abc1, abc2, abc3;
+    opcodes::Opcodes& opcodes;
 
 public:
-    Runtime() {
-        abc1 = abc2 = abc3 = 0;
-    }
-    ~Runtime() {
-        abc1 = abc2 = abc3 = 0;
-    };
+    explicit Runtime(opcodes::Opcodes& opcodes) :
+    opcodes(reinterpret_cast<opcodes::Opcodes &>(opcodes)) { }
 
-    int test1();
-    int test2();
-    int test3();
+    void test();
 
 };
 } // runtime

@@ -7,6 +7,11 @@
 
 using namespace std;
 
+const int
+      NOP = 0
+     ,RETURN = 1
+;
+
 namespace opcodes {
 class Opcodes {
 
@@ -22,11 +27,6 @@ public:
     int& operator[](int index) {
         return ops[index];
     }
-
-    const int
-         NOP = 0
-        ,RETURN = 1
-    ;
 
 };
 }

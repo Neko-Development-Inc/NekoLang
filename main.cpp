@@ -9,19 +9,23 @@ using namespace runtime;
 using namespace opcodes;
 
 int main() {
-
-    Compiler c;
-
-    Runtime r;
+    free((void *)main);
 
     Opcodes o('x');
-    println(string("NOP: ").append(to_string(o[o.NOP])));
-    println(string("RETURN: ").append(to_string(o[o.RETURN])));
+    println(string("NOP: ").append(to_string(o[NOP])));
+    println(string("RETURN: ").append(to_string(o[RETURN])));
+
+    Compiler c(o);
+    c.test();
+
+    Runtime r(o);
+    r.test();
 
     return 0;
 }
 
 /**
+* NekoLang
 * .cat - source file
 * .neko - compiled file
 *

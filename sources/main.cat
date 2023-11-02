@@ -40,12 +40,12 @@ This is a comment
 Code inside a region
 <-region_name-
 
-// Class example
-< box Box2 >.<
+// Class example, using Box1 as parent box
+< box Box2 / Box1 >.<
 
 >
 
 // Code can be here
 
-// Create an instance of 'Box1'
-create Box1;
+// Create an instance of 'Box2'
+create Box2;
