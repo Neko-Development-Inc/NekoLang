@@ -11,11 +11,11 @@ namespace compiler {
 class Compiler {
 
 private:
-    Opcodes& opcodes;
+    Opcodes& ops;
 
 public:
-    explicit Compiler(Opcodes& opcodes) :
-        opcodes(reinterpret_cast<Opcodes &>(opcodes)) { }
+    explicit Compiler(Opcodes& ops) :
+            ops(reinterpret_cast<Opcodes &>(ops)) { }
 
     void test();
 

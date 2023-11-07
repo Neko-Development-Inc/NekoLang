@@ -7,11 +7,11 @@
 using namespace std;
 
 inline void println(const string& str) {
-    cout << str << endl;
+    cout << str << '\n';
 }
 
 inline void println(int i) {
-    cout << i << endl;
+    cout << i << '\n';
 }
 
 #endif //UTILS_H

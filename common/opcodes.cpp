@@ -4,15 +4,27 @@ namespace opcodes {
 
     Opcodes::Opcodes() {
         /* Default opcode setup */
-        ops.insert(make_pair(NOP, NOP));
-        ops.insert(make_pair(RETURN, RETURN));
+        for (const auto n: {
+                NOP, POP, POP_N, CS,
+                LABEL, RETURN, JUMP,
+                CREATE, TYPE,
+                NUMBER, STRING, CONCAT,
+                REPEAT, REPEAT_N, REPEAT_LL, REPEAT_LL_N,
+                OUT, ERR
+        }) ops.insert(make_pair(n, n));
     }
 
     [[maybe_unused]]
     Opcodes::Opcodes(int key) {
         /* Key-based opcode setup */
-        ops.insert(make_pair(NOP, NOP ^ key));
-        ops.insert(make_pair(RETURN, RETURN ^ key));
+        for (const auto n: {
+                NOP, POP, POP_N, CS,
+                LABEL, RETURN, JUMP,
+                CREATE, TYPE,
+                NUMBER, STRING, CONCAT,
+                REPEAT, REPEAT_N, REPEAT_LL, REPEAT_LL_N,
+                OUT, ERR
+        }) ops.insert(make_pair(n, n ^ key));
     }
 
 }

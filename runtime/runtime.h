@@ -5,17 +5,20 @@
 #include "../common/opcodes.h"
 #include "../utils/utils.h"
 
+using namespace opcodes;
+
 namespace runtime {
 class Runtime {
 
 private:
-    opcodes::Opcodes& opcodes;
+    Opcodes& ops;
 
 public:
-    explicit Runtime(opcodes::Opcodes& opcodes) :
-    opcodes(reinterpret_cast<opcodes::Opcodes &>(opcodes)) { }
+    explicit Runtime(Opcodes& ops) :
+            ops(reinterpret_cast<Opcodes &>(ops)) { }
 
     void test();
+    void testPrint();
 
 };
 } // runtime

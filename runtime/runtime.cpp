@@ -1,10 +1,15 @@
 #include "runtime.h"
+#include "ops/NekoOpNop.cpp"
 
 namespace runtime {
 
     void Runtime::test() {
-        println("Hello world from Runtime");
-        auto a = opcodes[RETURN];
+        NekoOpNop nop;
+        nop.execute(*this);
+    }
+
+    void Runtime::testPrint() {
+        println("Hello from Runtime#testPrint");
     }
 
 } // runtime
