@@ -4,18 +4,20 @@
 
 #include "NekoOp.h"
 
-#include "../runtime.h"
+using runtime::Runtime;
 
-class NekoOpNop : NekoOp {
+namespace ops {
+class NekoOpNop : public NekoOp {
 
 public:
-    NekoOpNop() { }
+    explicit NekoOpNop(short opcode)
+            : NekoOp(opcode) {}
 
-    void execute(runtime::Runtime r) override {
+    void execute(const Runtime &r) override {
         // Do nothing
-        r.testPrint();
     }
 
 };
+}
 
 #endif //NEKO_OP_NOP_H

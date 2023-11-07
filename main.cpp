@@ -8,6 +8,8 @@ using namespace compiler;
 using namespace runtime;
 using namespace opcodes;
 
+using namespace vm;
+
 int main() {
 
     Opcodes o('x');
@@ -18,7 +20,12 @@ int main() {
     c.test();
 
     Runtime r(o);
-    r.test();
+    r.init();
+
+    NekoClass clz("default");
+
+    NekoFunction fun("main", clz);
+    fun.execute(r);
 
     return 0;
 }
@@ -35,7 +42,7 @@ int main() {
 * use x as y - includes x.cat as reference y
 *
 * box - class
-* var - field
+* var - variable
 * fun - function
 *
 * #owo - start of a single/multi-line comment
@@ -48,10 +55,13 @@ int main() {
 * >
 *
 * Types:
-*  number = N - int, or decimal
-*  string = S - character array
-*  bool   = B - true/false
+*  object   = O - object, any type
+*  number   = N - int, or decimal
+*  string   = S - character array
+*  bool     = B - true/false
 *  box type = <TypeNameHere> - any box type
+*  empty    = E - empty type
+*  null     = E - alias for the above empty type
 *
 * Opcodes:
 *
@@ -61,33 +71,33 @@ int main() {
 *                     N is the last Number on the Stack
 *  CS           = 3 - clear the stack
 *
-*  LABEL<id>    = 100 - label, a specific point in an instruction-set
-*  RETURN       = 101 - return from function
-*  JUMP<lbl>    = 102 - jump to label instruction
+*  LABEL<id>    = 1000 - label, a specific point in an instruction-set
+*  RETURN       = 1001 - return from function
+*  JUMP<lbl>    = 1002 - jump to label instruction
 *
-*  CREATE<type> = 200 - create new box
-*  TYPE<type>   = 201 - set box type
+*  CREATE<type> = 2000 - create new box
+*  TYPE<type>   = 2001 - set box type
 *
-*  NUMBER<num>  = 300 - add Number to the Stack
-*  STRING<str>  = 301 - add String to the Stack
-*  CONCAT       = 302 - concatenates the last two elements on the Stack, and
-*                       puts the result back on the Stack
+*  NUMBER<num>  = 3000 - add Number to the Stack
+*  STRING<str>  = 3001 - add String to the Stack
+*  CONCAT       = 3002 - concatenates the last two elements on the Stack, and
+*                        puts the result back on the Stack
 *
-*  REPEAT       = 400 - repeat the last instruction once
-*  REPEAT_N     = 401 - repeat the last instruction N times
-*                       N is the last Number on the Stack
-*  REPEAT_LL    = 402 - repeats the instructions between two Labels
-*                     - L stands for Label
-*                       uses the indexes from the last two Numbers on the Stack
-*  REPEAT_LL_N  = 403 - repeats the instructions between two Labels N times
-*                     - L stands for Label
-*                       uses the label indexes from the last two Numbers on the Stack
-*                     - N is the last Number on the Stack, after the two indexes above
+*  REPEAT       = 4000 - repeat the last instruction once
+*  REPEAT_N     = 4001 - repeat the last instruction N times
+*                        N is the last Number on the Stack
+*  REPEAT_LL    = 4002 - repeats the instructions between two Labels
+*                      - L stands for Label
+*                        uses the indexes from the last two Numbers on the Stack
+*  REPEAT_LL_N  = 4003 - repeats the instructions between two Labels N times
+*                      - L stands for Label
+*                        uses the label indexes from the last two Numbers on the Stack
+*                      - N is the last Number on the Stack, after the two indexes above
 *
-*  OUT          = 500 - prints the last value on the Stack to
-*                       the active output stream (stdout by default)
-*  ERR          = 501 - prints the last value on the Stack to
-*                       the active error output stream (stderr by default)
+*  OUT          = 5000 - prints the last value on the Stack to
+*                        the active output stream (stdout by default)
+*  ERR          = 5001 - prints the last value on the Stack to
+*                        the active error output stream (stderr by default)
 *
 * Example program (with opcodes):
 *  JUMP 1
@@ -100,11 +110,12 @@ int main() {
 *  REPEAT_LL_N 0 1 10
 *
 * Example program (using NekoLang):
-*  var start = 0;
-*  var end = 10;
-*  var isIncl = true;
-*  for times <start to end isIncl>.<
-*      println('Hello ' + 69);
+*  for <from 1 to 10 inclusive as i>.<
+*      println('Hello ' + i);
+*  >
+*  var items < 1, 2, 3 >;
+*  for <item in items>.<
+*      println(item);
 *  >
 *
 */

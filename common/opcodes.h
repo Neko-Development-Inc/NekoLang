@@ -13,24 +13,24 @@ const short
      , POP_N = 2
      , CS    = 3
 
-     , LABEL  = 100
-     , RETURN = 101
-     , JUMP   = 102
+     , LABEL  = 1000
+     , RETURN = 1001
+     , JUMP   = 1002
 
-     , CREATE = 200
-     , TYPE   = 201
+     , CREATE = 2000
+     , TYPE   = 2001
 
-     , NUMBER = 300
-     , STRING = 301
-     , CONCAT = 302
+     , NUMBER = 3000
+     , STRING = 3001
+     , CONCAT = 3002
 
-     , REPEAT      = 400
-     , REPEAT_N    = 401
-     , REPEAT_LL   = 402
-     , REPEAT_LL_N = 403
+     , REPEAT      = 4000
+     , REPEAT_N    = 4001
+     , REPEAT_LL   = 4002
+     , REPEAT_LL_N = 4003
 
-     , OUT = 500
-     , ERR = 501
+     , OUT = 5000
+     , ERR = 5001
 ;
 
 namespace opcodes {

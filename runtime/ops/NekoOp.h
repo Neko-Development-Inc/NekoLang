@@ -2,11 +2,19 @@
 #ifndef NEKO_OP_H
 #define NEKO_OP_H
 
-#include "../runtime.h"
-using namespace runtime;
+namespace runtime {
+    class Runtime;
+}
 
+namespace ops {
 class NekoOp {
-    virtual void execute(Runtime) = 0;
+public:
+    const short opcode;
+    explicit NekoOp(short opcode) :
+            opcode(opcode) { }
+    virtual void execute(const runtime::Runtime& r)
+        = 0;
 };
+}
 
 #endif //NEKO_OP_H
