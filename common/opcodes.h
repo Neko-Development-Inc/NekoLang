@@ -19,6 +19,7 @@ const short
 
      , CREATE = 2000
      , TYPE   = 2001
+     , CALL   = 2002
 
      , NUMBER = 3000
      , STRING = 3001

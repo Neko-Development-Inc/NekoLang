@@ -12,7 +12,7 @@ using namespace vm;
 
 int main() {
 
-    Opcodes o('x');
+    Opcodes o;
     println(string("NOP: ").append(to_string(o[NOP])));
     println(string("RETURN: ").append(to_string(o[RETURN])));
 
@@ -77,6 +77,8 @@ int main() {
 *
 *  CREATE<type> = 2000 - create new box
 *  TYPE<type>   = 2001 - set box type
+*  CALL<owner>  = 2002 - execute function box #owner
+*      <name>            by exact name
 *
 *  NUMBER<num>  = 3000 - add Number to the Stack
 *  STRING<str>  = 3001 - add String to the Stack

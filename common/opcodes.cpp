@@ -7,7 +7,7 @@ namespace opcodes {
         for (const auto n: {
                 NOP, POP, POP_N, CS,
                 LABEL, RETURN, JUMP,
-                CREATE, TYPE,
+                CREATE, TYPE, CALL,
                 NUMBER, STRING, CONCAT,
                 REPEAT, REPEAT_N, REPEAT_LL, REPEAT_LL_N,
                 OUT, ERR
@@ -20,7 +20,7 @@ namespace opcodes {
         for (const auto n: {
                 NOP, POP, POP_N, CS,
                 LABEL, RETURN, JUMP,
-                CREATE, TYPE,
+                CREATE, TYPE, CALL,
                 NUMBER, STRING, CONCAT,
                 REPEAT, REPEAT_N, REPEAT_LL, REPEAT_LL_N,
                 OUT, ERR
