@@ -11,13 +11,17 @@ namespace runtime {
     class Runtime;
 }
 
+namespace vm {
+    class NekoStack;
+}
+
 namespace ops {
 class NekoOp {
 public:
     const short opcode;
     explicit NekoOp(short op) :
             opcode(op) { }
-    virtual void execute(const runtime::Runtime& r)
+    virtual void execute(const runtime::Runtime&, const vm::NekoStack&)
         = 0;
 };
 }

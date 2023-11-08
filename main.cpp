@@ -41,11 +41,14 @@ int main() {
     stack.add(new types::NekoNumber(9223372036854775807L - 1L), types::ObjectType::NUMBER);
     stack.add(string("Hello world :)"), types::ObjectType::STRING);
 
+    int count = stack.count();
+    println("Count: ", count);
+
     auto str = *stack.popString();
-    println(str);
+    println("String: ", str);
 
     auto num = *stack.popNumber();
-    println(num.get());
+    println("Number: ", num, ", isSame: ", num.get() == (9223372036854775807L - 1L));
 
     return 0;
 }

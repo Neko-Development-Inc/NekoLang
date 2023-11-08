@@ -21,6 +21,10 @@ namespace vm {
         return !stack.empty();
     }
 
+    int NekoStack::count() {
+        return (int)stack.size();
+    }
+
     result NekoStack::pop() {
         if (!has())
             return result { false,

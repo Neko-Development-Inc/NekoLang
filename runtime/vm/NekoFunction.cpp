@@ -13,10 +13,13 @@ namespace vm {
     }
 
     void NekoFunction::execute(const Runtime& r) {
+        NekoStack stack;
+        // TODO: If non-static (instanced),
+        //  add `self/this` to top of Stack
 //        const auto opsNOP = ops[NOP];
 //        const auto opsRETURN = ops[RETURN];
         for (NekoOp* op : instructions) {
-            op->execute(r);
+            op->execute(r, stack);
 //            short opcode = op->opcode;
 //            if (opcode == opsNOP) {
 //                if (auto nop = dynamic_cast<NekoOpNop*>(op))

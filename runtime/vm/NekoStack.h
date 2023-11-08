@@ -33,6 +33,7 @@ private:
 public:
     void add(const std::any&, types::ObjectType type);
     constexpr bool has();
+    int count();
     result pop();
     void process();
 

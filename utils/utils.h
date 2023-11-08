@@ -3,11 +3,30 @@
 #define UTILS_H
 
 #include <iostream>
+#include "../runtime/types/NekoNumber.h"
 
 using namespace std;
 
-inline void println(auto a) {
-    cout << a << '\n';
+template <typename T> struct is_neko_number : std::false_type {};
+template <> struct is_neko_number<types::NekoNumber> : std::true_type {};
+
+template <typename T, typename... Args>
+inline void println(T&& first, Args&&... rest) {
+    if constexpr (std::is_same_v<T, bool>)
+        cout << (first ? "true" : "false");
+    else if constexpr (is_neko_number<std::remove_reference_t<T>>::value) {
+        types::NekoNumber num = first;
+        if (num.hasDecimals())
+            cout << num.get();
+        else
+            cout << (long long) num.get();
+    }
+    else
+        cout << first;
+    if constexpr (sizeof...(rest) > 0)
+        println(std::forward<Args>(rest)...);
+    else
+        cout << '\n';
 }
 
 template<typename Base, typename T>
