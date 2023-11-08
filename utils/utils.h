@@ -19,7 +19,7 @@ inline void println(T&& first, Args&&... rest) {
         if (num.hasDecimals())
             cout << num.get();
         else
-            cout << (long long) num.get();
+            cout << static_cast<long long>(num.get());
     }
     else
         cout << first;
