@@ -7,11 +7,11 @@
 using namespace compiler;
 using namespace runtime;
 using namespace opcodes;
-
 using namespace vm;
 
 int main() {
 
+    // Set up all opcodes
     Opcodes o;
     println(string("NOP: ").append(to_string(o[NOP])));
     println(string("RETURN: ").append(to_string(o[RETURN])));
@@ -19,12 +19,22 @@ int main() {
     Compiler c(o);
     c.test();
 
+    // Set up runtime env
     Runtime r(o);
     r.init();
 
+    // Create class
     NekoClass clz("default");
 
-    NekoFunction fun("main", clz);
+    // Create fun main
+    NekoFunction fun("main", clz, o);
+    // Initialize fun main
+    fun.init(r);
+
+    // Add fun main to default class
+    clz.addFunction(fun);
+
+    // Execute fun main
     fun.execute(r);
 
     return 0;

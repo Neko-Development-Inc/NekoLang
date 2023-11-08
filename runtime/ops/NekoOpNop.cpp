@@ -3,6 +3,7 @@
 #define NEKO_OP_NOP_H
 
 #include "NekoOp.h"
+#include "../../utils/utils.h"
 
 using runtime::Runtime;
 
@@ -15,6 +16,7 @@ public:
 
     void execute(const Runtime &r) override {
         // Do nothing
+        println("NekoOpNop");
     }
 
 };

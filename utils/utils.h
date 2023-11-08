@@ -14,4 +14,9 @@ inline void println(int i) {
     cout << i << '\n';
 }
 
+template<typename Base, typename T>
+inline bool instanceof(const T*) {
+    return std::is_base_of<Base, T>::value;
+}
+
 #endif //UTILS_H

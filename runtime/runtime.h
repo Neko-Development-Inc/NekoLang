@@ -35,19 +35,21 @@ namespace types {
 #include "vm/NekoFunction.h"
 
 using namespace opcodes;
+using ops::NekoOp;
 
 namespace runtime {
 class Runtime {
 
 private:
     Opcodes& ops;
-    map<short, ops::NekoOp*> impls;
+    map<short, NekoOp*> impls;
 
 public:
-    explicit Runtime(Opcodes& ops) :
-        ops(reinterpret_cast<Opcodes &>(ops)) { }
+    explicit Runtime(Opcodes& ops) : ops(ops) { }
 
     void init();
+
+    NekoOp & getImpl(short index);
 
 };
 } // runtime

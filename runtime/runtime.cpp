@@ -1,13 +1,19 @@
 #include "runtime.h"
 
+using namespace ops;
+
 namespace runtime {
 
     void Runtime::init() {
-        ops::NekoOpNop nop(NOP);
-        impls[NOP] = &nop;
+        auto* nop = new NekoOpNop(ops[NOP]);
+        impls[nop->opcode] = nop;
 
-        ops::NekoOpReturn ret(RETURN);
-        impls[RETURN] = &ret;
+        auto* ret = new NekoOpReturn(ops[RETURN]);
+        impls[ret->opcode] = ret;
+    }
+
+    NekoOp& Runtime::getImpl(short op) {
+        return *impls[ops[op]];
     }
 
 } // runtime

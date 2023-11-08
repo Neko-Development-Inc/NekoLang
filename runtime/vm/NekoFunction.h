@@ -8,6 +8,8 @@
 #include <utility>
 #include <variant>
 
+#include "../../common/opcodes.h"
+
 using std::string, std::vector, std::any;
 
 namespace runtime {
@@ -18,20 +20,35 @@ namespace vm {
     class NekoClass;
 }
 
+namespace ops {
+    class NekoOp;
+}
+
+namespace opcodes {
+    class Opcodes;
+}
+
+using opcodes::Opcodes,
+      runtime::Runtime,
+      ops::NekoOp;
+
 namespace vm {
 class NekoFunction {
 
 public:
     string name;
-    vector<any> instructions;
+    vector<NekoOp*> instructions;
     NekoClass &owner;
+    Opcodes &ops;
 
-    explicit NekoFunction(string name, NekoClass& owner) :
-        name(std::move(name)), owner(owner) { }
+    explicit NekoFunction(string name, NekoClass& owner, Opcodes& ops) :
+        name(std::move(name)),
+        owner(owner),
+        ops(ops) { }
 
-    void init();
+    void init(Runtime);
 
-    void execute(const runtime::Runtime&);
+    void execute(const Runtime&);
 
 };
 }
