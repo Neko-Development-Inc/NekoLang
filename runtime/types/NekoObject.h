@@ -4,8 +4,16 @@
 
 #include <cstdlib>
 #include <any>
+#include <string>
 
 namespace types {
+    enum ObjectType {
+        NONE,
+        UNKNOWN,
+        NUMBER,
+        STRING,
+    };
+
     template <class T>
     class NekoObject {
 
@@ -13,10 +21,19 @@ namespace types {
         T value;
 
     public:
-        explicit NekoObject(T t) : value(t) { }
+        explicit NekoObject(T t) :
+            value(t) { }
 
         virtual T get();
         virtual void set(T);
+
+        static std::string typeString(ObjectType type) {
+            if (type == ObjectType::NUMBER)
+                return "Number";
+            if (type == ObjectType::STRING)
+                return "String";
+            return "Unknown";
+        }
 
     };
 

@@ -20,4 +20,6 @@ add_executable(NekoLang main.cpp
         runtime/vm/NekoFunction.cpp
         runtime/vm/NekoFunction.h
         runtime/vm/NekoClass.cpp
-        runtime/vm/NekoClass.h)
+        runtime/vm/NekoClass.h
+        runtime/vm/NekoStack.cpp
+        runtime/vm/NekoStack.h)

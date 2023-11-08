@@ -11,7 +11,11 @@ const short
        NOP   = 0
      , POP   = 1
      , POP_N = 2
-     , CS    = 3
+     , DUP   = 3
+     , DUP_2 = 4
+     , DUP_3 = 5
+     , DUP_N = 6
+     , CS    = 7
 
      , LABEL  = 1000
      , RETURN = 1001

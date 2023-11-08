@@ -37,6 +37,16 @@ int main() {
     // Execute fun main
     fun.execute(r);
 
+    NekoStack stack;
+    stack.add(new types::NekoNumber(9223372036854775807L - 1L), types::ObjectType::NUMBER);
+    stack.add(string("Hello world :)"), types::ObjectType::STRING);
+
+    auto str = *stack.popString();
+    println(str);
+
+    auto num = *stack.popNumber();
+    println(num.get());
+
     return 0;
 }
 
@@ -79,7 +89,12 @@ int main() {
 *  POP          = 1 - pop last element from Stack
 *  POP_N        = 2 - pop last N elements from Stack
 *                     N is the last Number on the Stack
-*  CS           = 3 - clear the stack
+*  DUP          = 3 - duplicate the last element on the Stack
+*  DUP_2        = 4 - duplicate the last 2 elements on the Stack
+*  DUP_3        = 5 - duplicate the last 3 elements on the Stack
+*  DUP_N        = 6 - duplicate the last M elements on the Stack
+*                   - N is the last Number on the Stack
+*  CS           = 7 - clear the stack
 *
 *  LABEL<id>    = 1000 - label, a specific point in an instruction-set
 *  RETURN       = 1001 - return from function

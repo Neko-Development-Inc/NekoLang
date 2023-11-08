@@ -33,6 +33,7 @@ namespace types {
 
 #include "vm/NekoClass.h"
 #include "vm/NekoFunction.h"
+#include "vm/NekoStack.h"
 
 using namespace opcodes;
 using ops::NekoOp;

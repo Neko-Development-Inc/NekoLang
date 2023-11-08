@@ -6,12 +6,8 @@
 
 using namespace std;
 
-inline void println(const string& str) {
-    cout << str << '\n';
-}
-
-inline void println(int i) {
-    cout << i << '\n';
+inline void println(auto a) {
+    cout << a << '\n';
 }
 
 template<typename Base, typename T>

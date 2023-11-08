@@ -9,8 +9,8 @@ use 'utils.cat' as u;
 // Create a variable called 'u' with a reference to the file 'utils.cat'
 
 use test;
-use test;
-use test;
+use _pop;
+use add;
 
 var str <
     "hello<#test_N>" * test_N

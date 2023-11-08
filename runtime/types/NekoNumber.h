@@ -4,14 +4,19 @@
 
 #include "NekoObject.h"
 
+#include <cmath>
+
 namespace types {
-class NekoNumber : public NekoObject<double> {
+class NekoNumber : public NekoObject<long double> {
 
 public:
-    explicit NekoNumber(double num) : NekoObject(num) {}
+    explicit NekoNumber(long double num) :
+        NekoObject(num) {}
 
-    double get() override;
-    void set(double) override;
+    long double get() override;
+    void set(long double) override;
+
+    bool hasDecimals();
 
 };
 }

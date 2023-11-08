@@ -5,7 +5,7 @@ namespace opcodes {
     Opcodes::Opcodes() {
         /* Default opcode setup */
         for (const auto n: {
-                NOP, POP, POP_N, CS,
+                NOP, POP, POP_N, DUP, DUP_2, DUP_3, DUP_N, CS,
                 LABEL, RETURN, JUMP,
                 CREATE, TYPE, CALL,
                 NUMBER, STRING, CONCAT,
@@ -18,7 +18,7 @@ namespace opcodes {
     Opcodes::Opcodes(int key) {
         /* Key-based opcode setup */
         for (const auto n: {
-                NOP, POP, POP_N, CS,
+                NOP, POP, POP_N, DUP, DUP_2, DUP_3, DUP_N, CS,
                 LABEL, RETURN, JUMP,
                 CREATE, TYPE, CALL,
                 NUMBER, STRING, CONCAT,

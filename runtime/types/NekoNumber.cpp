@@ -2,12 +2,16 @@
 
 namespace types {
 
-    double NekoNumber::get() {
+    long double NekoNumber::get() {
         return value;
     }
 
-    void NekoNumber::set(double val) {
+    void NekoNumber::set(long double val) {
         value = val;
+    }
+
+    bool NekoNumber::hasDecimals() {
+        return value > std::floor(value);
     }
 
 }
