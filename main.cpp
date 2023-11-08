@@ -35,7 +35,7 @@ int main() {
     clz.addFunction(fun);
 
     // Execute fun main
-    fun.execute(r);
+    fun.execute(&r);
 
     NekoStack stack;
     stack.add(new types::NekoNumber(9223372036854775807L - 1L), types::ObjectType::NUMBER);

@@ -14,7 +14,7 @@ public:
     explicit NekoOpReturn(short opcode)
             : NekoOp(opcode) {}
 
-    void execute(const Runtime &r, const NekoStack &s) override {
+    void execute(Runtime* r, NekoStack* s) override {
         // Return from the current executing function
         println("NekoOpReturn");
     }

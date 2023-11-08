@@ -4,15 +4,12 @@
 
 #include <string>
 #include "../../utils/utils.h"
+#include "../vm/NekoStack.h"
 
 using std::string, std::to_string;
 
 namespace runtime {
     class Runtime;
-}
-
-namespace vm {
-    class NekoStack;
 }
 
 namespace ops {
@@ -21,7 +18,7 @@ public:
     const short opcode;
     explicit NekoOp(short op) :
             opcode(op) { }
-    virtual void execute(const runtime::Runtime&, const vm::NekoStack&)
+    virtual void execute(runtime::Runtime*, vm::NekoStack*)
         = 0;
 };
 }

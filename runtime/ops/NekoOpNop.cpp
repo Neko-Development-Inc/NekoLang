@@ -14,9 +14,10 @@ public:
     explicit NekoOpNop(short opcode)
             : NekoOp(opcode) {}
 
-    void execute(const Runtime &r, const NekoStack &s) override {
+    void execute(Runtime* r, NekoStack* s) override {
         // Do nothing
         println("NekoOpNop");
+        s->count();
     }
 
 };

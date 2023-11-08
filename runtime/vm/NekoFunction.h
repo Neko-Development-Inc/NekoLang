@@ -48,7 +48,7 @@ public:
 
     void init(Runtime);
 
-    void execute(const Runtime&);
+    void execute(Runtime*);
 
 };
 }
