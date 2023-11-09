@@ -75,7 +75,7 @@ int main() {
 *
 * box syntax:
 * < box Name >.<
-*   #owo code here uwu#
+*   // code here
 * >
 *
 * Types:
@@ -88,7 +88,6 @@ int main() {
 *  null     = E - alias for the above empty type
 *
 * Opcodes:
-*
 *  NOP          = 0 - do nothing
 *  POP          = 1 - pop last element from Stack
 *  POP_N        = 2 - pop last N elements from Stack
@@ -148,5 +147,21 @@ int main() {
 *  for <item in items>.<
 *      println(item);
 *  >
+*
+*  // Json example:
+*  owo json <{
+*      testKey: 'test value'
+*  }>
+*  print(json.testKey) // prints 'test value'
+*  json.testKey <'OwO'>
+*  print(json.testKey) // prints 'OwO'
+*
+*  // math example:
+*  owo a < 3 >         // 3
+*  var b < a + 1 >     // 4
+*  uwu c < a++ >       // 3 - assigns value 'a' THEN increments afterwards
+*  var d < ++a >       // 4 - increments first THEN assigns value 'a'
+*  owo e < a++ + a >   // 3 + 3 - assigns value 'a' + 'a' = 6, THEN increments afterwards
+*  var f < a++ + ++a > // 3 + 4 - assigns value 'a' + 'a=a+1' = 7
 *
 */
