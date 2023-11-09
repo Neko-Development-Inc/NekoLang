@@ -4,6 +4,10 @@
 
 #include "../common/opcodes.h"
 #include "../utils/utils.h"
+#include "reader.h"
+
+#include <fstream>
+#include <sstream>
 
 using namespace opcodes;
 

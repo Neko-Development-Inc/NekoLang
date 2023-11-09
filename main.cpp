@@ -13,42 +13,42 @@ int main() {
 
     // Set up all opcodes
     Opcodes o;
-    println(string("NOP: ").append(to_string(o[NOP])));
-    println(string("RETURN: ").append(to_string(o[RETURN])));
+//    println(string("NOP: ").append(to_string(o[NOP])));
+//    println(string("RETURN: ").append(to_string(o[RETURN])));
 
     Compiler c(o);
     c.test();
 
-    // Set up runtime env
-    Runtime r(o);
-    r.init();
-
-    // Create class
-    NekoClass clz("default");
-
-    // Create fun main
-    NekoFunction fun("main", clz, o);
-    // Initialize fun main
-    fun.init(r);
-
-    // Add fun main to default class
-    clz.addFunction(fun);
-
-    // Execute fun main
-    fun.execute(&r);
-
-    NekoStack stack;
-    stack.add(new types::NekoNumber(9223372036854775807L - 1L), types::ObjectType::NUMBER);
-    stack.add(string("Hello world :)"), types::ObjectType::STRING);
-
-    int count = stack.count();
-    println("Count: ", count);
-
-    auto str = *stack.popString();
-    println("String: ", str);
-
-    auto num = *stack.popNumber();
-    println("Number: ", num, ", isSame: ", num.get() == (9223372036854775807L - 1L));
+//    // Set up runtime env
+//    Runtime r(o);
+//    r.init();
+//
+//    // Create class
+//    NekoClass clz("default");
+//
+//    // Create fun main
+//    NekoFunction fun("main", clz, o);
+//    // Initialize fun main
+//    fun.init(r);
+//
+//    // Add fun main to default class
+//    clz.addFunction(fun);
+//
+//    // Execute fun main
+//    fun.execute(&r);
+//
+//    NekoStack stack;
+//    stack.add(new types::NekoNumber(9223372036854775807L - 1L), types::ObjectType::NUMBER);
+//    stack.add(string("Hello world :)"), types::ObjectType::STRING);
+//
+//    int count = stack.count();
+//    println("Count: ", count);
+//
+//    auto str = *stack.popString();
+//    println("String: ", str);
+//
+//    auto num = *stack.popNumber();
+//    println("Number: ", num, ", isSame: ", num.get() == (9223372036854775807L - 1L));
 
     return 0;
 }
@@ -61,13 +61,17 @@ int main() {
 * :3 catflap  - entrypoint
 * :3 cat-flap - entrypoint
 *
-* use x - includes x.cat
-* use x as y - includes x.cat as reference y
+* pls x - includes x.cat
+* pls x as y - includes x.cat as reference y
 *
 * box - class
+* owo --v
 * var - variable
+* uwu --^
 * fun - function
 *
+* // comment
+* \/\* comment \*\/
 *
 * box syntax:
 * < box Name >.<

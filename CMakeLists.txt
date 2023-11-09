@@ -22,4 +22,6 @@ add_executable(NekoLang main.cpp
         runtime/vm/NekoClass.cpp
         runtime/vm/NekoClass.h
         runtime/vm/NekoStack.cpp
-        runtime/vm/NekoStack.h)
+        runtime/vm/NekoStack.h
+        compiler/reader.cpp
+        compiler/reader.h)
