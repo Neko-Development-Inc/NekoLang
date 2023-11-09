@@ -70,6 +70,7 @@ namespace compiler {
             bool inComment = IN_COMMENT_1 || IN_COMMENT_2 || IN_COMMENT_3 || IN_COMMENT_4;
             bool inString = IN_STRING_1 || IN_STRING_2 || IN_STRING_3;
             if (inString) {
+                // Include string characters
                 out += c;
                 // Check for string exit
                 if (IN_STRING_1 && p != '\\' && c == '"')
@@ -78,7 +79,6 @@ namespace compiler {
                     IN_STRING_2 = false;
                 else if (IN_STRING_3 && p != '\\' && c == '`')
                     IN_STRING_3 = false;
-                continue;
             } else if (inComment) {
                 // Check for comment exit
                 if (IN_COMMENT_1 && c == '\n') {
@@ -93,11 +93,10 @@ namespace compiler {
                     i += 2;
                     IN_COMMENT_4 = false;
                 }
-                continue;
             } else {
                 // Check for string/comment entry
                 bool pIsEscape = p == '\\';
-                // Check for strings
+                // Check for strings, and include the character if it is a quote
                 if (!pIsEscape && c == '"') {
                     IN_STRING_1 = true;
                     out += c;
@@ -108,7 +107,7 @@ namespace compiler {
                     IN_STRING_3 = true;
                     out += c;
                 } else
-                // Check for comments
+                // Check for comments, but don't include comment symbols
                 if (c == '/' && n == '/') {
                     IN_COMMENT_1 = true;
                     i++;
@@ -122,11 +121,12 @@ namespace compiler {
                     IN_COMMENT_4 = true;
                     i += 2;
                 } else
+                    // Otherwise, include any other character, symbols, etc
                     out += c;
-                continue;
             }
         }
-        set(_index);
+        // Reset reader
+        index = _index;
         str = out;
         end = str.length() - 1;
     }

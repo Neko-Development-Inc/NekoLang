@@ -10,9 +10,9 @@ using std::string;
 namespace compiler {
 class Reader {
 private:
-    string str;
 
 public:
+    string str;
     long int index = 0;
     long int end = 0;
 
