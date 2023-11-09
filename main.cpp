@@ -68,9 +68,6 @@ int main() {
 * var - variable
 * fun - function
 *
-* #owo - start of a single/multi-line comment
-* uwu# - end of a single-line comment
-* #uwu - end of a multi-line comment
 *
 * box syntax:
 * < box Name >.<
