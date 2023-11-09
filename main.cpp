@@ -58,8 +58,8 @@ int main() {
 * .cat - source file
 * .neko - compiled file
 *
-* !catflap - entrypoint
-* !cat-flap - entrypoint
+* :3 catflap  - entrypoint
+* :3 cat-flap - entrypoint
 *
 * use x - includes x.cat
 * use x as y - includes x.cat as reference y
