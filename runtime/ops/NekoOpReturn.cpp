@@ -15,7 +15,8 @@ public:
             : NekoOp(opcode) {}
 
     void execute(Runtime* r, NekoStack* s) override {
-        // Return from the current executing function
+        // TODO: Return from the current executing function
+        int count = s->count();
         println("NekoOpReturn");
     }
 
