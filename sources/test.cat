@@ -1,5 +1,6 @@
-&pls test_N 1 ^;
-// &pls - define include_counter
+#pls <test_N 1 ^>
+// #pls - define include_counter
+// < > - settings
 // testN - counter_variable
 // 1 - default counter value, if variable(s) doesn't exist
 // ^ - use whatever counter was found first, forever
