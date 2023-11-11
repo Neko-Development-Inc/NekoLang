@@ -12,17 +12,27 @@ namespace compiler {
         println(str);
 
         Reader reader(str);
-        reader.removeComments();
         println("index: ", reader.index, ", length: ", reader.end+1);
         string out;
         while (reader.hasMore()) {
+            char p2 = reader.peekPrev(2);
             char p = reader.peekPrev();
             char c = reader.curr();
             char n = reader.peekNext();
+            char n2 = reader.peekNext(2);
             if (reader.index == 0 && c == '!') {
 
             }
             out += c;
+            reader.move(1);
+        }
+        println(out);
+
+        out = "";
+        reader.set(0);
+        while (reader.hasMore()) {
+            out += reader.curr();
+            out += ": " + to_string((int)reader.mappings[reader.index]) + '\n';
             reader.move(1);
         }
         println(out);
