@@ -139,6 +139,9 @@ namespace compiler {
     }
 
     void Reader::mapString() {
+        // Ignore the fact that the code
+        //  above is basically the same,
+        //  they do different things.
         bool IN_COMMENT_1 = false;
         bool IN_COMMENT_2 = false;
         bool IN_COMMENT_3 = false;
@@ -172,8 +175,8 @@ namespace compiler {
                 if (IN_COMMENT_1 && c == '\n') {
                     IN_COMMENT_1 = false;
                 } else if (IN_COMMENT_2 && p != '\\' && c == '*' && n == '/') {
-                    IN_COMMENT_2 = false;
                     mappings[i + 1] = MappingType::COMMENT;
+                    IN_COMMENT_2 = false;
                     i++;
                 } else if (IN_COMMENT_3 && p != '\\' && c == '\'' && n == '\'' && n2 == '\'') {
                     mappings[i + 1] = MappingType::COMMENT;

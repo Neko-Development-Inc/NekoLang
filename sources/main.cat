@@ -1,16 +1,16 @@
 :3 cat-flap
 // Defines entrypoint
 
-pls test;
+pls test
 
 var test_N < 3 >
 
-pls 'utils.cat' as u;
+pls 'utils.cat' as u
 // Create a variable called 'u' with a reference to the file 'utils.cat'
 
-pls test;
-pls test;
-pls test;
+pls test
+pls test
+pls test
 
 var str <
     "hello<#test_N>" * test_N

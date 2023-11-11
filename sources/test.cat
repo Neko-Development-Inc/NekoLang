@@ -5,4 +5,4 @@
 // 1 - default counter value, if variable(s) doesn't exist
 // ^ - use whatever counter was found first, forever
 
-print('hello world');
+print('hello world')
