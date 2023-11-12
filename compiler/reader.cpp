@@ -5,7 +5,7 @@ namespace compiler {
 
     char Reader::peekPrev() { return peekPrev(1); }
     char Reader::peekPrev(int n) {
-        if ((index - n) <= 0)
+        if ((index - n) < 0)
             return '\n';
         return str[index - n];
     }
@@ -24,6 +24,48 @@ namespace compiler {
     #define HAS_MORE index <= end
     bool Reader::hasMore() const {
         return HAS_MORE;
+    }
+
+    any Reader::charN(int n) {
+        if (n < 0 || n > 5) return nullptr;
+        if (n == 5) return Ret5 {
+            peekPrev(5), peekPrev(4), peekPrev(3),
+            peekPrev(2),  peekPrev(1), curr(), peekNext(1),
+            peekNext(2), peekNext(3), peekNext(4), peekNext(5)
+        };
+        if (n == 4) return Ret4 {
+            peekPrev(4), peekPrev(3), peekPrev(2),
+            peekPrev(1),   curr(), peekNext(1),
+            peekNext(2), peekNext(3), peekNext(4)
+        };
+        if (n == 3) return Ret3 {
+            peekPrev(3), peekPrev(2),
+            peekPrev(1),   curr(), peekNext(1),
+            peekNext(2), peekNext(3)
+        };
+        if (n == 2) return Ret2 {
+            peekPrev(2), peekPrev(1),
+            curr(), peekNext(1), peekNext(2),
+        };
+        if (n == 1) return Ret1 {
+            peekPrev(1),
+            curr(),
+            peekNext(1),
+        };
+        return curr();
+    }
+
+    bool Reader::isCode() const {
+        return mappings[index] == MappingType::CODE;
+    }
+
+    bool Reader::isComment() const {
+        return mappings[index] == MappingType::COMMENT;
+    }
+
+    bool Reader::isString() const {
+        auto m = mappings[index];
+        return m == MappingType::STRING1 || m == MappingType::STRING2 || m == MappingType::STRING3;
     }
 
     void Reader::move(long int dir) {
@@ -76,33 +118,33 @@ namespace compiler {
             i++;
             bool inComment = IN_COMMENT_1 || IN_COMMENT_2 || IN_COMMENT_3 || IN_COMMENT_4;
             bool inString = IN_STRING_1 || IN_STRING_2 || IN_STRING_3;
+            bool pIsEscape = p == '\\';
             if (inString) {
                 // Include string characters
                 out += c;
                 // Check for string exit
-                if (IN_STRING_1 && p != '\\' && c == '"')
+                if (IN_STRING_1 && !pIsEscape && c == '"')
                     IN_STRING_1 = false;
-                else if (IN_STRING_2 && p != '\\' && c == '\'')
+                else if (IN_STRING_2 && !pIsEscape && c == '\'')
                     IN_STRING_2 = false;
-                else if (IN_STRING_3 && p != '\\' && c == '`')
+                else if (IN_STRING_3 && !pIsEscape && c == '`')
                     IN_STRING_3 = false;
             } else if (inComment) {
                 // Check for comment exit
                 if (IN_COMMENT_1 && c == '\n') {
                     IN_COMMENT_1 = false;
-                } else if (IN_COMMENT_2 && p != '\\' && c == '*' && n == '/') {
+                } else if (IN_COMMENT_2 && !pIsEscape && c == '*' && n == '/') {
                     IN_COMMENT_2 = false;
                     i++;
-                } else if (IN_COMMENT_3 && p != '\\' && c == '\'' && n == '\'' && n2 == '\'') {
+                } else if (IN_COMMENT_3 && !pIsEscape && c == '\'' && n == '\'' && n2 == '\'') {
                     i += 2;
                     IN_COMMENT_3 = false;
-                } else if (IN_COMMENT_4 && p != '\\' && c == '-' && n == '-' && n2 == '>') {
+                } else if (IN_COMMENT_4 && !pIsEscape && c == '-' && n == '-' && n2 == '>') {
                     i += 2;
                     IN_COMMENT_4 = false;
                 }
             } else {
                 // Check for string/comment entry
-                bool pIsEscape = p == '\\';
                 // Check for strings, and include the character if it is a quote
                 if (!pIsEscape && c == '"') {
                     IN_STRING_1 = true;
@@ -158,32 +200,33 @@ namespace compiler {
             char n2 = (i + 2) > end ? '\n' : str[i + 2];
             bool inComment = IN_COMMENT_1 || IN_COMMENT_2 || IN_COMMENT_3 || IN_COMMENT_4;
             bool inString = IN_STRING_1 || IN_STRING_2 || IN_STRING_3;
+            bool pIsEscape = p == '\\';
             if (inString) {
                 if (IN_STRING_1) mappings[i] = MappingType::STRING1;
                 else if (IN_STRING_2) mappings[i] = MappingType::STRING2;
                 else if (IN_STRING_3) mappings[i] = MappingType::STRING3;
                 // Check for string exit
-                if (IN_STRING_1 && p != '\\' && c == '"')
+                if (IN_STRING_1 && !pIsEscape && c == '"')
                     IN_STRING_1 = false;
-                else if (IN_STRING_2 && p != '\\' && c == '\'')
+                else if (IN_STRING_2 && !pIsEscape && c == '\'')
                     IN_STRING_2 = false;
-                else if (IN_STRING_3 && p != '\\' && c == '`')
+                else if (IN_STRING_3 && !pIsEscape && c == '`')
                     IN_STRING_3 = false;
             } else if (inComment) {
                 // Check for comment exit
                 mappings[i] = MappingType::COMMENT;
                 if (IN_COMMENT_1 && c == '\n') {
                     IN_COMMENT_1 = false;
-                } else if (IN_COMMENT_2 && p != '\\' && c == '*' && n == '/') {
+                } else if (IN_COMMENT_2 && !pIsEscape && c == '*' && n == '/') {
                     mappings[i + 1] = MappingType::COMMENT;
                     IN_COMMENT_2 = false;
                     i++;
-                } else if (IN_COMMENT_3 && p != '\\' && c == '\'' && n == '\'' && n2 == '\'') {
+                } else if (IN_COMMENT_3 && !pIsEscape && c == '\'' && n == '\'' && n2 == '\'') {
                     mappings[i + 1] = MappingType::COMMENT;
                     mappings[i + 2] = MappingType::COMMENT;
                     i += 2;
                     IN_COMMENT_3 = false;
-                } else if (IN_COMMENT_4 && p != '\\' && c == '-' && n == '-' && n2 == '>') {
+                } else if (IN_COMMENT_4 && !pIsEscape && c == '-' && n == '-' && n2 == '>') {
                     mappings[i + 1] = MappingType::COMMENT;
                     mappings[i + 2] = MappingType::COMMENT;
                     i += 2;
@@ -191,7 +234,6 @@ namespace compiler {
                 }
             } else {
                 // Check for string/comment entry
-                bool pIsEscape = p == '\\';
                 // Check for strings, and include the character if it is a quote
                 if (!pIsEscape && c == '"') {
                     mappings[i] = MappingType::STRING1;

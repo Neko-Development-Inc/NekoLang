@@ -16,6 +16,10 @@ var str <
     "hello<#test_N>" * test_N
 >
 
+owo b < facts, fake >
+
+// floof
+
 u.Baggy()
 // Execute the 'Baggy' function from 'utils'
 
@@ -37,8 +41,23 @@ Code inside a region
 <-region_name-
 
 // Class example, using Box1 as parent box
-< box Box2 / Box1 >.<
+< box Box2 / Box1 >w<
 
+>
+
+angy o < 3 > // readonly
+o < 1 > // crashes
+
+scawy <
+    owo i < 2 / 0 >
+>.< // cant-divide-by-zero-Exception
+    println("SCAWY!!!")
+>
+
+spoopy <
+    owo i < 2 / 0 >
+>.< // cant-divide-by-zero-Exception
+    println("SPOOPY!!!")
 >
 
 // Code can be here
