@@ -53,13 +53,13 @@ public:
     char curr();
     char peekNext();
     char peekNext(int n);
-    [[nodiscard]] bool hasMore() const;
+    _GLIBCXX_NODISCARD bool hasMore() const;
 
     any charN(int n);
 
-    [[nodiscard]] bool isCode() const;
-    [[nodiscard]] bool isComment() const;
-    [[nodiscard]] bool isString() const;
+    _GLIBCXX_NODISCARD bool isCode() const;
+    _GLIBCXX_NODISCARD bool isComment() const;
+    _GLIBCXX_NODISCARD bool isString() const;
 
     void move(long int dir);
     constexpr void set(long int i);
@@ -72,7 +72,7 @@ public:
     void mapString();
 
     static char getClosingChar(char opening);
-    [[nodiscard]] std::tuple<int, int, int> findRange(char opening) const;
+    _GLIBCXX_NODISCARD std::tuple<int, int, int> findRange(char opening) const;
     char findFirstOpening();
     void skipWhitespace();
     static bool isWhiteSpace(char c);
