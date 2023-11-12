@@ -78,6 +78,8 @@ spoopy <
     owo i < 2 / 0 >
 >.< // cant-divide-by-zero-Exception
     println("SPOOPY!!!")
+>.< // finally
+    println("spoopy finally over <:o")
 >
 
 // Json example:
