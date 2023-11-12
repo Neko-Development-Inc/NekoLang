@@ -82,11 +82,6 @@ namespace compiler {
 
     // Removes all comments from current text
     void Reader::removeComments() {
-        removeComments(false);
-    }
-
-    // Removes all comments from current text
-    void Reader::removeComments(bool doMapping) {
         auto _index = index;
         set(0);
         auto i = index;
@@ -315,7 +310,7 @@ namespace compiler {
             } else if (c == opening)
                 openCount++;
         }
-        return std::tuple<int, int, int>{openIndex, endIndex, length};
+        return std::tuple<int, int, int> { openIndex, endIndex, length };
     }
 
     char Reader::findFirstOpening() {
@@ -340,7 +335,7 @@ namespace compiler {
     }
 
     bool Reader::isWhiteSpace(char c) {
-        if (c == ' ') return true;
+        if (c == ' ')  return true;
         if (c == '\f') return true; // form feed
         if (c == '\n') return true; // line feed
         if (c == '\r') return true; // carriage return
