@@ -13,33 +13,17 @@ namespace compiler {
         auto str = ss.str();
 
         Reader reader(str);
-        println(reader.currentString());
-        println("index: ", reader.index, ", length: ", reader.end+1);
+        println("reader: `", reader.currentString(), "`");
 
         char opening = reader.findFirstOpening();
         auto [start, end, len] = reader.findRange(opening);
         auto inner = reader.str.substr(start+1, len-2);
+        reader.set(end);
+        println("reader: `", reader.currentString(), "`");
 
         Reader readerInner(inner);
-        println(readerInner.currentString());
+        println("readerInner: `", readerInner.currentString(), "`");
 
-//        string out;
-//        while (reader.hasMore()) {
-//            auto [ p, c, n ] = any_cast<Ret1>(reader.charN(1));
-////            println(p5, p4, p3, p2, p, c, n, n2, n3, n4, n5);
-//            out += c;
-//            reader.move(1);
-//        }
-//        println(out);
-
-//        out = "";
-//        reader.set(0);
-//        while (reader.hasMore()) {
-//            out += reader.curr();
-//            out += ": " + to_string((int)reader.mappings[reader.index]) + '\n';
-//            reader.move(1);
-//        }
-//        println(out);
     }
 
 } // compiler
