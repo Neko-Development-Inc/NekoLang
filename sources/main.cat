@@ -1,22 +1,26 @@
 :3 cat-flap
 // Defines entrypoint
 
+// Include 'test.cat' into this file
 pls test
 
-var test_N < 3 >
+// Create variable test_N with the value 3
+uwu test_N < 3 >
 
+// Include 'utils.cat' into a variable called 'u'
 pls 'utils.cat' as u
-// Create a variable called 'u' with a reference to the file 'utils.cat'
 
+// Include 'test.cat' into this file, 3 times
 pls test
 pls test
 pls test
 
+// Create string variable
 var str <
     "hello<#test_N>" * test_N
 >
 
-owo b < facts, fake >
+owo b < fact, fake >
 
 // floof
 
@@ -27,6 +31,12 @@ u.Baggy()
 < box Box1 >.<
 
 >
+
+// This is a comment
+
+/*
+This is a comment
+*/
 
 '''
 This is a comment
@@ -45,25 +55,24 @@ Code inside a region
 
 >
 
-angy o < 3 > // readonly
-o < 1 > // crashes
+// Create an instance of 'Box2'
+create Box2()
 
+angy o < 3 > // readonly
+
+// try-catch basically
 scawy <
-    owo i < 2 / 0 >
->.< // cant-divide-by-zero-Exception
+    o < 1 > // reassign o to 1 - throws exception
+>.< // cant-reassign-angy-Exception
     println("SCAWY!!!")
 >
 
+// alternative try-catch
 spoopy <
     owo i < 2 / 0 >
 >.< // cant-divide-by-zero-Exception
     println("SPOOPY!!!")
 >
-
-// Code can be here
-
-// Create an instance of 'Box2'
-create Box2()
 
 // Json example:
 owo json <{
