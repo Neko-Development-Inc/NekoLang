@@ -164,4 +164,24 @@ int main() {
 *  owo e < a++ + a >   // 3 + 3 - assigns value 'a' + 'a' = 6, THEN increments afterwards
 *  var f < a++ + ++a > // 3 + 4 - assigns value 'a' + 'a=a+1' = 7
 *
+*  booleans:
+*  fact - true
+*  fake - false
+*
+*  if < expression is fact >.<
+*      println("noice")
+*  >
+*  if < expression is fake >.<
+*      println("oops")
+*  >
+*
+*  if/else-if/else:
+*  if < expression >.<
+*      // If here
+*  > uhm < expression >.<
+*      // Else-if here
+*  > oh <
+*      // Else here
+*  >
+*
 */
