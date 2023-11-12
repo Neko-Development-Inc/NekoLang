@@ -11,22 +11,17 @@ namespace compiler {
         std::ostringstream ss;
         ss << stream.rdbuf();
         auto str = ss.str();
-        println(str);
 
         Reader reader(str);
+        println(reader.currentString());
         println("index: ", reader.index, ", length: ", reader.end+1);
 
         char opening = reader.findFirstOpening();
-
         auto [start, end, len] = reader.findRange(opening);
-        println(start, " ", end, " ", len);
-
         auto inner = reader.str.substr(start+1, len-2);
-        println(inner);
 
         Reader readerInner(inner);
-        readerInner.skipWhitespace();
-        println(readerInner.index);
+        println(readerInner.currentString());
 
 //        string out;
 //        while (reader.hasMore()) {
