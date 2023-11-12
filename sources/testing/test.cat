@@ -1,6 +1,6 @@
 
 
 
-< box Box1 >.<
+< box Box1("Abc", 'Def', `Ghi`) >.<
 
 >
