@@ -15,14 +15,27 @@ namespace compiler {
 
         Reader reader(str);
         println("index: ", reader.index, ", length: ", reader.end+1);
-        string out;
-        while (reader.hasMore()) {
-            auto [ p, c, n ] = any_cast<Ret1>(reader.charN(1));
-//            println(p5, p4, p3, p2, p, c, n, n2, n3, n4, n5);
-            out += c;
-            reader.move(1);
-        }
-        println(out);
+
+        char opening = reader.findFirstOpening();
+
+        auto [start, end, len] = reader.findRange(opening);
+        println(start, " ", end, " ", len);
+
+        auto inner = reader.str.substr(start+1, len-2);
+        println(inner);
+
+        Reader readerInner(inner);
+        readerInner.skipWhitespace();
+        println(readerInner.index);
+
+//        string out;
+//        while (reader.hasMore()) {
+//            auto [ p, c, n ] = any_cast<Ret1>(reader.charN(1));
+////            println(p5, p4, p3, p2, p, c, n, n2, n3, n4, n5);
+//            out += c;
+//            reader.move(1);
+//        }
+//        println(out);
 
 //        out = "";
 //        reader.set(0);
