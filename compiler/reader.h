@@ -34,15 +34,18 @@ public:
     long int end = 0;
     int* mappings;
 
-    explicit Reader(const string& s) : Reader(s, true) { }
+    explicit Reader(const string& s) :
+        Reader(s, true, true) { }
 
-    explicit Reader(const string& s, bool doRemoveComments) {
+    explicit Reader(const string& s, bool doRemoveComments, bool doSkipWhitespace) {
         str = s;
         end = str.length() - 1;
         if (doRemoveComments)
             removeComments();
         mappings = new int[str.length()];
         mapString();
+        if (doSkipWhitespace)
+            skipWhitespace();
     }
 
     char peekPrev();
@@ -60,6 +63,8 @@ public:
 
     void move(long int dir);
     constexpr void set(long int i);
+
+    string currentString();
 
     void removeComments();
     void removeComments(bool doMapping);

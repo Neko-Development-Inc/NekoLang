@@ -76,6 +76,10 @@ namespace compiler {
         index = i;
     }
 
+    string Reader::currentString() {
+        return str.substr(index);
+    }
+
     // Removes all comments from current text
     void Reader::removeComments() {
         removeComments(false);
