@@ -276,4 +276,73 @@ namespace compiler {
         }
     }
 
+    char Reader::getClosingChar(char c) {
+        if (c == '<') return '>';
+        if (c == '(') return ')';
+        if (c == '[') return ']';
+        if (c == '{') return '}';
+        return ' ';
+    }
+
+    /// Find range for the opening character @opening
+    std::tuple<int, int, int> Reader::findRange(char opening) const {
+        int openIndex = -1, endIndex = -1, length = -1;
+        auto i = index;
+        bool hasFoundOpening = false;
+        char closingChar = getClosingChar(opening);
+        int openCount = 0;
+        while (i <= end) {
+            char c = str[i++];
+            if (!hasFoundOpening) {
+                // Look for opening
+                if (c == opening) {
+                    hasFoundOpening = true;
+                    openIndex = i-1;
+                    openCount++;
+                    continue;
+                }
+            } else
+            // Look for closing of the correct type
+            //  and check if we fully closed
+            if (c == closingChar && --openCount == 0) {
+                endIndex = i;
+                length = endIndex - openIndex;
+                break;
+            } else if (c == opening)
+                openCount++;
+        }
+        return std::tuple<int, int, int>{openIndex, endIndex, length};
+    }
+
+    char Reader::findFirstOpening() {
+        auto i = index;
+        while (i <= end) {
+            char c = str[i++];
+            if (getClosingChar(c) != ' ')
+                return c;
+        }
+        return ' ';
+    }
+
+    void Reader::skipWhitespace() {
+        auto i = index;
+        while (i <= end) {
+            char c = str[i];
+            if (!isWhiteSpace(c))
+                break;
+            i++;
+        }
+        set(i);
+    }
+
+    bool Reader::isWhiteSpace(char c) {
+        if (c == ' ') return true;
+        if (c == '\f') return true; // form feed
+        if (c == '\n') return true; // line feed
+        if (c == '\r') return true; // carriage return
+        if (c == '\t') return true; // horizontal tab
+        if (c == '\v') return true; // vertical tab
+        return false;
+    }
+
 }

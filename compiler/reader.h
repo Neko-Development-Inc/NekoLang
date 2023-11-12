@@ -66,6 +66,12 @@ public:
 
     void mapString();
 
+    static char getClosingChar(char opening);
+    [[nodiscard]] std::tuple<int, int, int> findRange(char opening) const;
+    char findFirstOpening();
+    void skipWhitespace();
+    static bool isWhiteSpace(char c);
+
 };
 }
 
