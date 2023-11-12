@@ -58,8 +58,11 @@ public:
     any charN(int n);
 
     bool isCode() const;
+    bool isCode(int i) const;
     bool isComment() const;
+    bool isComment(int i) const;
     bool isString() const;
+    bool isString(int i) const;
 
     void move(long int dir);
     constexpr void set(long int i);

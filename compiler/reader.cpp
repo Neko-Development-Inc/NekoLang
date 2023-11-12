@@ -56,15 +56,27 @@ namespace compiler {
     }
 
     bool Reader::isCode() const {
-        return mappings[index] == MappingType::CODE;
+        return isCode(index);
+    }
+
+    bool Reader::isCode(int i) const {
+        return mappings[i] == MappingType::CODE;
     }
 
     bool Reader::isComment() const {
-        return mappings[index] == MappingType::COMMENT;
+        return isComment(index);
+    }
+
+    bool Reader::isComment(int i) const {
+        return mappings[i] == MappingType::COMMENT;
     }
 
     bool Reader::isString() const {
-        auto m = mappings[index];
+        return isString(index);
+    }
+
+    bool Reader::isString(int i) const {
+        auto m = mappings[i];
         return m == MappingType::STRING1 || m == MappingType::STRING2 || m == MappingType::STRING3;
     }
 
@@ -291,6 +303,10 @@ namespace compiler {
         char closingChar = getClosingChar(opening);
         int openCount = 0;
         while (i <= end) {
+            if (!isCode(i)) {
+                i++;
+                continue;
+            }
             char c = str[i++];
             if (!hasFoundOpening) {
                 // Look for opening
@@ -316,6 +332,10 @@ namespace compiler {
     char Reader::findFirstOpening() {
         auto i = index;
         while (i <= end) {
+            if (!isCode(i)) {
+                i++;
+                continue;
+            }
             char c = str[i++];
             if (getClosingChar(c) != ' ')
                 return c;
@@ -326,6 +346,10 @@ namespace compiler {
     void Reader::skipWhitespace() {
         auto i = index;
         while (i <= end) {
+            if (!isCode(i)) {
+                i++;
+                continue;
+            }
             char c = str[i];
             if (!isWhiteSpace(c))
                 break;
