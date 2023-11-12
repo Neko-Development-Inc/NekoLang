@@ -16,8 +16,14 @@ pls test
 pls test
 
 // Create string variable
+//  and assign an on-change event
 var str <
     "hello<#test_N>" * test_N
+>^.^<
+    println("String changed from " + old + " to " + new)
+    // Re-assign the current reassignment.
+    // This will not trigger another on-change event call.
+    new < "owo" >
 >
 
 owo b < fact, fake >
