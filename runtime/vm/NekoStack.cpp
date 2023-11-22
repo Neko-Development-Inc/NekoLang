@@ -1,6 +1,5 @@
 #include "NekoStack.h"
 
-#include "../types/NekoNumber.h"
 #include "../../utils/utils.h"
 
 using std::get,
@@ -8,13 +7,11 @@ using std::get,
       types::NekoObject,
       types::NekoNumber;
 
-typedef NekoObject<any> NEKO_OBJ;
-
 namespace vm {
 
-    void NekoStack::add(const std::any& obj, ObjectType type) {
+    void NekoStack::add(std::unique_ptr<types::NekoBase> obj, ObjectType type) {
         stackTypes.emplace(type);
-        stack.emplace(obj);
+        stack.emplace(std::move(obj));
     }
 
     constexpr bool NekoStack::has() {
@@ -25,36 +22,21 @@ namespace vm {
         return (int)stack.size();
     }
 
-    result NekoStack::pop() {
+    Result NekoStack::pop() {
         if (!has())
-            return result { false,
-                nullptr, nullptr,
-                nullptr, ObjectType::NONE
+            return Result { false,
+               nullptr, ObjectType::NONE
             };
 
-        auto type = stackTypes.top();
-        auto item = stack.top();
+        auto type = std::move(stackTypes.top());
+        auto item = std::move(stack.top());
 
         stackTypes.pop();
         stack.pop();
 
-        switch (type) {
-            case ObjectType::NUMBER:
-                return result { true,
-                    &item, any_cast<NekoNumber*>(item),
-                    nullptr, type
-                };
-            case ObjectType::STRING:
-                return result { true,
-                    &item, nullptr,
-                    any_cast<string>(&item), type
-                };
-            default: ;
-        }
-
-        return result { false,
-            &item, nullptr,
-            nullptr, ObjectType::UNKNOWN
+        return Result { true,
+            std::move(item),
+            std::move(type)
         };
     }
 
@@ -62,24 +44,34 @@ namespace vm {
         while (true) {
             auto result = pop();
             if (!result.success) break;
-            if (result.type == ObjectType::NUMBER)
-                println(string("Number: ").append(to_string(result.number->get())));
-            else if (result.type == ObjectType::STRING)
-                println(string("String: '").append(*result.str).append("'"));
+            if (result.type == ObjectType::NUMBER) {
+                auto num = reinterpret_cast<types::NekoNumber*>(result.obj.get());
+                println(string("Number: ").append(to_string(num->get())));
+            }
+            else if (result.type == ObjectType::STRING) {
+                auto str = reinterpret_cast<string*>(result.obj.get());
+                println(string("String: '").append(*str).append("'"));
+            }
         }
     }
 
-    types::NekoNumber* NekoStack::popNumber() {
+    std::unique_ptr<long double> NekoStack::popNumber() {
         auto result = pop();
-        if (result.success && result.type == ObjectType::NUMBER)
-            return result.number;
+        if (result.success && result.type == types::NUMBER) {
+            auto obj = dynamic_cast<types::NekoNumber*>(result.obj.get());
+            if (obj != nullptr)
+                return std::make_unique<long double>(obj->get());
+        }
         return nullptr;
     }
 
-    string* NekoStack::popString() {
+    std::unique_ptr<string> NekoStack::popString() {
         auto result = pop();
-        if (result.success && result.type == ObjectType::STRING)
-            return result.str;
+        if (result.success && result.type == types::STRING) {
+            auto obj = dynamic_cast<types::NekoString*>(result.obj.get());
+            if (obj != nullptr)
+                return std::make_unique<string>(obj->get());
+        }
         return nullptr;
     }
 

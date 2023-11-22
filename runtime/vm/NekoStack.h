@@ -8,37 +8,38 @@
 #include <stack>
 #include <string>
 #include <variant>
+#include <memory>
 
 #include "../types/NekoObject.h"
 #include "../types/NekoNumber.h"
+#include "../types/NekoString.h"
 
 using std::stack, std::string;
 
-struct result {
+namespace vm {
+
+struct Result {
     bool success;
-    std::any* obj;
-    types::NekoNumber* number;
-    string* str;
+    std::unique_ptr<types::NekoBase> obj;
     types::ObjectType type;
 };
 
-namespace vm {
 class NekoStack {
 
 private:
     stack<types::ObjectType> stackTypes;
-    stack<std::any> stack;
+    stack<std::unique_ptr<types::NekoBase>> stack;
     std::mutex _mutex;
 
 public:
-    void add(const std::any&, types::ObjectType type);
+    void add(std::unique_ptr<types::NekoBase>, types::ObjectType type);
     constexpr bool has();
     int count();
-    result pop();
+    Result pop();
     void process();
 
-    types::NekoNumber* popNumber();
-    string* popString();
+    std::unique_ptr<long double> popNumber();
+    std::unique_ptr<string> popString();
 
 };
 }
