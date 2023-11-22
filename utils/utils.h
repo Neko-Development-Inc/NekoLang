@@ -2,6 +2,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <memory>
 #include <iostream>
 #include "../runtime/types/NekoNumber.h"
 
