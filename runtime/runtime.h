@@ -26,6 +26,7 @@ namespace types {
 
 #include "types/NekoObject.h"
 #include "types/NekoNumber.h"
+#include "types/NekoString.h"
 
 #include "ops/NekoOp.h"
 #include "ops/NekoOpNop.cpp"
