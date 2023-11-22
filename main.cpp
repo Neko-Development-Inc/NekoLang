@@ -37,18 +37,21 @@ int main() {
 //    // Execute fun main
 //    fun.execute(&r);
 //
-//    NekoStack stack;
-//    stack.add(new types::NekoNumber(9223372036854775807L - 1L), types::ObjectType::NUMBER);
-//    stack.add(string("Hello world :)"), types::ObjectType::STRING);
-//
-//    int count = stack.count();
-//    println("Count: ", count);
-//
-//    auto str = *stack.popString();
-//    println("String: ", str);
-//
-//    auto num = *stack.popNumber();
-//    println("Number: ", num, ", isSame: ", num.get() == (9223372036854775807L - 1L));
+
+    NekoStack stack;
+    stack.add(std::make_unique<types::NekoNumber>(9223372036854775807L - 1L),
+            types::NUMBER);
+    stack.add(std::make_unique<types::NekoString>("Hello world"),
+            types::STRING);
+
+    int count = stack.count();
+    println("Count: ", count);
+
+    auto str = *stack.popString();
+    println("String: ", str);
+
+    auto num = *stack.popNumber();
+    println("Number: ", num, ", isSame: ", num == (9223372036854775807L - 1L));
 
     return 0;
 }
@@ -111,7 +114,7 @@ int main() {
 *  NUMBER<num>  = 3000 - add Number to the Stack
 *  STRING<str>  = 3001 - add String to the Stack
 *  CONCAT       = 3002 - concatenates the last two elements on the Stack, and
-*                        puts the result back on the Stack
+*                        puts the Result back on the Stack
 *
 *  REPEAT       = 4000 - repeat the last instruction once
 *  REPEAT_N     = 4001 - repeat the last instruction N times
@@ -167,6 +170,7 @@ int main() {
 *  booleans:
 *  fact - true
 *  fake - false
+*  idfk - maybe
 *
 *  if < expression is fact >.<
 *      println("noice")
