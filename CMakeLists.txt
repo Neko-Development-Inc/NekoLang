@@ -17,6 +17,8 @@ add_executable(NekoLang main.cpp
         runtime/types/NekoObject.h
         runtime/types/NekoNumber.cpp
         runtime/types/NekoNumber.h
+        runtime/types/NekoString.cpp
+        runtime/types/NekoString.h
         runtime/vm/NekoFunction.cpp
         runtime/vm/NekoFunction.h
         runtime/vm/NekoClass.cpp
