@@ -59,7 +59,7 @@ Uses my very own custom instruction-set; no copy-pasted code from elsewhere, oth
 /  NUMBER<num>  = 3000 - add Number to the Stack  
 /  STRING<str>  = 3001 - add String to the Stack  
 /  CONCAT       = 3002 - concatenates the last two elements on the Stack, and  
-/                        puts the result back on the Stack  
+/                        puts the Result back on the Stack  
 /  
 /  REPEAT       = 4000 - repeat the last instruction once  
 /  REPEAT_N     = 4001 - repeat the last instruction N times  
