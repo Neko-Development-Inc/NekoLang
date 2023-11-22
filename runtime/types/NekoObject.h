@@ -14,8 +14,13 @@ namespace types {
         STRING,
     };
 
+    class NekoBase {
+    public:
+        virtual ~NekoBase() = default;
+    };
+
     template <class T>
-    class NekoObject {
+    class NekoObject : public NekoBase {
 
     protected:
         T value;
@@ -27,10 +32,11 @@ namespace types {
         virtual T get();
         virtual void set(T);
 
-        static std::string typeString(ObjectType type) {
-            if (type == ObjectType::NUMBER)
+        static std::string typeString() {
+            const auto& type = typeid(T);
+            if (type == typeid(ObjectType::NUMBER))
                 return "Number";
-            if (type == ObjectType::STRING)
+            if (type == typeid(ObjectType::STRING))
                 return "String";
             return "Unknown";
         }
@@ -43,9 +49,7 @@ namespace types {
     }
 
     template<class T>
-    T NekoObject<T>::get() {
-        return 0;
-    }
+    T NekoObject<T>::get() {}
 }
 
 #endif //NEKO_OBJECT_H
