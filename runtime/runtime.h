@@ -44,14 +44,14 @@ class Runtime {
 
 private:
     Opcodes& ops;
-    map<short, NekoOp*> impls;
+    map<short, unique_ptr<NekoOp>> impls;
 
 public:
     explicit Runtime(Opcodes& ops) : ops(ops) { }
 
     void init();
 
-    NekoOp & getImpl(short index);
+    NekoOp& getImpl(short index);
 
 };
 } // runtime

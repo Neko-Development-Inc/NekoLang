@@ -7,9 +7,9 @@ using namespace ops;
 
 namespace vm {
 
-    void NekoFunction::init(Runtime r) {
-        instructions.emplace_back(&r.getImpl(NOP));
-        instructions.emplace_back(&r.getImpl(RETURN));
+    void NekoFunction::init(Runtime* r) {
+        instructions.emplace_back(&r->getImpl(NOP));
+        instructions.emplace_back(&r->getImpl(RETURN));
     }
 
     void NekoFunction::execute(Runtime* r) {

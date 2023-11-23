@@ -46,7 +46,7 @@ public:
         owner(owner),
         ops(ops) { }
 
-    void init(Runtime);
+    void init(Runtime*);
 
     void execute(Runtime*);
 
