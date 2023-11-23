@@ -16,27 +16,40 @@ int main() {
 //    println(string("NOP: ").append(to_string(o[NOP])));
 //    println(string("RETURN: ").append(to_string(o[RETURN])));
 
+//#define COMPILE
+#define RUNTIME
+//#define STACK
+
+#ifdef COMPILE
+
     Compiler c(o);
     c.test();
 
-//    // Set up runtime env
-//    Runtime r(o);
-//    r.init();
-//
-//    // Create class
-//    NekoClass clz("default");
-//
-//    // Create fun main
-//    NekoFunction fun("main", clz, o);
-//    // Initialize fun main
-//    fun.init(r);
-//
-//    // Add fun main to default class
-//    clz.addFunction(fun);
-//
-//    // Execute fun main
-//    fun.execute(&r);
-//
+#endif
+
+#ifdef RUNTIME
+
+    // Set up runtime env
+    Runtime r(o);
+    r.init();
+
+    // Create class
+    NekoClass clz("default");
+
+    // Create fun main
+    NekoFunction fun("main", clz, o);
+    // Initialize fun main
+    fun.init(&r);
+
+    // Add fun main to default class
+    clz.addFunction(fun);
+
+    // Execute fun main
+    fun.execute(&r);
+
+#endif
+
+#if STACK
 
     NekoStack stack;
     stack.add(std::make_unique<types::NekoNumber>(9223372036854775807L - 1L),
@@ -52,6 +65,8 @@ int main() {
 
     auto num = *stack.popNumber();
     println("Number: ", num, ", isSame: ", num == (9223372036854775807L - 1L));
+
+#endif
 
     return 0;
 }
