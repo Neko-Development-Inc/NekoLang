@@ -6,6 +6,7 @@
 #include <string>
 #include <utility>
 #include <variant>
+#include <vector>
 
 using std::any, std::string, std::variant;
 
@@ -32,7 +33,7 @@ public:
     string str;
     long int index = 0;
     long int end = 0;
-    int* mappings;
+    std::vector<int> mappings;
 
     explicit Reader(const string& s) :
         Reader(s, true, true) { }
@@ -42,7 +43,7 @@ public:
         end = str.length() - 1;
         if (doRemoveComments)
             removeComments();
-        mappings = new int[str.length()];
+        mappings.resize(str.length());
         mapString();
         if (doSkipWhitespace)
             skipWhitespace();
