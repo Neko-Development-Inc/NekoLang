@@ -20,6 +20,7 @@ public:
             opcode(op) { }
     virtual void execute(runtime::Runtime*, vm::NekoStack*)
         = 0;
+    virtual ~NekoOp() = default;
 };
 }
 
