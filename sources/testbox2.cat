@@ -1,0 +1,13 @@
+
+< box Box1 >.<
+
+    < !fun test >.< <-- Static function test -->
+        scawy < <-- try/catch -->
+            owo a < 3 / 0 > <-- try to divide by zero -->
+            println('this should never print')
+        >!<
+            println(e.error) <-- print error -->
+        >
+    >
+
+>

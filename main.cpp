@@ -16,8 +16,8 @@ int main() {
 //    println(string("NOP: ").append(to_string(o[NOP])));
 //    println(string("RETURN: ").append(to_string(o[RETURN])));
 
-//#define COMPILE
-#define RUNTIME
+#define COMPILE
+//#define RUNTIME
 //#define STACK
 
 #ifdef COMPILE

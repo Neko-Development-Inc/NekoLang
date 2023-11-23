@@ -186,9 +186,11 @@ namespace compiler {
             }
         }
         // Reset reader
+        auto len = str.length();
+        if (_index > len) _index = len;
         index = _index;
         str = out;
-        end = str.length() - 1;
+        end = len - 1;
     }
 
     void Reader::mapString() {
@@ -212,77 +214,77 @@ namespace compiler {
             bool inComment = IN_COMMENT_1 || IN_COMMENT_2 || IN_COMMENT_3 || IN_COMMENT_4;
             bool inString = IN_STRING_1 || IN_STRING_2 || IN_STRING_3;
             bool pIsEscape = p == '\\';
-            if (inString) {
-                if (IN_STRING_1) mappings[i] = MappingType::STRING1;
-                else if (IN_STRING_2) mappings[i] = MappingType::STRING2;
-                else if (IN_STRING_3) mappings[i] = MappingType::STRING3;
-                // Check for string exit
-                if (IN_STRING_1 && !pIsEscape && c == '"')
-                    IN_STRING_1 = false;
-                else if (IN_STRING_2 && !pIsEscape && c == '\'')
-                    IN_STRING_2 = false;
-                else if (IN_STRING_3 && !pIsEscape && c == '`')
-                    IN_STRING_3 = false;
-            } else if (inComment) {
-                // Check for comment exit
-                mappings[i] = MappingType::COMMENT;
-                if (IN_COMMENT_1 && c == '\n') {
-                    IN_COMMENT_1 = false;
-                } else if (IN_COMMENT_2 && !pIsEscape && c == '*' && n == '/') {
-                    mappings[i + 1] = MappingType::COMMENT;
-                    IN_COMMENT_2 = false;
-                    i++;
-                } else if (IN_COMMENT_3 && !pIsEscape && c == '\'' && n == '\'' && n2 == '\'') {
-                    mappings[i + 1] = MappingType::COMMENT;
-                    mappings[i + 2] = MappingType::COMMENT;
-                    i += 2;
-                    IN_COMMENT_3 = false;
-                } else if (IN_COMMENT_4 && !pIsEscape && c == '-' && n == '-' && n2 == '>') {
-                    mappings[i + 1] = MappingType::COMMENT;
-                    mappings[i + 2] = MappingType::COMMENT;
-                    i += 2;
-                    IN_COMMENT_4 = false;
-                }
-            } else {
-                // Check for string/comment entry
-                // Check for strings, and include the character if it is a quote
-                if (!pIsEscape && c == '"') {
-                    mappings[i] = MappingType::STRING1;
-                    IN_STRING_1 = true;
-                } else if (!pIsEscape && c == '\'' && n != '\'' && n2 != '\n') {
-                    mappings[i] = MappingType::STRING2;
-                    IN_STRING_2 = true;
-                } else if (!pIsEscape && c == '`') {
-                    mappings[i] = MappingType::STRING3;
-                    IN_STRING_3 = true;
-                } else
-                // Check for comments, but don't include comment symbols
-                if (c == '/' && n == '/') {
-                    mappings[i + 0] = MappingType::COMMENT;
-                    mappings[i + 1] = MappingType::COMMENT;
-                    IN_COMMENT_1 = true;
-                    i++;
-                } else if (!pIsEscape && c == '/' && n == '*') {
-                    mappings[i + 0] = MappingType::COMMENT;
-                    mappings[i + 1] = MappingType::COMMENT;
-                    IN_COMMENT_2 = true;
-                    i++;
-                } else if (!pIsEscape && c == '\'' && n == '\'' && n2 == '\'') {
-                    mappings[i + 0] = MappingType::COMMENT;
-                    mappings[i + 1] = MappingType::COMMENT;
-                    mappings[i + 2] = MappingType::COMMENT;
-                    IN_COMMENT_3 = true;
-                    i += 2;
-                } else if (!pIsEscape && c == '<' && n == '-' && n2 == '-') {
-                    mappings[i + 0] = MappingType::COMMENT;
-                    mappings[i + 1] = MappingType::COMMENT;
-                    mappings[i + 2] = MappingType::COMMENT;
-                    IN_COMMENT_4 = true;
-                    i += 2;
-                } else {
+//            if (inString) {
+//                if (IN_STRING_1) mappings[i] = MappingType::STRING1;
+//                else if (IN_STRING_2) mappings[i] = MappingType::STRING2;
+//                else if (IN_STRING_3) mappings[i] = MappingType::STRING3;
+//                // Check for string exit
+//                if (IN_STRING_1 && !pIsEscape && c == '"')
+//                    IN_STRING_1 = false;
+//                else if (IN_STRING_2 && !pIsEscape && c == '\'')
+//                    IN_STRING_2 = false;
+//                else if (IN_STRING_3 && !pIsEscape && c == '`')
+//                    IN_STRING_3 = false;
+//            } else if (inComment) {
+//                // Check for comment exit
+//                mappings[i] = MappingType::COMMENT;
+//                if (IN_COMMENT_1 && c == '\n') {
+//                    IN_COMMENT_1 = false;
+//                } else if (IN_COMMENT_2 && !pIsEscape && c == '*' && n == '/') {
+//                    mappings[i + 1] = MappingType::COMMENT;
+//                    IN_COMMENT_2 = false;
+//                    i++;
+//                } else if (IN_COMMENT_3 && !pIsEscape && c == '\'' && n == '\'' && n2 == '\'') {
+//                    mappings[i + 1] = MappingType::COMMENT;
+//                    mappings[i + 2] = MappingType::COMMENT;
+//                    i += 2;
+//                    IN_COMMENT_3 = false;
+//                } else if (IN_COMMENT_4 && !pIsEscape && c == '-' && n == '-' && n2 == '>') {
+//                    mappings[i + 1] = MappingType::COMMENT;
+//                    mappings[i + 2] = MappingType::COMMENT;
+//                    i += 2;
+//                    IN_COMMENT_4 = false;
+//                }
+//            } else {
+//                // Check for string/comment entry
+//                // Check for strings, and include the character if it is a quote
+//                if (!pIsEscape && c == '"') {
+//                    mappings[i] = MappingType::STRING1;
+//                    IN_STRING_1 = true;
+//                } else if (!pIsEscape && c == '\'' && n != '\'' && n2 != '\n') {
+//                    mappings[i] = MappingType::STRING2;
+//                    IN_STRING_2 = true;
+//                } else if (!pIsEscape && c == '`') {
+//                    mappings[i] = MappingType::STRING3;
+//                    IN_STRING_3 = true;
+//                } else
+//                // Check for comments, but don't include comment symbols
+//                if (c == '/' && n == '/') {
+//                    mappings[i + 0] = MappingType::COMMENT;
+//                    mappings[i + 1] = MappingType::COMMENT;
+//                    IN_COMMENT_1 = true;
+//                    i++;
+//                } else if (!pIsEscape && c == '/' && n == '*') {
+//                    mappings[i + 0] = MappingType::COMMENT;
+//                    mappings[i + 1] = MappingType::COMMENT;
+//                    IN_COMMENT_2 = true;
+//                    i++;
+//                } else if (!pIsEscape && c == '\'' && n == '\'' && n2 == '\'') {
+//                    mappings[i + 0] = MappingType::COMMENT;
+//                    mappings[i + 1] = MappingType::COMMENT;
+//                    mappings[i + 2] = MappingType::COMMENT;
+//                    IN_COMMENT_3 = true;
+//                    i += 2;
+//                } else if (!pIsEscape && c == '<' && n == '-' && n2 == '-') {
+//                    mappings[i + 0] = MappingType::COMMENT;
+//                    mappings[i + 1] = MappingType::COMMENT;
+//                    mappings[i + 2] = MappingType::COMMENT;
+//                    IN_COMMENT_4 = true;
+//                    i += 2;
+//                } else {
                     mappings[i] = MappingType::CODE;
-                }
-            }
+//                }
+//            }
             i++;
         }
     }

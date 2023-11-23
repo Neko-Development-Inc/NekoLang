@@ -1,6 +1,4 @@
 
-
-
-< box Box1("Abc", 'Def', `Ghi`) >.<
-
+< box Box1 >.<
+    // Code here
 >

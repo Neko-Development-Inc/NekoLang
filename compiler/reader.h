@@ -43,7 +43,7 @@ public:
         end = str.length() - 1;
         if (doRemoveComments)
             removeComments();
-        mappings.resize(str.length());
+        mappings.resize(end+1);
         mapString();
         if (doSkipWhitespace)
             skipWhitespace();
