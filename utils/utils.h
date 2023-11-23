@@ -2,6 +2,8 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <map>
+#include <unordered_map>
 #include <memory>
 #include <iostream>
 #include "../runtime/types/NekoNumber.h"
