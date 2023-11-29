@@ -15,7 +15,7 @@ namespace compiler {
         doParseFile(str);
     }
 
-    void Compiler::doParseFile(string& str) {
+    void Compiler::doParseFile(const string& str) {
         Reader reader(str);
         cout << "reader: `" << reader.currentString() << "`\n";
 

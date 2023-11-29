@@ -64,11 +64,11 @@ namespace types {
 // FORWARD DECLARATIONS >
 
 // < USING FORWARD DECLARATIONS
-using namespace runtime;
 using namespace ops;
+using namespace runtime;
 using namespace compiler;
-using namespace vm;
 using namespace types;
+using namespace vm;
 // USING FORWARD DECLARATIONS >
 
 // < NORMAL HEADERS

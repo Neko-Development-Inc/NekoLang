@@ -145,8 +145,7 @@ namespace compiler {
     // Removes all comments from current text
     void Reader::removeComments() {
         auto _index = index;
-        set(0);
-        auto i = index;
+        auto i = index = 0;
         // Comments:
         // 1 // Single line comment
         // 2 /*
@@ -407,11 +406,12 @@ namespace compiler {
                 continue;
             }
             char c = str[i];
+            cout << c;
             if (!isWhiteSpace(c))
                 break;
             i++;
         }
-        set(i);
+        index = i;
     }
 
     void Reader::trimEnd() {

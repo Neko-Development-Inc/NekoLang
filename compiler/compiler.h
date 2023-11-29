@@ -17,7 +17,7 @@ public:
             ops(reinterpret_cast<const Opcodes &>(ops)) { }
 
     void parseFile(string);
-    void doParseFile(string&);
+    void doParseFile(const string&);
 
 };
 } // compiler
