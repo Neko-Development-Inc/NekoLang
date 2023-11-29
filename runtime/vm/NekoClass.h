@@ -1,15 +1,10 @@
 #pragma once
+
 #ifndef NEKO_CLASS_H
 #define NEKO_CLASS_H
 
-#include <string>
-#include <map>
-#include <any>
-#include <utility>
-
+#include "../../headers.h"
 #include "NekoFunction.h"
-
-using std::string, std::map;
 
 namespace vm {
 class NekoClass {

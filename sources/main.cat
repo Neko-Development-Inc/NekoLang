@@ -67,19 +67,12 @@ create Box2()
 angy o < 3 > // readonly
 
 // try-catch basically
-scawy <
-    o < 1 > // reassign o to 1 - throws exception
->.< // cant-reassign-angy-Exception
+< scawy <-- or spoopy --> >.<
+    o < 1 > // reassign o to 1 - throws exception, because o is angy
+>.<
     println("SCAWY!!!")
->
-
-// alternative try-catch
-spoopy <
-    owo i < 2 / 0 >
->.< // cant-divide-by-zero-Exception
-    println("SPOOPY!!!")
->.< // finally
-    println("spoopy finally over <:o")
+>_<
+    println("Finally :)")
 >
 
 // Json example:

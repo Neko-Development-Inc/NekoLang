@@ -1,5 +1,4 @@
 #include "reader.h"
-#include "../utils/utils.h"
 
 namespace compiler {
 
@@ -55,6 +54,28 @@ namespace compiler {
         return curr();
     }
 
+    string Reader::stringN(int n) {
+        if (n < 0 || n > 5) return "";
+        if (n == 5) return string { peekNext(1), peekNext(2), peekNext(3), peekNext(4), peekNext(5) };
+        if (n == 4) return string { peekNext(1), peekNext(2), peekNext(3), peekNext(4) };
+        if (n == 3) return string { peekNext(1), peekNext(2), peekNext(3) };
+        if (n == 2) return string { peekNext(1), peekNext(2) };
+        if (n == 1) return string { peekNext(1) };
+        return "";
+    }
+
+    int Reader::search(const string& regex) {
+        return search(regex, currentString());
+    }
+
+    int Reader::search(const string& regex, const string& text) {
+        std::regex r(regex);
+        std::smatch m;
+        if (std::regex_search(text, m, r))
+            return m.position() + m.length();
+        return -1;
+    }
+
     bool Reader::isCode() const {
         return isCode(index);
     }
@@ -80,16 +101,45 @@ namespace compiler {
         return m == MappingType::STRING1 || m == MappingType::STRING2 || m == MappingType::STRING3;
     }
 
+    bool Reader::isAlphanumeric() {
+        return isAlphanumeric(0);
+    }
+
+    bool Reader::isAlphanumeric(int i) {
+        char16_t c = peekNext(i);
+        if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'z')
+            return true;
+        if (c >= '0' && c <= '9')
+            return true;
+        if (c == L'æ' || c == L'ø' || c == L'å')
+            return true;
+        if (c == L'Æ' || c == L'Ø' || c == L'Å')
+            return true;
+        return false;
+    }
+
     void Reader::move(long int dir) {
+        move(dir, true, false);
+    }
+
+    void Reader::move(long int dir, bool trimStart, bool trimEnd) {
         index += dir;
     }
 
-    constexpr void Reader::set(long int i) {
+    void Reader::set(long int i) {
+        set(i, true, true);
+    }
+
+    void Reader::set(long int i, bool doTrimStart, bool doTrimEnd) {
         index = i;
+        if (doTrimStart)
+            trimStart();
+        if (doTrimEnd)
+            trimEnd();
     }
 
     string Reader::currentString() {
-        return str.substr(index);
+        return str.substr(index, end - index);
     }
 
     // Removes all comments from current text
@@ -214,77 +264,77 @@ namespace compiler {
             bool inComment = IN_COMMENT_1 || IN_COMMENT_2 || IN_COMMENT_3 || IN_COMMENT_4;
             bool inString = IN_STRING_1 || IN_STRING_2 || IN_STRING_3;
             bool pIsEscape = p == '\\';
-//            if (inString) {
-//                if (IN_STRING_1) mappings[i] = MappingType::STRING1;
-//                else if (IN_STRING_2) mappings[i] = MappingType::STRING2;
-//                else if (IN_STRING_3) mappings[i] = MappingType::STRING3;
-//                // Check for string exit
-//                if (IN_STRING_1 && !pIsEscape && c == '"')
-//                    IN_STRING_1 = false;
-//                else if (IN_STRING_2 && !pIsEscape && c == '\'')
-//                    IN_STRING_2 = false;
-//                else if (IN_STRING_3 && !pIsEscape && c == '`')
-//                    IN_STRING_3 = false;
-//            } else if (inComment) {
-//                // Check for comment exit
-//                mappings[i] = MappingType::COMMENT;
-//                if (IN_COMMENT_1 && c == '\n') {
-//                    IN_COMMENT_1 = false;
-//                } else if (IN_COMMENT_2 && !pIsEscape && c == '*' && n == '/') {
-//                    mappings[i + 1] = MappingType::COMMENT;
-//                    IN_COMMENT_2 = false;
-//                    i++;
-//                } else if (IN_COMMENT_3 && !pIsEscape && c == '\'' && n == '\'' && n2 == '\'') {
-//                    mappings[i + 1] = MappingType::COMMENT;
-//                    mappings[i + 2] = MappingType::COMMENT;
-//                    i += 2;
-//                    IN_COMMENT_3 = false;
-//                } else if (IN_COMMENT_4 && !pIsEscape && c == '-' && n == '-' && n2 == '>') {
-//                    mappings[i + 1] = MappingType::COMMENT;
-//                    mappings[i + 2] = MappingType::COMMENT;
-//                    i += 2;
-//                    IN_COMMENT_4 = false;
-//                }
-//            } else {
-//                // Check for string/comment entry
-//                // Check for strings, and include the character if it is a quote
-//                if (!pIsEscape && c == '"') {
-//                    mappings[i] = MappingType::STRING1;
-//                    IN_STRING_1 = true;
-//                } else if (!pIsEscape && c == '\'' && n != '\'' && n2 != '\n') {
-//                    mappings[i] = MappingType::STRING2;
-//                    IN_STRING_2 = true;
-//                } else if (!pIsEscape && c == '`') {
-//                    mappings[i] = MappingType::STRING3;
-//                    IN_STRING_3 = true;
-//                } else
-//                // Check for comments, but don't include comment symbols
-//                if (c == '/' && n == '/') {
-//                    mappings[i + 0] = MappingType::COMMENT;
-//                    mappings[i + 1] = MappingType::COMMENT;
-//                    IN_COMMENT_1 = true;
-//                    i++;
-//                } else if (!pIsEscape && c == '/' && n == '*') {
-//                    mappings[i + 0] = MappingType::COMMENT;
-//                    mappings[i + 1] = MappingType::COMMENT;
-//                    IN_COMMENT_2 = true;
-//                    i++;
-//                } else if (!pIsEscape && c == '\'' && n == '\'' && n2 == '\'') {
-//                    mappings[i + 0] = MappingType::COMMENT;
-//                    mappings[i + 1] = MappingType::COMMENT;
-//                    mappings[i + 2] = MappingType::COMMENT;
-//                    IN_COMMENT_3 = true;
-//                    i += 2;
-//                } else if (!pIsEscape && c == '<' && n == '-' && n2 == '-') {
-//                    mappings[i + 0] = MappingType::COMMENT;
-//                    mappings[i + 1] = MappingType::COMMENT;
-//                    mappings[i + 2] = MappingType::COMMENT;
-//                    IN_COMMENT_4 = true;
-//                    i += 2;
-//                } else {
+            if (inString) {
+                if (IN_STRING_1) mappings[i] = MappingType::STRING1;
+                else if (IN_STRING_2) mappings[i] = MappingType::STRING2;
+                else if (IN_STRING_3) mappings[i] = MappingType::STRING3;
+                // Check for string exit
+                if (IN_STRING_1 && !pIsEscape && c == '"')
+                    IN_STRING_1 = false;
+                else if (IN_STRING_2 && !pIsEscape && c == '\'')
+                    IN_STRING_2 = false;
+                else if (IN_STRING_3 && !pIsEscape && c == '`')
+                    IN_STRING_3 = false;
+            } else if (inComment) {
+                // Check for comment exit
+                mappings[i] = MappingType::COMMENT;
+                if (IN_COMMENT_1 && c == '\n') {
+                    IN_COMMENT_1 = false;
+                } else if (IN_COMMENT_2 && !pIsEscape && c == '*' && n == '/') {
+                    mappings[i + 1] = MappingType::COMMENT;
+                    IN_COMMENT_2 = false;
+                    i++;
+                } else if (IN_COMMENT_3 && !pIsEscape && c == '\'' && n == '\'' && n2 == '\'') {
+                    mappings[i + 1] = MappingType::COMMENT;
+                    mappings[i + 2] = MappingType::COMMENT;
+                    i += 2;
+                    IN_COMMENT_3 = false;
+                } else if (IN_COMMENT_4 && !pIsEscape && c == '-' && n == '-' && n2 == '>') {
+                    mappings[i + 1] = MappingType::COMMENT;
+                    mappings[i + 2] = MappingType::COMMENT;
+                    i += 2;
+                    IN_COMMENT_4 = false;
+                }
+            } else {
+                // Check for string/comment entry
+                // Check for strings, and include the character if it is a quote
+                if (!pIsEscape && c == '"') {
+                    mappings[i] = MappingType::STRING1;
+                    IN_STRING_1 = true;
+                } else if (!pIsEscape && c == '\'' && n != '\'' && n2 != '\n') {
+                    mappings[i] = MappingType::STRING2;
+                    IN_STRING_2 = true;
+                } else if (!pIsEscape && c == '`') {
+                    mappings[i] = MappingType::STRING3;
+                    IN_STRING_3 = true;
+                } else
+                // Check for comments, but don't include comment symbols
+                if (c == '/' && n == '/') {
+                    mappings[i + 0] = MappingType::COMMENT;
+                    mappings[i + 1] = MappingType::COMMENT;
+                    IN_COMMENT_1 = true;
+                    i++;
+                } else if (!pIsEscape && c == '/' && n == '*') {
+                    mappings[i + 0] = MappingType::COMMENT;
+                    mappings[i + 1] = MappingType::COMMENT;
+                    IN_COMMENT_2 = true;
+                    i++;
+                } else if (!pIsEscape && c == '\'' && n == '\'' && n2 == '\'') {
+                    mappings[i + 0] = MappingType::COMMENT;
+                    mappings[i + 1] = MappingType::COMMENT;
+                    mappings[i + 2] = MappingType::COMMENT;
+                    IN_COMMENT_3 = true;
+                    i += 2;
+                } else if (!pIsEscape && c == '<' && n == '-' && n2 == '-') {
+                    mappings[i + 0] = MappingType::COMMENT;
+                    mappings[i + 1] = MappingType::COMMENT;
+                    mappings[i + 2] = MappingType::COMMENT;
+                    IN_COMMENT_4 = true;
+                    i += 2;
+                } else {
                     mappings[i] = MappingType::CODE;
-//                }
-//            }
+                }
+            }
             i++;
         }
     }
@@ -295,6 +345,10 @@ namespace compiler {
         if (c == '[') return ']';
         if (c == '{') return '}';
         return ' ';
+    }
+
+    string Reader::getRange(int start, int len) const {
+        return str.substr(start+1, len-2);
     }
 
     /// Find range for the opening character @opening
@@ -345,7 +399,7 @@ namespace compiler {
         return ' ';
     }
 
-    void Reader::skipWhitespace() {
+    void Reader::trimStart() {
         auto i = index;
         while (i <= end) {
             if (!isCode(i)) {
@@ -360,6 +414,22 @@ namespace compiler {
         set(i);
     }
 
+    void Reader::trimEnd() {
+        auto _index = index;
+        auto i = end;
+        while (i > _index) {
+            if (!isCode(i)) {
+                i--;
+                continue;
+            }
+            char c = str[i];
+            if (!isWhiteSpace(c))
+                break;
+            i--;
+        }
+        end = i;
+    }
+
     bool Reader::isWhiteSpace(char c) {
         if (c == ' ')  return true;
         if (c == '\f') return true; // form feed
@@ -368,6 +438,64 @@ namespace compiler {
         if (c == '\t') return true; // horizontal tab
         if (c == '\v') return true; // vertical tab
         return false;
+    }
+
+    WhatResult Reader::whatIsNext(int& indexAfter) {
+        auto i = index;
+        trimStart();
+
+        char c = curr();
+        if (c == '<') { // Open something
+            move(1); // jump past <
+            trimStart();
+            if (isAlphanumeric()) {
+                const auto& s = currentString();
+                int jump = 0;
+                if ((jump = search("\\s*box\\s+", s)) != -1) {
+                    // {\s*}box{\s+}
+                    indexAfter = index + jump;
+                    set(i, false, false);
+                    int len = indexAfter - i;
+                    if (len < 0) len = 0;
+                    return { BOX, i, indexAfter, len };
+                }
+                // Alphanumeric, but not box
+                if ((jump = search("\\s*fun\\s+", s)) != -1) {
+                    // {\s*}fun{\s+}
+                    indexAfter = index + jump;
+                    set(i, false, false);
+                    int len = indexAfter - i;
+                    if (len < 0) len = 0;
+                    return { FUN, i, indexAfter, len };
+                }
+                // Alphanumeric, but not fun
+                if ((jump = search("\\s*(scawy|spoopy)\\s+", s)) != -1) {
+                    // {\s*}(scawy or spoopy){\s+}
+                    indexAfter = index + jump;
+                    set(i, false, false);
+                    int len = indexAfter - i;
+                    if (len < 0) len = 0;
+                    return { SCAWY_SPOOPY, i, indexAfter, len };
+                }
+                // Alphanumeric, but not scawy/spoopy
+                int max = 25;
+                if (max > s.length()) max = s.length();
+                cout << "Error: Unknown alphanumeric text inside '<': `" <<
+                        s.substr(0, max) << "`\n";
+                int len = index - 1;
+                if (len < 0) len = 0;
+                return { UNKNOWN, i, index, len };
+            }
+        } else if (c == '!') {
+            // Either: Box metadata, or static functions
+            int len = index - 1;
+            if (len < 0) len = 0;
+            return { EX_MARK, i, index, len };
+        }
+
+        int len = index - 1;
+        if (len < 0) len = 0;
+        return { UNKNOWN, i, index, len };
     }
 
 }

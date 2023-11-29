@@ -19,6 +19,15 @@
 
     <-- Function to multi-return all class fields -->
     < fun getABC >.<
+
+        if < expression >.<
+            // If here
+        > uhm < expression >.<
+            // Else-if here
+        > oh <
+            // Else here
+        >
+
         ret ( a, b, c )
     >
 

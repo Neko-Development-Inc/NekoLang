@@ -1,11 +1,9 @@
 #pragma once
+
 #ifndef OPCODES_H
 #define OPCODES_H
 
-#include <string>
 #include <map>
-
-using namespace std;
 
 const short
        NOP   = 0
@@ -38,11 +36,11 @@ const short
      , ERR = 5001
 ;
 
-namespace opcodes {
+namespace ops {
 class Opcodes {
 
 protected:
-    map<short, short> ops;
+    std::map<short, short> ops;
 
 public:
 
@@ -50,7 +48,7 @@ public:
 
     [[maybe_unused]] explicit Opcodes(int key);
 
-    constexpr short& operator[](short index) {
+    short& operator[](short index) {
         return ops[index];
     }
 

@@ -1,6 +1,6 @@
 #include "opcodes.h"
 
-namespace opcodes {
+namespace ops {
 
     Opcodes::Opcodes() {
         /* Default opcode setup */
@@ -11,7 +11,7 @@ namespace opcodes {
                 NUMBER, STRING, CONCAT,
                 REPEAT, REPEAT_N, REPEAT_LL, REPEAT_LL_N,
                 OUT, ERR
-        }) ops.insert(make_pair(n, n));
+        }) ops.insert(std::make_pair(n, n));
     }
 
     [[maybe_unused]]
@@ -24,7 +24,7 @@ namespace opcodes {
                 NUMBER, STRING, CONCAT,
                 REPEAT, REPEAT_N, REPEAT_LL, REPEAT_LL_N,
                 OUT, ERR
-        }) ops.insert(make_pair(n, n ^ key));
+        }) ops.insert(std::make_pair(n, n ^ key));
     }
 
 }

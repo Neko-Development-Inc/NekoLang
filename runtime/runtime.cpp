@@ -1,7 +1,5 @@
 #include "runtime.h"
 
-using namespace ops;
-
 namespace runtime {
 
     void Runtime::init() {

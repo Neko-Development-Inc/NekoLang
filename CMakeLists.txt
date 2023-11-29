@@ -1,14 +1,15 @@
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.22)
 project(NekoLang)
 
 set(CMAKE_CXX_STANDARD 23)
 
 add_executable(NekoLang main.cpp
-        compiler/compiler.cpp
-        compiler/compiler.h
         common/opcodes.cpp
         common/opcodes.h
-        utils/utils.h
+        compiler/compiler.cpp
+        compiler/compiler.h
+        compiler/reader.cpp
+        compiler/reader.h
         runtime/runtime.cpp
         runtime/runtime.h
         runtime/ops/NekoOp.h
@@ -25,5 +26,4 @@ add_executable(NekoLang main.cpp
         runtime/vm/NekoClass.h
         runtime/vm/NekoStack.cpp
         runtime/vm/NekoStack.h
-        compiler/reader.cpp
-        compiler/reader.h)
+        headers.h)

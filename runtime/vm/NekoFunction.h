@@ -1,36 +1,13 @@
 #pragma once
+
 #ifndef NEKO_FUNCTION_H
 #define NEKO_FUNCTION_H
 
-#include <any>
-#include <string>
-#include <vector>
-#include <utility>
-#include <variant>
-
+#include "../../headers.h"
 #include "../../common/opcodes.h"
-
-using std::string, std::vector, std::any;
-
-namespace runtime {
-    class Runtime;
-}
-
-namespace vm {
-    class NekoClass;
-}
-
-namespace ops {
-    class NekoOp;
-}
-
-namespace opcodes {
-    class Opcodes;
-}
-
-using opcodes::Opcodes,
-      runtime::Runtime,
-      ops::NekoOp;
+#include "../ops/NekoOp.h"
+#include "../runtime.h"
+#include "NekoStack.h"
 
 namespace vm {
 class NekoFunction {
@@ -46,9 +23,9 @@ public:
         owner(owner),
         ops(ops) { }
 
-    void init(Runtime*);
+    void init(Runtime&);
 
-    void execute(Runtime*);
+    void execute(Runtime&);
 
 };
 }

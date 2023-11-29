@@ -1,17 +1,16 @@
 #pragma once
+
 #ifndef NEKO_OBJECT_H
 #define NEKO_OBJECT_H
 
-#include <cstdlib>
-#include <any>
-#include <string>
+#include "../../headers.h"
 
 namespace types {
     enum ObjectType {
-        NONE,
-        UNKNOWN,
-        NUMBER,
-        STRING,
+        T_NONE,
+        T_UNKNOWN,
+        T_NUMBER,
+        T_STRING
     };
 
     class NekoBase {
@@ -34,9 +33,9 @@ namespace types {
 
         static std::string typeString() {
             const auto& type = typeid(T);
-            if (type == typeid(ObjectType::NUMBER))
+            if (type == typeid(ObjectType::T_NUMBER))
                 return "Number";
-            if (type == typeid(ObjectType::STRING))
+            if (type == typeid(ObjectType::T_STRING))
                 return "String";
             return "Unknown";
         }

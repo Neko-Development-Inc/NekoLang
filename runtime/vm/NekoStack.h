@@ -1,39 +1,32 @@
 #pragma once
+
 #ifndef NEKO_STACK_H
 #define NEKO_STACK_H
 
-#include <mutex>
-
-#include <any>
-#include <stack>
-#include <string>
-#include <variant>
-#include <memory>
+#include "../../headers.h"
 
 #include "../types/NekoObject.h"
 #include "../types/NekoNumber.h"
 #include "../types/NekoString.h"
 
-using std::stack, std::string;
-
 namespace vm {
 
 struct Result {
     bool success;
-    std::unique_ptr<types::NekoBase> obj;
-    types::ObjectType type;
+    std::unique_ptr<NekoBase> obj;
+    ObjectType type;
 };
 
 class NekoStack {
 
 private:
-    stack<types::ObjectType> stackTypes;
-    stack<std::unique_ptr<types::NekoBase>> stack;
+    stack<ObjectType> stackTypes;
+    stack<std::unique_ptr<NekoBase>> _stack;
     std::mutex _mutex;
 
 public:
-    void add(std::unique_ptr<types::NekoBase>, types::ObjectType type);
-    constexpr bool has();
+    void add(std::unique_ptr<NekoBase>, ObjectType);
+    bool has();
     int count();
     Result pop();
     void process();

@@ -1,29 +1,32 @@
-#include "utils/utils.h"
-
-#include "compiler/compiler.h"
-#include "runtime/runtime.h"
-#include "common/opcodes.h"
-
-using namespace compiler;
-using namespace runtime;
-using namespace opcodes;
-using namespace vm;
-
-int main() {
-
-    // Set up all opcodes
-    Opcodes o;
-//    println(string("NOP: ").append(to_string(o[NOP])));
-//    println(string("RETURN: ").append(to_string(o[RETURN])));
-
 #define COMPILE
 //#define RUNTIME
 //#define STACK
 
+#include "headers.h"
+#include "common/opcodes.h"
+
+#ifdef COMPILE
+#include "compiler/compiler.h"
+#endif
+
+#ifdef RUNTIME
+#include "runtime/runtime.h"
+#endif
+
+#ifdef STACK
+#include "runtime/types/NekoObject.h"
+#include "runtime/vm/NekoStack.h"
+#endif
+
+int main() {
+
+    // Set up all opcodes
+    ops::Opcodes o;
+
 #ifdef COMPILE
 
     Compiler c(o);
-    c.test();
+    c.parseFile("testing/test.cat");
 
 #endif
 
@@ -39,32 +42,32 @@ int main() {
     // Create fun main
     NekoFunction fun("main", clz, o);
     // Initialize fun main
-    fun.init(&r);
+    fun.init(r);
 
     // Add fun main to default class
     clz.addFunction(fun);
 
     // Execute fun main
-    fun.execute(&r);
+    fun.execute(r);
 
 #endif
 
-#if STACK
+#ifdef STACK
 
-    NekoStack stack;
-    stack.add(std::make_unique<types::NekoNumber>(9223372036854775807L - 1L),
-            types::NUMBER);
-    stack.add(std::make_unique<types::NekoString>("Hello world"),
-            types::STRING);
+    NekoStack _stack;
+    _stack.add(std::make_unique<NekoNumber>(9223372036854775807L - 1L),
+            T_NUMBER);
+    _stack.add(std::make_unique<NekoString>("Hello world"),
+            T_STRING);
 
-    int count = stack.count();
-    println("Count: ", count);
+    int count = _stack.count();
+    cout << "Count: " << count << "\n";
 
-    auto str = *stack.popString();
-    println("String: ", str);
+    auto str = *_stack.popString();
+    cout << "String: " << str << "\n";
 
-    auto num = *stack.popNumber();
-    println("Number: ", num, ", isSame: ", num == (9223372036854775807L - 1L));
+    auto num = *_stack.popNumber();
+    cout << "Number: " << num << ", isSame: " << (num == (9223372036854775807L - 1L) ? "true" : "false") << "\n";
 
 #endif
 
@@ -115,7 +118,7 @@ int main() {
 *  DUP_3        = 5 - duplicate the last 3 elements on the Stack
 *  DUP_N        = 6 - duplicate the last M elements on the Stack
 *                   - N is the last Number on the Stack
-*  CS           = 7 - clear the stack
+*  CS           = 7 - clear the _stack
 *
 *  LABEL<id>    = 1000 - label, a specific point in an instruction-set
 *  RETURN       = 1001 - return from function
@@ -126,8 +129,8 @@ int main() {
 *  CALL<owner>  = 2002 - execute function box #owner
 *      <name>            by exact name
 *
-*  NUMBER<num>  = 3000 - add Number to the Stack
-*  STRING<str>  = 3001 - add String to the Stack
+*  T_NUMBER<num>  = 3000 - add Number to the Stack
+*  T_STRING<str>  = 3001 - add String to the Stack
 *  CONCAT       = 3002 - concatenates the last two elements on the Stack, and
 *                        puts the Result back on the Stack
 *
@@ -150,8 +153,8 @@ int main() {
 * Example program (with opcodes):
 *  JUMP 1
 *  LABEL 0
-*  STRING 'Hello '
-*  NUMBER 69
+*  T_STRING 'Hello '
+*  T_NUMBER 69
 *  CONCAT
 *  OUT
 *  LABEL 1
@@ -168,9 +171,9 @@ int main() {
 *
 *  // Json example:
 *  owo json <{
-*      testKey: 'test value'
+*      testKey: 'parseFile value'
 *  }>
-*  print(json.testKey) // prints 'test value'
+*  print(json.testKey) // prints 'parseFile value'
 *  json.testKey <'OwO'>
 *  print(json.testKey) // prints 'OwO'
 *
@@ -192,6 +195,9 @@ int main() {
 *  >
 *  if < expression is fake >.<
 *      println("oops")
+*  >
+*  if < expression is maybe >.<
+*      println("wtf?")
 *  >
 *
 *  if/else-if/else:

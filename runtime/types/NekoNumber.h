@@ -1,10 +1,12 @@
 #pragma once
+
 #ifndef NEKO_NUMBER_H
 #define NEKO_NUMBER_H
 
+#include "../../headers.h"
 #include "NekoObject.h"
-
-#include <cmath>
+#include "NekoNumber.h"
+#include "NekoString.h"
 
 namespace types {
 class NekoNumber : public NekoObject<long double> {
