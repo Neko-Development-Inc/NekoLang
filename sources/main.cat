@@ -38,6 +38,11 @@ u.Baggy()
 
 >
 
+// Non-extendable class example
+< !box Box2 >.<
+
+>
+
 // This is a comment
 
 /*
@@ -57,14 +62,20 @@ Code inside a region
 <-region_name-
 
 // Class example, using Box1 as parent box
-< box Box2 / Box1 >w<
+< box Box3 / Box1 >w<
 
 >
 
-// Create an instance of 'Box2'
-create Box2()
+// Create an instance of 'Box3'
+create Box3()
 
-angy o < 3 > // readonly
+// Class example, using Box2 as parent box
+< box Box4 / Box2 >w< // This doesn't compile, as 'Box2' is marked non-extendable
+
+>
+
+// readonly variable
+angy o < 3 >
 
 // try-catch basically
 < scawy <-- or spoopy --> >.<

@@ -16,17 +16,38 @@ enum MappingType {
 };
 
 enum What {
-    BOX          = 0, // Found box text
-    FUN          = 1, // Found function text
-    VAR          = 2, // Found variable text
-    FOR_LOOP     = 3, // Found for-loop text
-    WHILE_LOOP   = 4, // Found while-loop text
-    IF_CHECK     = 5, // Found if-check text
-    CODE_BLOCK   = 6, // Found code block text
-    EX_MARK      = 7, // Found !
-    SCAWY_SPOOPY = 8, // Found SCAWY or SPOOPY
+    BOX          = 0,  // Found box text
+    FUN          = 1,  // Found function text
+    VAR          = 2,  // Found variable text
+    FOR_LOOP     = 3,  // Found for-loop text
+    WHILE_LOOP   = 4,  // Found while-loop text
+    IF_CHECK     = 5,  // Found if-check text
+    CODE_BLOCK   = 6,  // Found code block text
+    EX_MARK      = 7,  // Found !
+    SCAWY_SPOOPY = 8,  // Found SCAWY or SPOOPY
 
-    UNKNOWN      = 99 // Unknown result
+    END          = 98, // End of reader
+    UNKNOWN      = 99  // Unknown result
+};
+
+struct WhatMap {
+public:
+    inline static const std::unordered_map<What, const char*> map = {
+        {BOX, "Box"},
+        {FUN, "Fun"},
+        {VAR, "Var"},
+        {FOR_LOOP, "ForLoop"},
+        {WHILE_LOOP, "WhileLoop"},
+        {IF_CHECK, "IfCheck"},
+        {CODE_BLOCK, "CodeBlock"},
+        {EX_MARK, "ExMark"},
+        {SCAWY_SPOOPY, "ScawySpoopy"},
+        {END, "End"},
+        {UNKNOWN, "Unknown"}
+    };
+    inline static const char* whatName(What& what) {
+        return WhatMap::map.at(what);
+    }
 };
 
 struct WhatResult {

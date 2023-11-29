@@ -31,6 +31,7 @@ using std::unique_ptr,
       std::string,
       std::stack,
       std::cout,
+      std::cerr,
       std::map,
       std::any;
 // USING =========== >

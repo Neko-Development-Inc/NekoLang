@@ -1,4 +1,14 @@
 
-< box Box1 >.<
-    // Code here
+< !box Box1 >.<
+
+    uwu abc < "Hover" * 3 >
+
+    < fun test >.<
+        println("Hello World, " + abc + "!") <-- Prints 'Hello World, Hover!' -->
+    >
+
+    < !fun test2 >.<
+        println("test2 is a static function")
+    >
+
 >

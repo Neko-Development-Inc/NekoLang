@@ -122,8 +122,12 @@ namespace compiler {
         move(dir, true, false);
     }
 
-    void Reader::move(long int dir, bool trimStart, bool trimEnd) {
+    void Reader::move(long int dir, bool doTrimStart, bool doTrimEnd) {
         index += dir;
+        if (doTrimStart)
+            trimStart();
+        if (doTrimEnd)
+            trimEnd();
     }
 
     void Reader::set(long int i) {
@@ -139,7 +143,7 @@ namespace compiler {
     }
 
     string Reader::currentString() {
-        return str.substr(index, end - index);
+        return str.substr(index, end - index + 1);
     }
 
     // Removes all comments from current text
@@ -401,12 +405,11 @@ namespace compiler {
     void Reader::trimStart() {
         auto i = index;
         while (i <= end) {
-            if (!isCode(i)) {
+            if (!isCode(i) && !isString(i)) {
                 i++;
                 continue;
             }
             char c = str[i];
-            cout << c;
             if (!isWhiteSpace(c))
                 break;
             i++;
@@ -418,7 +421,7 @@ namespace compiler {
         auto _index = index;
         auto i = end;
         while (i > _index) {
-            if (!isCode(i)) {
+            if (!isCode(i) && !isString(i)) {
                 i--;
                 continue;
             }
@@ -444,40 +447,63 @@ namespace compiler {
         auto i = index;
         trimStart();
 
+        auto _end = end;
+        trimEnd();
+        if (currentString().length() == 0)
+            return { END, i, index, 0 };
+        end = _end;
+
         char c = curr();
         if (c == '<') { // Open something
             move(1); // jump past <
-            trimStart();
+            if (curr() == '!') move(1); // Jump over !
             if (isAlphanumeric()) {
                 const auto& s = currentString();
                 int jump = 0;
-                if ((jump = search("\\s*box\\s+", s)) != -1) {
+                if ((jump = search("^\\s*(!{0,1}\\s*box)\\s+", s)) != -1) {
                     // {\s*}box{\s+}
                     indexAfter = index + jump;
                     set(i, false, false);
                     int len = indexAfter - i;
                     if (len < 0) len = 0;
+                    if (indexAfter < i) indexAfter = i;
                     return { BOX, i, indexAfter, len };
                 }
                 // Alphanumeric, but not box
-                if ((jump = search("\\s*fun\\s+", s)) != -1) {
+
+                if ((jump = search("^\\s*(!{0,1}\\s*fun)\\s+", s)) != -1) {
                     // {\s*}fun{\s+}
                     indexAfter = index + jump;
                     set(i, false, false);
                     int len = indexAfter - i;
                     if (len < 0) len = 0;
+                    if (indexAfter < i) indexAfter = i;
                     return { FUN, i, indexAfter, len };
                 }
                 // Alphanumeric, but not fun
-                if ((jump = search("\\s*(scawy|spoopy)\\s+", s)) != -1) {
+
+//                if ((jump = search("^\\s*(owo|var|uwu)\\s+", s)) != -1) {
+//                    // {\s*}var{\s+}
+//                    indexAfter = index + jump;
+//                    set(i, false, false);
+//                    int len = indexAfter - i;
+//                    if (len < 0) len = 0;
+//                    if (indexAfter < i) indexAfter = i;
+//                    return { VAR, i, indexAfter, len };
+//                }
+//                // Alphanumeric, but not var
+
+                if ((jump = search("^\\s*(scawy|spoopy)\\s+", s)) != -1) {
                     // {\s*}(scawy or spoopy){\s+}
                     indexAfter = index + jump;
                     set(i, false, false);
                     int len = indexAfter - i;
                     if (len < 0) len = 0;
+                    if (indexAfter < i) indexAfter = i;
                     return { SCAWY_SPOOPY, i, indexAfter, len };
                 }
                 // Alphanumeric, but not scawy/spoopy
+
                 int max = 25;
                 if (max > s.length()) max = s.length();
                 cout << "Error: Unknown alphanumeric text inside '<': `" <<
@@ -486,11 +512,27 @@ namespace compiler {
                 if (len < 0) len = 0;
                 return { UNKNOWN, i, index, len };
             }
-        } else if (c == '!') {
-            // Either: Box metadata, or static functions
+//        } else if (c == '!') {
+//            // Either: Box metadata, or static functions
+//            int len = index - 1;
+//            if (len < 0) len = 0;
+//            return { EX_MARK, i, index, len };
+        } else if (c == ':' && peekNext(1) == '3') {
+            // Either: cat-flap?
             int len = index - 1;
             if (len < 0) len = 0;
             return { EX_MARK, i, index, len };
+        } else if (isAlphanumeric()) {
+            const auto& s = currentString();
+            int jump = 0;
+            if ((jump = search("^\\s*(owo|var|uwu)\\s+\\w+\\s*", s)) != -1) {
+                indexAfter = index + jump;
+                set(i, false, false);
+                int len = indexAfter - i;
+                if (len < 0) len = 0;
+                if (indexAfter < i) indexAfter = i;
+                return { VAR, i, indexAfter, len };
+            }
         }
 
         int len = index - 1;

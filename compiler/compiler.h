@@ -11,14 +11,23 @@ class Compiler {
 
 private:
     const ops::Opcodes& ops;
+    //std::map<string, struct> structs; // TODO: Add resulting classes(fields/functions) to this map
 
 public:
     explicit Compiler(const ops::Opcodes& ops) :
-            ops(reinterpret_cast<const Opcodes &>(ops)) { }
+            ops(ops) { }
 
     void parseFile(string);
-    void doParseFile(const string&);
+    void parse(Reader &reader);
 
+    void parseBoxHeader(Reader&);
+    void parseBoxBody(Reader&);
+
+    void parseVarHeader(Reader&);
+    void parseVarBody(Reader&);
+
+    void parseFunHeader(Reader&);
+    void parseFunBody(Reader&);
 };
 } // compiler
 
