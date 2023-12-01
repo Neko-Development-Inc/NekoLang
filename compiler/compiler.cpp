@@ -121,25 +121,25 @@ namespace compiler {
     }
 
     void Compiler::parseBoxHeader(Reader& reader) {
-        cout << "box header: `" << reader.currentString() << "`\n";
+        cout << "\nbox header: `" << reader.currentString() << "`\n";
     }
     void Compiler::parseBoxBody(Reader& reader) {
-        cout << "box body: `" << reader.currentString() << "`\n";
+        cout << "box body: `" << reader.currentString() << "`\n\n";
         parse(reader);
     }
 
     void Compiler::parseVarHeader(Reader& reader) {
-        cout << "var header: `" << reader.currentString() << "`\n";
+        cout << "\nvar header: `" << reader.currentString() << "`\n";
     }
     void Compiler::parseVarBody(Reader& reader) {
-        cout << "var body: `" << reader.currentString() << "`\n";
+        cout << "var body: `" << reader.currentString() << "`\n\n";
     }
 
     void Compiler::parseFunHeader(Reader& reader) {
-        cout << "fun header: `" << reader.currentString() << "`\n";
+        cout << "\nfun header: `" << reader.currentString() << "`\n";
     }
     void Compiler::parseFunBody(Reader& reader) {
-        cout << "fun body: `" << reader.currentString() << "`\n";
+        cout << "fun body: `" << reader.currentString() << "`\n\n";
     }
 
 } // compiler

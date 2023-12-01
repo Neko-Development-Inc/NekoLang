@@ -5,4 +5,4 @@
     print(i + s);
     println(i + s);
 >
-Baggy(123, 'def')
+Baggy(s: 'def', i: 123)

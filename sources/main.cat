@@ -78,11 +78,11 @@ create Box3()
 angy o < 3 >
 
 // try-catch basically
-< scawy <-- or spoopy --> >.<
+scawy < <-- or spoopy -->
     o < 1 > // reassign o to 1 - throws exception, because o is angy
 >.<
     println("SCAWY!!!")
->_<
+>#<
     println("Finally :)")
 >
 

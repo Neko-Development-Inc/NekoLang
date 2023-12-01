@@ -24,7 +24,8 @@ enum What {
     IF_CHECK     = 5,  // Found if-check text
     CODE_BLOCK   = 6,  // Found code block text
     EX_MARK      = 7,  // Found !
-    SCAWY_SPOOPY = 8,  // Found SCAWY or SPOOPY
+    CAT_FLAP     = 8,  // Found cat-flap
+    SCAWY_SPOOPY = 9,  // Found SCAWY or SPOOPY
 
     END          = 98, // End of reader
     UNKNOWN      = 99  // Unknown result
@@ -41,6 +42,7 @@ public:
         {IF_CHECK, "IfCheck"},
         {CODE_BLOCK, "CodeBlock"},
         {EX_MARK, "ExMark"},
+        {CAT_FLAP, "CatFlap"},
         {SCAWY_SPOOPY, "ScawySpoopy"},
         {END, "End"},
         {UNKNOWN, "Unknown"}

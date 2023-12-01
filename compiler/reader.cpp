@@ -449,8 +449,10 @@ namespace compiler {
 
         auto _end = end;
         trimEnd();
-        if (currentString().length() == 0)
+        if (currentString().length() == 0) {
+            indexAfter = _end;
             return { END, i, index, 0 };
+        }
         end = _end;
 
         char c = curr();
@@ -461,7 +463,7 @@ namespace compiler {
                 const auto& s = currentString();
                 int jump = 0;
                 if ((jump = search("^\\s*(!{0,1}\\s*box)\\s+", s)) != -1) {
-                    // {\s*}box{\s+}
+                    // {\s*}!{0,1}{\s*}box{\s+}
                     indexAfter = index + jump;
                     set(i, false, false);
                     int len = indexAfter - i;
@@ -482,28 +484,6 @@ namespace compiler {
                 }
                 // Alphanumeric, but not fun
 
-//                if ((jump = search("^\\s*(owo|var|uwu)\\s+", s)) != -1) {
-//                    // {\s*}var{\s+}
-//                    indexAfter = index + jump;
-//                    set(i, false, false);
-//                    int len = indexAfter - i;
-//                    if (len < 0) len = 0;
-//                    if (indexAfter < i) indexAfter = i;
-//                    return { VAR, i, indexAfter, len };
-//                }
-//                // Alphanumeric, but not var
-
-                if ((jump = search("^\\s*(scawy|spoopy)\\s+", s)) != -1) {
-                    // {\s*}(scawy or spoopy){\s+}
-                    indexAfter = index + jump;
-                    set(i, false, false);
-                    int len = indexAfter - i;
-                    if (len < 0) len = 0;
-                    if (indexAfter < i) indexAfter = i;
-                    return { SCAWY_SPOOPY, i, indexAfter, len };
-                }
-                // Alphanumeric, but not scawy/spoopy
-
                 int max = 25;
                 if (max > s.length()) max = s.length();
                 cout << "Error: Unknown alphanumeric text inside '<': `" <<
@@ -518,21 +498,37 @@ namespace compiler {
 //            if (len < 0) len = 0;
 //            return { EX_MARK, i, index, len };
         } else if (c == ':' && peekNext(1) == '3') {
-            // Either: cat-flap?
+            // Either: catflap or cat-flap
+            move(2); // Jump past :3
             int len = index - 1;
             if (len < 0) len = 0;
-            return { EX_MARK, i, index, len };
+            return { CAT_FLAP, i, index, len };
         } else if (isAlphanumeric()) {
             const auto& s = currentString();
             int jump = 0;
-            if ((jump = search("^\\s*(owo|var|uwu)\\s+\\w+\\s*", s)) != -1) {
-                indexAfter = index + jump;
+            if ((jump = search("^\\s*(owo|var|uwu)\\s+\\w+\\s*<", s)) != -1) {
+                indexAfter = index + jump - 1;
                 set(i, false, false);
                 int len = indexAfter - i;
                 if (len < 0) len = 0;
                 if (indexAfter < i) indexAfter = i;
                 return { VAR, i, indexAfter, len };
             }
+            // Alphanumeric, but not owo/var/uwu
+
+            if ((jump = search("^\\s*(scawy|spoopy)\\s*<", s)) != -1) {
+                // {\s*}(scawy or spoopy){\s+}
+                indexAfter = index + jump - 1;
+                set(i, false, false);
+                int len = indexAfter - i;
+                if (len < 0) len = 0;
+                if (indexAfter < i) indexAfter = i;
+                return { SCAWY_SPOOPY, i, indexAfter, len };
+            }
+            // Alphanumeric, but not scawy/spoopy
+
+            // Not owo/var/uwu, but alphanumeric
+            return { UNKNOWN, i, index, 0 };
         }
 
         int len = index - 1;
