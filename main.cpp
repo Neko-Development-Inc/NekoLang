@@ -1,5 +1,5 @@
-#define COMPILE
-//#define RUNTIME
+//#define COMPILE
+#define RUNTIME
 //#define STACK
 
 #include "headers.h"
@@ -11,6 +11,7 @@
 
 #ifdef RUNTIME
 #include "runtime/runtime.h"
+#include "runtime/vm/NekoClass.h"
 #endif
 
 #ifdef STACK
@@ -95,55 +96,92 @@ int main() {
 * \/\* comment \*\/
 *
 * box syntax:
-* < box Name >.<
-*   // code here
-* >
+*   < box Name >.<
+*     // code here
+*   >
 *
-* Types:
-*  object   = O - object, any type
-*  number   = N - int, or decimal
-*  string   = S - character array
-*  bool     = B - true/false
-*  box type = <TypeNameHere> - any box type
-*  empty    = E - empty type
-*  null     = E - alias for the above empty type
+* Bytecode types:
+*   object   = * - object, any type below
+*   number   = N - int or decimal (always 64-bit)
+*   string   = S - character array
+*   bool     = B - true/false/maybe
+*   box-type = <path/name> - any box type
+*   array    = A - array of any type
+*   empty    = E - empty type
+*   null     = E - alias for the above empty type
+*
+* Types examples:
+*   single object: *
+*     1d array of objects: A*
+*     2d array of objects: AA*
+*   single number: N
+*     1d array of numbers: AN
+*     2d array of numbers: AAN
+*   single string: S
+*     1d array of strings: AS
+*     2d array of strings: AAS
+*   single a/b/c/Box1: <a/b/c/Box1>
+*     1d array of strings: A<a/b/c/Box1>
+*     2d array of strings: AA<a/b/c/Box1>
+*   single number, string, bool: NSB
+*     1d array of number only: ANSB  -- SB is not an array
+*     2d array of number only: AANSB -- SB is not an array
+*     1d array of string only: NASB  -- NB is not an array
+*     2d array of string only: NAASB -- NB is not an array
+*     1d array of bool only:   NSAB  -- NS is not an array
+*     2d array of bool only:   NSAAB -- NS is not an array
 *
 * Opcodes:
 *  NOP          = 0 - do nothing
 *  POP          = 1 - pop last element from Stack
 *  POP_N        = 2 - pop last N elements from Stack
-*                     N is the last Number on the Stack
+*    <n>            Number
 *  DUP          = 3 - duplicate the last element on the Stack
 *  DUP_2        = 4 - duplicate the last 2 elements on the Stack
 *  DUP_3        = 5 - duplicate the last 3 elements on the Stack
-*  DUP_N        = 6 - duplicate the last M elements on the Stack
-*                   - N is the last Number on the Stack
-*  CS           = 7 - clear the _stack
+*  DUP_N        = 6 - duplicate the last N elements on the Stack
+*    <n>            Number
+*  CS           = 7 - clear the stack
 *
-*  LABEL<id>    = 1000 - label, a specific point in an instruction-set
+*  LABEL        = 1000 - label, a specific point in an instruction-set
+*    <id>              Number
 *  RETURN       = 1001 - return from function
-*  JUMP<lbl>    = 1002 - jump to label instruction
+*  JUMP         = 1002 - jump to label instruction
+*    <lbl id>          Number
 *
-*  CREATE<type> = 2000 - create new box
-*  TYPE<type>   = 2001 - set box type
-*  CALL<owner>  = 2002 - execute function box #owner
-*      <name>            by exact name
+*  CREATE       = 2000 - create new box
+*    <type>            String <path/owner>
+*  TYPE         = 2001 - set box type
+*    <type>            String <path/owner>
+*  CALL         = 2002 - execute function box <path/owner>
+*    <path>            String path (a/b/c)
+*    <owner>           String owner (Box1)
+*    <name>            by exact name (test_function)
+*    <argc>            Number -- number of arguments -- optional
+*    <sign>            String -- signature of arguments -- optional
 *
-*  T_NUMBER<num>  = 3000 - add Number to the Stack
-*  T_STRING<str>  = 3001 - add String to the Stack
+*  NUMBER       = 3000 - add Number to the Stack
+*    <num>             Number
+*  STRING       = 3001 - add String to the Stack
+*    <str>             String
 *  CONCAT       = 3002 - concatenates the last two elements on the Stack, and
 *                        puts the Result back on the Stack
+*  CONCAT_N     = 3003 - concatenates the last two elements on the Stack, and
+*                        puts the Result back on the Stack
+*    <n>               Number -- number of elements to concatenate
 *
 *  REPEAT       = 4000 - repeat the last instruction once
 *  REPEAT_N     = 4001 - repeat the last instruction N times
-*                        N is the last Number on the Stack
+*    <n>               Number -- number of times to repeat
 *  REPEAT_LL    = 4002 - repeats the instructions between two Labels
 *                      - L stands for Label
-*                        uses the indexes from the last two Numbers on the Stack
+*    <n1>              Number -- index of first Label
+*    <n2>              Number -- index of second Label
 *  REPEAT_LL_N  = 4003 - repeats the instructions between two Labels N times
 *                      - L stands for Label
-*                        uses the label indexes from the last two Numbers on the Stack
-*                      - N is the last Number on the Stack, after the two indexes above
+*    <n1>              Number -- index of first Label
+*    <n2>              Number -- index of second Label
+*    <n>               Number -- number of times to repeat
 *
 *  OUT          = 5000 - prints the last value on the Stack to
 *                        the active output stream (stdout by default)
@@ -153,8 +191,8 @@ int main() {
 * Example program (with opcodes):
 *  JUMP 1
 *  LABEL 0
-*  T_STRING 'Hello '
-*  T_NUMBER 69
+*  STRING 'Hello '
+*  NUMBER 69
 *  CONCAT
 *  OUT
 *  LABEL 1
