@@ -26,4 +26,6 @@ add_executable(NekoLang main.cpp
         runtime/vm/NekoClass.h
         runtime/vm/NekoStack.cpp
         runtime/vm/NekoStack.h
-        headers.h)
+        headers.h
+        common/libs/miniz/miniz.c
+        common/libs/miniz/miniz.h)
