@@ -55,13 +55,11 @@ namespace compiler {
     }
 
     string Reader::stringN(int n) {
-        if (n < 0 || n > 5) return "";
-        if (n == 5) return string { peekNext(1), peekNext(2), peekNext(3), peekNext(4), peekNext(5) };
-        if (n == 4) return string { peekNext(1), peekNext(2), peekNext(3), peekNext(4) };
-        if (n == 3) return string { peekNext(1), peekNext(2), peekNext(3) };
-        if (n == 2) return string { peekNext(1), peekNext(2) };
-        if (n == 1) return string { peekNext(1) };
-        return "";
+        if (n < 0) return "";
+        char chars[n];
+        for (int i = 0; i < n; i++)
+            chars[i] = peekNext(n);
+        return chars;
     }
 
     int Reader::search(const string& regex) {
@@ -69,7 +67,7 @@ namespace compiler {
     }
 
     int Reader::search(const string& regex, const string& text) {
-        std::regex r(regex);
+        std::regex r(regex, std::regex::extended);
         std::smatch m;
         if (std::regex_search(text, m, r))
             return m.position() + m.length();
@@ -499,10 +497,24 @@ namespace compiler {
 //            return { EX_MARK, i, index, len };
         } else if (c == ':' && peekNext(1) == '3') {
             // Either: catflap or cat-flap
-            move(2); // Jump past :3
-            int len = index - 1;
-            if (len < 0) len = 0;
-            return { CAT_FLAP, i, index, len };
+            move(2); // jump past :3
+            trimStart();
+
+            const auto& s = currentString();
+            int jump = 0;
+            if ((jump = search("^(catflap|cat-flap)(\\s*|$)", s)) == -1) {
+                cout << "Error: Expected `catflap` or `cat-flap` after `:3`\n";
+                exit(1);
+            }
+            cout << "Found catflap. Jump: " << jump << "\n";
+
+            // TODO: Mark current box as entrypoint
+
+            indexAfter = index + jump;
+            set(i, false, false);
+            int len = indexAfter - 1;
+            if (indexAfter < i) indexAfter = i;
+            return { CAT_FLAP, i, indexAfter, len };
         } else if (isAlphanumeric()) {
             const auto& s = currentString();
             int jump = 0;

@@ -1,35 +1,6 @@
 :3 cat-flap
 
-#replace <over> with <more> // replace orange keywords with a custom keyword,
-                            // which then can be used in the code
-
-<-- Implement code at compile-time -->
-#def TEST(n) <<!
-    #assert < n is num > // make sure n is an integer
-    #if < n is uoe 0 >
-        #end // end the macro
-    < fun test_#<n>() >.<
-        #if < n is 3 >
-            println('OwO')
-        println('test_' + #<n> + ' called')
-    >
-    #if < n is over 0 >.<
-        #call TEST(n - 1)
-    >
-!>>
-
 < fun main(args) >w<
-
-    #call TEST(5) // call the macro at compile-time
-
-    < fun test >.<
-        // call functions test_5 through test_1
-        test_5()
-        test_4()
-        test_3()
-        test_2()
-        test_1()
-    >
 
     owo test // declare variable with default value 'empty'
 

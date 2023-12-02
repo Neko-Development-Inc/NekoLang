@@ -108,11 +108,14 @@ namespace compiler {
                     break;
                 case SCAWY_SPOOPY:
                     break;
-                case UNKNOWN:
-                    cout << "Unknown. Current string: `" << reader.currentString() << "`\n";
-                    goto end_loop;
+                case CAT_FLAP: {
+                    reader.set(afterIndex, true, false);
+                } goto continue_loop;
                 case END:
                     cout << "End of reader\n";
+                    goto end_loop;
+                case UNKNOWN:
+                    cout << "Unknown. Current string: `" << reader.currentString() << "`\n";
                     goto end_loop;
             }
             continue_loop:;

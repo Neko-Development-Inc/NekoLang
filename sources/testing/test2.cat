@@ -1,0 +1,57 @@
+:3cat-flap#keyword<over>with<more> // replace orange keywords with a custom keyword,
+                                   // which then can be used in the code
+
+<-- Implement code at compile-time -->
+#def PRINTLN(s) print('#<s>\n')
+
+#def TEST(n) <<!
+    #assert < n is num > // make sure n is an integer
+    #if < n is uoe 0 >
+        #end // end the macro
+    < fun test_#<n>() >.<
+        #if < n is 3 >
+            println('OwO')
+        println('test_#<n> called')
+    >
+    #if < n is over 0 >.<
+        #call TEST(n - 1)
+    >
+!>>
+
+< fun main(args) >w<
+
+    #call TEST(5) // call the macro at compile-time
+
+    < fun test >.<
+        // call functions test_5 through test_1
+        test_5()
+        test_4()
+        test_3()
+        test_2()
+        test_1()
+    >
+
+    owo test // declare variable with default value 'empty'
+
+    event < test changing e >.<
+        // the variable 'test' is changing
+        e.cancel() // cancel the event
+    >
+
+    event < test changed e >.<
+        // the variable 'test' was changed
+    >
+
+    event < test read e >.<
+        // the variable 'test' is being read
+    >
+
+    scawy <
+        test < 3 / 0 > // try setting test to 3 divided by 0,
+                       // which is impossible, so it will throw an error
+                       // and the events 'test changing/changed' will not be called
+    >_<
+        // finally
+    >
+
+>
