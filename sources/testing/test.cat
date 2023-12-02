@@ -1,21 +1,23 @@
-:3 cat-flap
+:3 cat-flap < main > // declare the current file as a cat-flap (entrypoint)
+:3 path < a/b/c >    // declare the current file under the path a/b/c
+:3 box < Box1 >      // declare the current file as a box named Box1
+
+owo test // declare variable with default value 'empty'
+
+event < test changing e >.<
+    // the variable 'test' is changing
+    e.cancel() // cancel the event
+>
+
+event < test changed e >.<
+    // the variable 'test' was changed
+>
+
+event < test read e >.<
+    // the variable 'test' is being read
+>
 
 < fun main(args) >w<
-
-    owo test // declare variable with default value 'empty'
-
-    event < test changing e >.<
-        // the variable 'test' is changing
-        e.cancel() // cancel the event
-    >
-
-    event < test changed e >.<
-        // the variable 'test' was changed
-    >
-
-    event < test read e >.<
-        // the variable 'test' is being read
-    >
 
     scawy <
         test < 3 / 0 > // try setting test to 3 divided by 0,
