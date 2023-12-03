@@ -37,30 +37,30 @@ using std::unique_ptr,
 // USING =========== >
 
 // < FORWARD DECLARATIONS
-namespace runtime {
-    class Runtime;
-}
 namespace ops {
     class Opcodes;
     class NekoOp;
     class NekoOpNop;
     class NekoOpReturn;
 }
+namespace runtime {
+    class Runtime;
+}
 namespace compiler {
     class Compiler;
     class Reader;
     struct WhatResult;
+}
+namespace types {
+    class NekoBase;
+    class NekoNumber;
+    class NekoString;
 }
 namespace vm {
     struct Result;
     class NekoStack;
     class NekoClass;
     class NekoFunction;
-}
-namespace types {
-    class NekoBase;
-    class NekoNumber;
-    class NekoString;
 }
 // FORWARD DECLARATIONS >
 

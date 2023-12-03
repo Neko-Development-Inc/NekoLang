@@ -10,11 +10,15 @@ class NekoOpNop : public NekoOp {
 
 public:
     explicit NekoOpNop(short opcode)
-            : NekoOp(opcode) {}
+        : NekoOp(opcode) {}
+
+    std::unique_ptr<NekoOp> clone() const override {
+        return std::make_unique<NekoOpNop>(*this);
+    }
 
     void execute(Runtime& r, vm::NekoStack& s) override {
         // Do nothing
-        cout << "NekoOpNop\n";
+
         //s->count();
     }
 

@@ -11,14 +11,14 @@ class NekoClass {
 
 public:
     string name;
-    map<string, NekoFunction> functions{};
+    map<string, const NekoFunction*> functions;
 
     explicit NekoClass(string name) :
         name(std::move(name)) { }
 
-    void addFunction(const NekoFunction& func);
+    void addFunction(const NekoFunction&);
 
-    void removeFunction(const string& s);
+    void removeFunction(const string&);
 
 };
 }

@@ -12,10 +12,15 @@ public:
     explicit NekoOpReturn(short opcode)
             : NekoOp(opcode) {}
 
+    std::unique_ptr<NekoOp> clone() const override {
+        return std::make_unique<NekoOpReturn>(*this);
+    }
+
     void execute(Runtime& r, vm::NekoStack& s) override {
-        // TODO: Return from the current executing function
-        //int count = s->count();
-        cout << "NekoOpReturn\n";
+//        // TODO: Return from the current executing function
+
+//        //int count = s->count();
+//        cout << "NekoOpReturn\n";
     }
 
 };

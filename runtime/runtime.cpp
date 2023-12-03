@@ -7,8 +7,4 @@ namespace runtime {
         impls.emplace(ops[RETURN], std::make_unique<NekoOpReturn>(ops[RETURN]));
     }
 
-    NekoOp& Runtime::getImpl(short op) {
-        return *impls[ops[op]];
-    }
-
 } // runtime

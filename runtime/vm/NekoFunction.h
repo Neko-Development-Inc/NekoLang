@@ -13,8 +13,8 @@ namespace vm {
 class NekoFunction {
 
 public:
-    string name;
-    vector<NekoOp*> instructions;
+    const string name;
+    vector<unique_ptr<NekoOp>> instructions;
     NekoClass &owner;
     Opcodes &ops;
 
