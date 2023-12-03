@@ -32,8 +32,8 @@ public:
         }
         auto c = **b->value();
         auto d = c; // Copy object
-        s.add(&c, a.type); // TODO: This will exit the program, due to
-        s.add(&d, a.type); //       wrong types (only support primitives rn)
+        s.add(&c, a.type);
+        s.add(&d, a.type);
         cout << "NekoOpDup: Stack size after dup: " << s.count() << "\n";
     }
 
