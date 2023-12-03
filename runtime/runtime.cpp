@@ -26,9 +26,9 @@ namespace runtime {
         //  DUP_3                    = 5 - duplicate the last 3 elements on the Stack
         impls.emplace(ops[DUP_3],  std::make_unique<NekoOpDup>());
 
-        //  DUP_N                    = 6 - pop last N elements from Stack
+        //  DUP_N                    = 6 - duplicate the last N elements on the Stack
         //    <n>                        Number
-        impls.emplace(ops[POP_N],  std::make_unique<NekoOpPop>());
+        impls.emplace(ops[DUP_N],  std::make_unique<NekoOpDup>());
 
 
 
