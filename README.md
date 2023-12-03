@@ -118,8 +118,10 @@ Uses my very own custom instruction-set; no copy-pasted code from elsewhere, oth
  *
  *  OUT          = 5000 - prints the last value on the Stack to
  *                        the active output stream (stdout by default)
+ *    <bool>            Bool -- force flush or not -- optional
  *  ERR          = 5001 - prints the last value on the Stack to
  *                        the active error output stream (stderr by default)
+ *    <bool>            Bool -- force flush or not -- optional
  *
  * Example program 1 (opcodes):
  *    JUMP 1
@@ -129,7 +131,7 @@ Uses my very own custom instruction-set; no copy-pasted code from elsewhere, oth
  *    CONCAT
  *    STRING ' :)\n'
  *    CONCAT
- *    OUT
+ *    OUT true
  *  LABEL 1
  *    REPEAT_LL_N 0 1 10
  *

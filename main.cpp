@@ -195,8 +195,10 @@ int main() {
 *
 *  OUT          = 5000 - prints the last value on the Stack to
 *                        the active output stream (stdout by default)
+*    <bool>            Bool -- force flush or not -- optional
 *  ERR          = 5001 - prints the last value on the Stack to
 *                        the active error output stream (stderr by default)
+*    <bool>            Bool -- force flush or not -- optional
 *
 * Example program 1 (opcodes):
 *    JUMP 1
@@ -206,7 +208,7 @@ int main() {
 *    CONCAT
 *    STRING ' :)\n'
 *    CONCAT
-*    OUT
+*    OUT true
 *  LABEL 1
 *    REPEAT_LL_N 0 1 10
 *
