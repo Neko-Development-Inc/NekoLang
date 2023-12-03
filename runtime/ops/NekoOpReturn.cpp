@@ -9,8 +9,8 @@ namespace ops {
 class NekoOpReturn : public NekoOp {
 
 public:
-    explicit NekoOpReturn(short opcode)
-            : NekoOp(opcode) {}
+    explicit NekoOpReturn()
+            : NekoOp(RETURN) {}
 
     std::unique_ptr<NekoOp> clone() const override {
         return std::make_unique<NekoOpReturn>(*this);

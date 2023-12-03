@@ -7,6 +7,7 @@
 
 #include "ops/NekoOp.h"
 #include "ops/NekoOpNop.cpp"
+#include "ops/NekoOpPop.cpp"
 #include "ops/NekoOpReturn.cpp"
 
 namespace runtime {

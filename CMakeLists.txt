@@ -12,9 +12,13 @@ add_executable(NekoLang main.cpp
         compiler/reader.h
         runtime/runtime.cpp
         runtime/runtime.h
+
         runtime/ops/NekoOp.h
         runtime/ops/NekoOpNop.cpp
+        runtime/ops/NekoOpPop.cpp
+        runtime/ops/NekoOpDup.cpp
         runtime/ops/NekoOpReturn.cpp
+
         runtime/types/NekoObject.h
         runtime/types/NekoNumber.cpp
         runtime/types/NekoNumber.h

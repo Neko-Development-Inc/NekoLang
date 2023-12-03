@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../headers.h"
+#include "../vm/NekoStack.h"
 
 namespace ops {
 class NekoOp {

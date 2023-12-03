@@ -8,6 +8,14 @@ namespace vm {
             "Hello", 123, true
         ));
         instructions.emplace_back(r.createImplT(
+            POP,
+            420
+        ));
+        instructions.emplace_back(r.createImplT(
+            POP_N,
+            696969
+        ));
+        instructions.emplace_back(r.createImplT(
             RETURN,
             123, 456, string("World"), false
         ));

@@ -9,14 +9,14 @@ namespace ops {
 class NekoOpNop : public NekoOp {
 
 public:
-    explicit NekoOpNop(short opcode)
-        : NekoOp(opcode) {}
+    explicit NekoOpNop()
+        : NekoOp(NOP) {}
 
     std::unique_ptr<NekoOp> clone() const override {
         return std::make_unique<NekoOpNop>(*this);
     }
 
-    void execute(Runtime& r, vm::NekoStack& s) override {
+    void execute(Runtime& r, NekoStack& s) override {
         // Do nothing
 
         //s->count();
