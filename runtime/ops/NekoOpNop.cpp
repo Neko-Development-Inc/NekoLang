@@ -19,7 +19,6 @@ public:
     long int execute(Runtime& r, NekoStack& s, size_t& i) override {
         // Do nothing
         cout << "NekoOpNop\n";
-        i++;
         return 0;
     }
 
