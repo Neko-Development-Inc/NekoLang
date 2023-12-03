@@ -33,7 +33,7 @@ namespace runtime {
 
 
         //  CS                       = 7 - clear the stack
-        impls.emplace(ops[CS],     std::make_unique<NekoOpDup>());
+        impls.emplace(ops[CS],     std::make_unique<NekoOpCs>());
 
 
 
@@ -63,7 +63,7 @@ namespace runtime {
 
 
 
-        //  OUT                      = 5000 - return from functionprints the last value on the Stack to
+        //  OUT                      = 5000 - prints the last value on the Stack to
         //                                    the active output stream (stdout by default)
         impls.emplace(ops[OUT], std::make_unique<NekoOpOut>());
     }
