@@ -29,9 +29,9 @@ public:
     template<typename T>
     void add(T obj, ObjectType type) {
         constexpr auto& typeInfo = typeid(T);
-        if constexpr (std::is_same<T, NekoBase>::value) {
-            auto n = static_cast<NekoBase>(obj);
-            _stack.emplace(std::move(std::make_unique<NekoBase*>(n)));
+        if constexpr (std::is_same<T, NekoBase*>::value) {
+            auto n = static_cast<NekoBase*>(obj);
+            _stack.emplace(std::move(&n));
             stackTypes.emplace(type);
             return;
         } else if constexpr (std::is_arithmetic<T>::value) {
@@ -55,10 +55,12 @@ public:
 
     bool has();
     size_t count();
+    ObjectType peek();
     Result pop();
     void clear();
     void process();
 
+    std::unique_ptr<string> popToString();
     std::unique_ptr<long double> popNumber();
     std::unique_ptr<string> popString();
 
