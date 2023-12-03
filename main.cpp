@@ -62,15 +62,19 @@ int main() {
         T_NUMBER
     );
     _stack.add(
-        "hello world",
+        "hello world 2",
+        T_STRING
+    );
+    _stack.add(
+        string("hello world 1"),
         T_STRING
     );
 
     int count = _stack.count();
     cout << "Count: " << count << "\n";
 
-    auto str = *_stack.popString();
-    cout << "String: " << str << "\n";
+    cout << "String: " << *_stack.popString() << "\n";
+    cout << "String: " << *_stack.popString() << "\n";
 
     auto num = *_stack.popNumber();
     cout << "Number: " << num << ", isSame: " << (num == (9223372036854775807L - 1L) ? "true" : "false") << "\n";
