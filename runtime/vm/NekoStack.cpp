@@ -2,26 +2,22 @@
 
 namespace vm {
 
-    void NekoStack::add(std::unique_ptr<NekoBase> obj, ObjectType type) {
-        stackTypes.emplace(type);
-        _stack.emplace(std::move(obj));
-    }
-
     bool NekoStack::has() {
         return !_stack.empty();
     }
 
-    int NekoStack::count() {
-        return (int)_stack.size();
+    size_t NekoStack::count() {
+        return _stack.size();
     }
 
     Result NekoStack::pop() {
         if (!has())
-            return Result {false,
-                           nullptr, ObjectType::T_NONE
+            return Result { false,
+                nullptr,
+               ObjectType::T_NONE
             };
 
-        auto type = std::move(stackTypes.top());
+        auto& type = stackTypes.top();
         auto item = std::move(_stack.top());
 
         stackTypes.pop();
@@ -29,7 +25,7 @@ namespace vm {
 
         return Result { true,
             std::move(item),
-            std::move(type)
+            type
         };
     }
 
@@ -38,11 +34,11 @@ namespace vm {
             auto result = pop();
             if (!result.success) break;
             if (result.type == ObjectType::T_NUMBER) {
-                auto num = reinterpret_cast<NekoNumber*>(result.obj.get());
+                auto num = reinterpret_cast<NekoNumber*>(result.obj->get());
                 cout << "Number: " << num->get() << "\n";
             }
             else if (result.type == ObjectType::T_STRING) {
-                auto str = reinterpret_cast<string*>(result.obj.get());
+                auto str = reinterpret_cast<string*>(result.obj->get());
                 cout << "String: '" << *str << "'\n";
             }
         }
@@ -50,10 +46,14 @@ namespace vm {
 
     std::unique_ptr<long double> NekoStack::popNumber() {
         auto result = pop();
+        cout << "popNumber: " << result.type << "\n";
         if (result.success && result.type == ObjectType::T_NUMBER) {
-            auto obj = dynamic_cast<NekoNumber*>(result.obj.get());
-            if (obj != nullptr)
-                return std::make_unique<long double>(obj->get());
+            auto opt = &result.obj;
+            if (opt->has_value()) {
+                auto s = dynamic_cast<NekoNumber*>(*(&opt->value())->get());
+                return std::make_unique<long double>(s->get());
+            }
+            cout << "popNumber: no value\n";
         }
         return nullptr;
     }
@@ -61,9 +61,12 @@ namespace vm {
     std::unique_ptr<string> NekoStack::popString() {
         auto result = pop();
         if (result.success && result.type == ObjectType::T_STRING) {
-            auto obj = dynamic_cast<NekoString*>(result.obj.get());
-            if (obj != nullptr)
-                return std::make_unique<string>(obj->get());
+            auto opt = &result.obj;
+            if (opt->has_value()) {
+                auto s = dynamic_cast<NekoString*>(*(&opt->value())->get());
+                return std::make_unique<string>(s->get());
+            }
+            cout << "popString: no value\n";
         }
         return nullptr;
     }

@@ -1,6 +1,6 @@
 //#define COMPILE
-#define RUNTIME
-//#define STACK
+//#define RUNTIME
+#define STACK
 
 #include "headers.h"
 #include "common/opcodes.h"
@@ -56,10 +56,15 @@ int main() {
 #ifdef STACK
 
     NekoStack _stack;
-    _stack.add(std::make_unique<NekoNumber>(9223372036854775807L - 1L),
-            T_NUMBER);
-    _stack.add(std::make_unique<NekoString>("Hello world"),
-            T_STRING);
+
+    _stack.add(
+        9223372036854775807L - 1L,
+        T_NUMBER
+    );
+    _stack.add(
+        "hello world",
+        T_STRING
+    );
 
     int count = _stack.count();
     cout << "Count: " << count << "\n";

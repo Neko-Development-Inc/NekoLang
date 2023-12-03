@@ -7,10 +7,10 @@
 
 namespace types {
     enum ObjectType {
-        T_NONE,
-        T_UNKNOWN,
-        T_NUMBER,
-        T_STRING
+        T_NONE = 0,
+        T_UNKNOWN = 1,
+        T_NUMBER = 2,
+        T_STRING = 3
     };
 
     class NekoBase {
