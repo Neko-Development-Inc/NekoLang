@@ -484,7 +484,7 @@ namespace compiler {
 
                 int max = 25;
                 if (max > s.length()) max = s.length();
-                cout << "Error: Unknown alphanumeric text inside '<': `" <<
+                cerr << "Error: Unknown alphanumeric text inside '<': `" <<
                         s.substr(0, max) << "`\n";
                 int len = index - 1;
                 if (len < 0) len = 0;
@@ -503,7 +503,7 @@ namespace compiler {
             const auto& s = currentString();
             int jump = 0;
             if ((jump = search("^(catflap|cat-flap)(\\s*|$)", s)) == -1) {
-                cout << "Error: Expected `catflap` or `cat-flap` after `:3`\n";
+                cerr << "Error: Expected `catflap` or `cat-flap` after `:3`\n";
                 exit(1);
             }
             cout << "Found catflap. Jump: " << jump << "\n";

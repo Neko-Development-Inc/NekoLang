@@ -35,22 +35,22 @@ public:
             stackTypes.emplace(type);
             return;
         } else if constexpr (typeInfo == typeid(string)) {
-            auto str = static_cast<string>(obj);
-            _stack.emplace(std::move(std::make_unique<NekoBase*>(new NekoString(str))));
+            _stack.emplace(std::move(std::make_unique<NekoBase*>(new NekoString(obj))));
             stackTypes.emplace(type);
             return;
         } else if constexpr (typeInfo == typeid(const char *)) {
-            auto str = reinterpret_cast<const char *>(obj);
-            _stack.emplace(std::make_unique<NekoBase*>(new NekoString(str)));
+            _stack.emplace(std::make_unique<NekoBase*>(new NekoString(obj)));
             stackTypes.emplace(type);
             return;
         }
-        cout << "NekoStack: Unknown type: " << typeInfo.name() << "\n";
+        cerr << "Error: NekoStack: Unknown type: " << typeInfo.name() << "\n";
+        exit(1);
     }
 
     bool has();
     size_t count();
     Result pop();
+    void clear();
     void process();
 
     std::unique_ptr<long double> popNumber();

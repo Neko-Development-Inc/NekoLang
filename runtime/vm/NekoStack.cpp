@@ -29,6 +29,11 @@ namespace vm {
         };
     }
 
+    void NekoStack::clear() {
+        while (!_stack.empty())
+            _stack.pop();
+    }
+
     void NekoStack::process() {
         while (true) {
             auto result = pop();
@@ -38,8 +43,8 @@ namespace vm {
                 cout << "Number: " << num->get() << "\n";
             }
             else if (result.type == ObjectType::T_STRING) {
-                auto str = reinterpret_cast<string*>(result.obj->get());
-                cout << "String: '" << *str << "'\n";
+                auto str = reinterpret_cast<NekoString*>(result.obj->get());
+                cout << "String: '" << str->get() << "'\n";
             }
         }
     }
