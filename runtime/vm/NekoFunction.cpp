@@ -4,9 +4,12 @@ namespace vm {
 
     void NekoFunction::init(Runtime& r) {
         instructions.emplace_back(r.createImplT(NOP));
-        instructions.emplace_back(r.createImplT(NUMBER, 123));
-        instructions.emplace_back(r.createImplT(STRING, "hello"));
-        instructions.emplace_back(r.createImplT(CONCAT));
+        instructions.emplace_back(r.createImplT(STRING, "hello "));
+        instructions.emplace_back(r.createImplT(NUMBER, 420));
+        instructions.emplace_back(r.createImplT(STRING, " :)"));
+        instructions.emplace_back(r.createImplT(CONCAT_ALL));
+        instructions.emplace_back(r.createImplT(DUP));
+        instructions.emplace_back(r.createImplT(CONCAT_ALL));
         instructions.emplace_back(r.createImplT(OUT));
     }
 
