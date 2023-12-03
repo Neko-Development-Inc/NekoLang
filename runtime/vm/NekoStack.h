@@ -65,7 +65,7 @@ public:
             stackTypes.emplace(type);
             return;
         } else if constexpr (typeInfo == typeid(string)) {
-            auto str = reinterpret_cast<string>(obj);
+            auto str = static_cast<string>(obj);
             _stack.emplace(std::move(std::make_unique<NekoBase*>(new NekoString(str))));
             stackTypes.emplace(type);
             return;
