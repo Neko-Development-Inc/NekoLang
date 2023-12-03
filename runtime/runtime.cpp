@@ -66,6 +66,10 @@ namespace runtime {
         //  OUT                      = 5000 - prints the last value on the Stack to
         //                                    the active output stream (stdout by default)
         impls.emplace(ops[OUT], std::make_unique<NekoOpOut>());
+
+        //  ERR                      = 5001 - prints the last value on the Stack to
+        //                                    the active error output stream (stderr by default)
+        impls.emplace(ops[ERR], std::make_unique<NekoOpOut>(ERR));
     }
 
 } // runtime
