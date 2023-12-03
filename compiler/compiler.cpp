@@ -115,7 +115,7 @@ namespace compiler {
                     cout << "End of reader\n";
                     goto end_loop;
                 case UNKNOWN:
-                    cout << "Unknown. Current string: `" << reader.currentString() << "`\n";
+                    cerr << "Unknown. Current string: `" << reader.currentString() << "`\n";
                     goto end_loop;
             }
             continue_loop:;

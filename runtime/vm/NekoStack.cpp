@@ -58,7 +58,7 @@ namespace vm {
                 auto s = dynamic_cast<NekoNumber*>(*(&opt->value())->get());
                 return std::make_unique<long double>(s->get());
             }
-            cout << "popNumber: no value\n";
+            cerr << "popNumber: no value\n";
         }
         return nullptr;
     }
@@ -71,7 +71,7 @@ namespace vm {
                 auto s = dynamic_cast<NekoString*>(*(&opt->value())->get());
                 return std::make_unique<string>(s->get());
             }
-            cout << "popString: no value\n";
+            cerr << "popString: no value\n";
         }
         return nullptr;
     }
