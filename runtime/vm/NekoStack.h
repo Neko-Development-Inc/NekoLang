@@ -11,36 +11,6 @@
 
 namespace vm {
 
-//    class Parent {
-//    public:
-//        Parent(const std::string& name) : name(name) {}
-//
-//        std::string getName() const {
-//            return name;
-//        }
-//
-//    private:
-//        std::string name;
-//    };
-//
-//    class Child : public Parent {
-//    public:
-//        Child(const std::string& name, int additionalProperty) : Parent(name), additionalProperty(additionalProperty) {}
-//
-//        int getAdditionalProperty() const {
-//            return additionalProperty;
-//        }
-//
-//    private:
-//        int additionalProperty;
-//    };
-//
-//    int testt() {
-//        std::stack<std::unique_ptr<NekoBase*>> stk;
-//        stk.push(std::move(std::make_unique<NekoBase*>(new NekoString("Hello"))));
-//        stk.push(std::move(std::make_unique<NekoBase*>(new NekoString("World"))));
-//    }
-
 struct Result {
     bool success;
     std::optional<std::unique_ptr<NekoBase*>> obj;
