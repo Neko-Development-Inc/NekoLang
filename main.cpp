@@ -163,10 +163,10 @@ int main() {
 *    <type>            String <path/owner>
 *  TYPE         = 2001 - set box type
 *    <type>            String <path/owner>
-*  CALL         = 2002 - execute function box <path/owner>
+*  CALL         = 2002 - execute function in box <path/owner>
 *    <path>            String path (a/b/c)
 *    <owner>           String owner (Box1)
-*    <name>            by exact name (test_function)
+*    <name>            String function name (test_function)
 *    <argc>            Number -- number of arguments -- optional
 *    <sign>            String -- signature of arguments -- optional
 *
@@ -198,15 +198,31 @@ int main() {
 *  ERR          = 5001 - prints the last value on the Stack to
 *                        the active error output stream (stderr by default)
 *
-* Example program (with opcodes):
-*  JUMP 1
+* Example program 1 (opcodes):
+*    JUMP 1
 *  LABEL 0
-*  STRING 'Hello '
-*  NUMBER 69
-*  CONCAT
-*  OUT
+*    STRING 'Hello '
+*    NUMBER 420
+*    CONCAT
+*    STRING ' :)\n'
+*    CONCAT
+*    OUT
 *  LABEL 1
-*  REPEAT_LL_N 0 1 10
+*    REPEAT_LL_N 0 1 10
+*
+* Example program 2 (opcodes):
+*    JUMP 1
+*  LABEL 0
+*    STRING 'abc' -- argument 1 (S)
+*    NUMBER  123  -- argument 2 (N)
+*    CALL    a/b/c    Box1   function_test   2     SN    true
+*    --      path    |^      func_name      |^    |^     auto pop call result
+*    --              |box_name              |^    |signature (S = String, N = Number)
+*    --                                     |argument_count (String, Number)
+*  LABEL 1
+*    REPEAT_LL_N 0 1 3 -- call a/b/c/Box1.function_test(SN) three times,
+*                      -- using 'abc' and 123 as the arguments.
+*                      -- automatically pop call result from the stack.
 *
 * Example program (using NekoLang):
 *  for <from 1 to 10 inclusive as i>.<
