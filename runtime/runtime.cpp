@@ -54,7 +54,12 @@ namespace runtime {
         //                                    on the Stack, and puts the Result
         //                                    back on the Stack
         //    <n>                           Number
-        impls.emplace(ops[CONCAT_N], std::make_unique<NekoOpConcat>());
+        impls.emplace(ops[CONCAT_N], std::make_unique<NekoOpConcat>(CONCAT_N));
+
+        //  CONCAT_ALL               = 3004 - concatenates all the elements
+        //                                    on the Stack, and puts the Result
+        //                                    back on the Stack
+        impls.emplace(ops[CONCAT_ALL], std::make_unique<NekoOpConcat>(CONCAT_ALL));
 
 
 

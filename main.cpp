@@ -179,6 +179,8 @@ int main() {
 *  CONCAT_N     = 3003 - concatenates the last N elements on the Stack, and
 *                        puts the Result back on the Stack
 *    <n>               Number -- number of elements to concatenate
+*  CONCAT_ALL   = 3004 - concatenates all the elements on the Stack, and
+*                        puts the Result back on the Stack
 *
 *  REPEAT       = 4000 - repeat the last instruction once
 *  REPEAT_N     = 4001 - repeat the last instruction N times

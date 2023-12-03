@@ -14,10 +14,20 @@ namespace vm {
         NekoStack stack;
         // TODO: If non-static (instanced),
         //  add `self/this` to top of Stack
-        for (auto& op : instructions) {
-            op->execute(r, stack);
-            op->debugArguments();
+//        auto retVal = nullptr;
+        for (size_t i = 0; i < instructions.size();) {
+            auto tmp = i + 0; // ugly hack for false CLion warning
+            auto& insn = instructions[i];
+            long int next = insn->execute(r, stack, i);
+            if (next == -1) {
+                // Return from function
+                cout << "Return from function\n";
+                break;
+            }
+            if (tmp == i)
+                i++;
         }
+//        stack.process();
     }
 
 }

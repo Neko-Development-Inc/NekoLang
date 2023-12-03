@@ -11,81 +11,88 @@ class NekoOpConcat : public NekoOp {
 public:
     explicit NekoOpConcat()
             : NekoOp(CONCAT) {}
+    explicit NekoOpConcat(short opcode)
+            : NekoOp(opcode) {}
 
     std::unique_ptr<NekoOp> clone() const override {
         return std::make_unique<NekoOpConcat>(*this);
     }
 
-    void execute(Runtime& r, NekoStack& s) override {
+    long int execute(Runtime& r, NekoStack& s, size_t& i) override {
         cout << "NekoOpConcat\n";
-        // TODO: Check 'args' for _N. Default 2
-        auto pop1 = s.pop();
-        if (!pop1.success) {
-            cerr << "Error: NekoOpConcat: pop1 failed\n";
+
+        auto peek1 = s.peek();
+        if (peek1 == T_NONE || peek1 == T_UNKNOWN) {
+            cerr << "Error: NekoOpConcat: peek1 failed\n";
             exit(1);
         }
-        auto pop2 = s.pop();
-        if (!pop2.success) {
-            cerr << "Error: NekoOpConcat: pop2 failed\n";
-            exit(1);
+
+        string result;
+
+        int n;
+        if (opcode == CONCAT) {
+            // Last 2 elements
+            if (s.count() >= 2)
+                n = 2;
+            else
+                n = 1;
+        } else if (opcode == CONCAT_N) {
+            if (!hasArg(0)) {
+                cerr << "Error: NekoOpConcat: CONCAT_N: args[0] not found\n";
+                exit(1);
+            }
+            if (!argIsType(0, typeid(int))) {
+                cerr << "Error: NekoOpConcat: CONCAT_N: args[0] wasn't a number\n";
+                exit(1);
+            }
+            n = getArgNumber(0);
+            if (n < 1) {
+                cerr << "Error: NekoOpConcat: CONCAT_N: N was below 1\n";
+                exit(1);
+            } else if (n > 100) {
+                cout << "Warning: NekoOpConcat: CONCAT_N: N was over 100 "
+                        "(N: " << n << "), did you mean to do that?\n";
+            }
+        } else if (opcode == CONCAT_ALL) {
+            n = s.count();
+            if (n > 100) {
+                cout << "Warning: NekoOpConcat: CONCAT_N: N was over 100 "
+                        "(N: " << n << "), did you mean to do that?\n";
+            }
         }
-        // Both are numbers
-        if (pop1.type == ObjectType::T_NUMBER && pop2.type == ObjectType::T_NUMBER) {
-            auto num1 = dynamic_cast<NekoNumber*>(*pop1.obj->get());
-            auto num2 = dynamic_cast<NekoNumber*>(*pop2.obj->get());
 
-            auto result = string();
-
-            long long numLong2 = static_cast<long long>(num2->get());
-            if (num2->hasDecimals()) result.append(to_string(num2->get()));
-            else result.append(to_string(numLong2));
-
-            long long numLong1 = static_cast<long long>(num1->get());
-            if (num1->hasDecimals()) result.append(to_string(num1->get()));
-            else result.append(to_string(numLong1));
-
-            s.add(result, T_STRING);
-            return;
+        vector<string> strings(n);
+        while (n--) {
+            // reversed order
+            auto peek = s.peek();
+            if (peek == T_NONE || peek == T_UNKNOWN) {
+                cerr << "Error: NekoOpConcat: CONCAT_N: peekN(" << (n+1) << ") failed\n";
+                exit(1);
+            }
+            switch (peek) {
+                case T_NUMBER: {
+                    auto num = *s.popNumber();
+                    if (num > std::floor(num))
+                        strings.emplace_back(to_string(num));
+                    else
+                        strings.emplace_back(to_string(static_cast<long long int>(num)));
+                } break;
+                case T_STRING: {
+                    auto str = *s.popString();
+                    strings.emplace_back(str);
+                } break;
+                case T_NONE:
+                case T_UNKNOWN:
+                    break;
+            }
         }
-        // Both are strings
-        else if (pop1.type == ObjectType::T_STRING && pop2.type == ObjectType::T_STRING) {
-            auto str1 = dynamic_cast<NekoString*>(*pop1.obj->get())->get();
-            auto str2 = dynamic_cast<NekoString*>(*pop2.obj->get())->get();
-            auto result = str2.append(str1);
-            s.add(result, T_STRING);
-            return;
-        }
-        // First is number, Second is string
-        else if (pop1.type == ObjectType::T_NUMBER && pop2.type == ObjectType::T_STRING) {
-            auto num = dynamic_cast<NekoNumber*>(*pop1.obj->get());
-            auto str = dynamic_cast<NekoString*>(*pop2.obj->get())->get();
-            auto result = str;
 
-            long long numLong = static_cast<long long>(num->get());
-            if (num->hasDecimals()) result.append(to_string(num->get()));
-            else result.append(to_string(numLong));
+        for (const auto &item: strings)
+            result = item + result;
 
-            s.add(result, T_STRING);
-            return;
-        }
-        // First is string, Second is number
-        else if (pop1.type == ObjectType::T_STRING && pop2.type == ObjectType::T_NUMBER) {
-            auto str = dynamic_cast<NekoString*>(*pop1.obj->get())->get();
-            auto num = dynamic_cast<NekoNumber*>(*pop2.obj->get());
-            auto result = string();
+        s.add(result, T_STRING);
 
-            long long numLong = static_cast<long long>(num->get());
-            if (num->hasDecimals()) result.append(to_string(num->get()));
-            else result.append(to_string(numLong));
-
-            result.append(str);
-            s.add(result, T_STRING);
-            return;
-        }
-        cerr << "Error: NekoOpConcat: Unknown stack types: "
-                "pop1.type(" << pop1.type << "), "
-                "pop2.type(" << pop2.type << ")\n";
-        exit(1);
+        return 0;
     }
 
 };

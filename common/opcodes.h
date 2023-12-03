@@ -23,10 +23,11 @@ const short
      , TYPE   = 2001
      , CALL   = 2002
 
-     , NUMBER   = 3000
-     , STRING   = 3001
-     , CONCAT   = 3002
-     , CONCAT_N = 3003
+     , NUMBER     = 3000
+     , STRING     = 3001
+     , CONCAT     = 3002
+     , CONCAT_N   = 3003
+     , CONCAT_ALL = 3004
 
      , REPEAT      = 4000
      , REPEAT_N    = 4001
