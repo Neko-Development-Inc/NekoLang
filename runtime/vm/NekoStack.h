@@ -29,16 +29,22 @@ public:
     template<typename T>
     void add(T obj, ObjectType type) {
         constexpr auto& typeInfo = typeid(T);
-        if constexpr (std::is_arithmetic<T>::value) {
+        if constexpr (std::is_same<T, NekoBase>::value) {
+            auto n = static_cast<NekoBase>(obj);
+            _stack.emplace(std::move(std::make_unique<NekoBase*>(n)));
+            stackTypes.emplace(type);
+            return;
+        } else if constexpr (std::is_arithmetic<T>::value) {
             auto num = static_cast<long double>(obj);
             _stack.emplace(std::move(std::make_unique<NekoBase*>(new NekoNumber(num))));
             stackTypes.emplace(type);
             return;
-        } else if constexpr (typeInfo == typeid(string)) {
-            _stack.emplace(std::move(std::make_unique<NekoBase*>(new NekoString(obj))));
+        } else if constexpr (std::is_same<T, string>::value) {
+            auto str = static_cast<string>(obj);
+            _stack.emplace(std::move(std::make_unique<NekoBase*>(new NekoString(str))));
             stackTypes.emplace(type);
             return;
-        } else if constexpr (typeInfo == typeid(const char *)) {
+        } else if constexpr (std::is_same<T, const char *>::value) {
             _stack.emplace(std::make_unique<NekoBase*>(new NekoString(obj)));
             stackTypes.emplace(type);
             return;
