@@ -16,11 +16,12 @@ public:
         return std::make_unique<NekoOpCs>(*this);
     }
 
-    void execute(Runtime& r, NekoStack& s) override {
+    long int execute(Runtime& r, NekoStack& s, size_t& i) override {
         cout << "NekoOpCs\n";
         cout << "NekoOpCs: Stack size before CS: " << s.count() << "\n";
         s.clear();
         cout << "NekoOpCs: Stack size after CS: " << s.count() << "\n";
+        return 0;
     }
 
 };

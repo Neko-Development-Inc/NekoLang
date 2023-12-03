@@ -16,7 +16,7 @@ public:
         return std::make_unique<NekoOpNumber>(*this);
     }
 
-    void execute(Runtime& r, NekoStack& s) override {
+    long int execute(Runtime& r, NekoStack& s, size_t& i) override {
         cout << "NekoOpNumber\n";
         if (args.empty()) {
             cerr << "Error: NekoOpNumber args was empty\n";
@@ -30,27 +30,27 @@ public:
         const auto& type = first.type();
         if (type == typeid(int)) {
             s.add(any_cast<int>(first), T_NUMBER);
-            return;
+            return 0;
         }
         if (type == typeid(long)) {
             s.add(any_cast<long>(first), T_NUMBER);
-            return;
+            return 0;
         }
         if (type == typeid(double)) {
             s.add(any_cast<double>(first), T_NUMBER);
-            return;
+            return 0;
         }
         if (type == typeid(long double)) {
             s.add(any_cast<long double>(first), T_NUMBER);
-            return;
+            return 0;
         }
         if (type == typeid(long long)) {
-            s.add(any_cast<long long>(first), T_NUMBER);
-            return;
+            s.add(any_cast<long long int>(first), T_NUMBER);
+            return 0;
         }
         if (type == typeid(long int)) {
             s.add(any_cast<long int>(first), T_NUMBER);
-            return;
+            return 0;
         }
         cerr << "Error: NekoOpNumber args[0] wasn't a number, "
                 "it was: '" << type.name() << "'\n";

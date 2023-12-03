@@ -16,7 +16,7 @@ public:
         return std::make_unique<NekoOpString>(*this);
     }
 
-    void execute(Runtime& r, NekoStack& s) override {
+    long int execute(Runtime& r, NekoStack& s, size_t& i) override {
         cout << "NekoOpString\n";
         if (args.empty()) {
             cerr << "Error: NekoOpString args was empty\n";
@@ -30,10 +30,10 @@ public:
         const auto& type = first.type();
         if (type == typeid(const char *)) {
             s.add(std::any_cast<const char *>(first), T_STRING);
-            return;
+            return 0;
         } else if (type == typeid(string)) {
             s.add(any_cast<string>(first), T_STRING);
-            return;
+            return 0;
         }
         cerr << "Error: NekoOpString args[0] wasn't a string, "
                 "it was: '" << type.name() << "'\n";

@@ -16,9 +16,8 @@ public:
         return std::make_unique<NekoOpPop>(*this);
     }
 
-    void execute(Runtime& r, NekoStack& s) override {
+    long int execute(Runtime& r, NekoStack& s, size_t& i) override {
         cout << "NekoOpPop\n";
-
         int n = 1;
         if (!args.empty()) {
             auto first = args[0];
@@ -42,6 +41,7 @@ public:
                 exit(1);
             }
         }
+        return 0;
     }
 
 };

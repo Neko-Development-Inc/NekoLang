@@ -18,7 +18,7 @@ public:
         return std::make_unique<NekoOpOut>(*this);
     }
 
-    void execute(Runtime& r, NekoStack& s) override {
+    long int execute(Runtime& r, NekoStack& s, size_t& i) override {
 //        cout << "NekoOpOut\n";
         auto size = s.count();
         auto a = s.pop();
@@ -65,6 +65,7 @@ public:
                 if (doFlush) cerr << std::flush;
             }
         }
+        return 0;
     }
 
 };

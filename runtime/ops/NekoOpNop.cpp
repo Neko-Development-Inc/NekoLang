@@ -16,9 +16,11 @@ public:
         return std::make_unique<NekoOpNop>(*this);
     }
 
-    void execute(Runtime& r, NekoStack& s) override {
+    long int execute(Runtime& r, NekoStack& s, size_t& i) override {
         // Do nothing
         cout << "NekoOpNop\n";
+        i++;
+        return 0;
     }
 
 };
