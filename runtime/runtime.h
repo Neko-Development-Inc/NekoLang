@@ -6,8 +6,14 @@
 #include "../headers.h"
 
 #include "ops/NekoOp.h"
+#include "ops/NekoOpCs.cpp"
 #include "ops/NekoOpNop.cpp"
+#include "ops/NekoOpOut.cpp"
 #include "ops/NekoOpPop.cpp"
+#include "ops/NekoOpDup.cpp"
+#include "ops/NekoOpNumber.cpp"
+#include "ops/NekoOpString.cpp"
+#include "ops/NekoOpConcat.cpp"
 #include "ops/NekoOpReturn.cpp"
 
 namespace runtime {
@@ -24,7 +30,10 @@ namespace runtime {
 
         template <typename T, typename... Args>
         void addArg(unique_ptr<NekoOp>& a, T&& first, Args&&... rest) {
-            a->addArg(first);
+            if constexpr (std::is_arithmetic<T>::value)
+                a->addArg(static_cast<long double>(first));
+            else
+                a->addArg(first);
             if constexpr (sizeof...(rest) > 0)
                 addArg(a, std::forward<Args>(rest)...);
         }
@@ -34,6 +43,10 @@ namespace runtime {
             auto a = impls[ops[op]]->clone();
             addArg(a, first, rest...);
             return std::move(a);
+        }
+
+        unique_ptr<NekoOp> createImplT(short op) {
+            return std::move(impls[ops[op]]->clone());
         }
 
     };

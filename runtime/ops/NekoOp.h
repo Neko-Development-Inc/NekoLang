@@ -14,7 +14,7 @@ public:
     virtual unique_ptr<NekoOp> clone() const = 0;
     virtual void execute(Runtime&, NekoStack&) = 0;
     void debugArguments() {
-        cout << "NekoOpReturn Test, args count: " << args.size() << "\n";
+        cout << "\targs count: " << args.size() << "\n";
         for (auto arg: args) {
             if (arg.has_value()) {
                 const auto& argType = arg.type();

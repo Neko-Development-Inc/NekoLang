@@ -1,6 +1,7 @@
+
 //#define COMPILE
-//#define RUNTIME
-#define STACK
+#define RUNTIME
+//#define STACK
 
 #include "headers.h"
 #include "common/opcodes.h"
@@ -175,7 +176,7 @@ int main() {
 *    <str>             String
 *  CONCAT       = 3002 - concatenates the last two elements on the Stack, and
 *                        puts the Result back on the Stack
-*  CONCAT_N     = 3003 - concatenates the last two elements on the Stack, and
+*  CONCAT_N     = 3003 - concatenates the last N elements on the Stack, and
 *                        puts the Result back on the Stack
 *    <n>               Number -- number of elements to concatenate
 *

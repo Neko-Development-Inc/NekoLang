@@ -18,8 +18,7 @@ public:
 
     void execute(Runtime& r, NekoStack& s) override {
         // Do nothing
-
-        //s->count();
+        cout << "NekoOpNop\n";
     }
 
 };

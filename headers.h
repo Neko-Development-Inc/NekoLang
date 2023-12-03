@@ -41,7 +41,15 @@ using std::unique_ptr,
 namespace ops {
     class Opcodes;
     class NekoOp;
+    class NekoOpCs;
+    class NekoOpDup;
+    class NekoOpOut;
+    class NekoOpErr;
     class NekoOpNop;
+    class NekoOpPop;
+    class NekoOpNumber;
+    class NekoOpString;
+    class NekoOpConcat;
     class NekoOpReturn;
 }
 namespace runtime {

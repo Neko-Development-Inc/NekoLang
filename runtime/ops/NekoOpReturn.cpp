@@ -16,11 +16,9 @@ public:
         return std::make_unique<NekoOpReturn>(*this);
     }
 
-    void execute(Runtime& r, vm::NekoStack& s) override {
+    void execute(Runtime& r, NekoStack& s) override {
 //        // TODO: Return from the current executing function
-
-//        //int count = s->count();
-//        cout << "NekoOpReturn\n";
+        cout << "NekoOpReturn\n";
     }
 
 };

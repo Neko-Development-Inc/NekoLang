@@ -17,19 +17,23 @@ public:
     }
 
     void execute(Runtime& r, NekoStack& s) override {
+        cout << "NekoOpDup\n";
         auto size = s.count();
-        cout << "NekoOpDup: Stack size before: " << s.count() << "\n";
         auto a = s.pop();
-        cout << "NekoOpDup: Stack size after pop: " << s.count() << "\n";
         if (!a.success) {
-            cout << "NekoOpDup: Failed to pop from stack. (Size: " << size << ")\n";
+            cerr << "Error: NekoOpDup: Failed to pop from stack. (Size: " << size << ")\n";
             exit(1);
         }
         cout << "NekoOpDup: Stack size before dup: " << s.count() << "\n";
-
-//        s.add(std::make_unique<NekoBase>(*a.obj->get()), a.type);
-//        s.add(std::make_unique<NekoBase>(*a.obj->get()), a.type);
-
+        auto b = &a.obj;
+        if (!b->has_value()) {
+            cerr << "Error: NekoOpDup: Optional was empty\n";
+            exit(1);
+        }
+        auto c = **b->value();
+        auto d = c; // Copy object
+        s.add(c, a.type); // TODO: This will exit the program, due to
+        s.add(d, a.type); //       wrong types (only support primitives rn)
         cout << "NekoOpDup: Stack size after dup: " << s.count() << "\n";
     }
 
