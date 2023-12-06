@@ -3,6 +3,10 @@ project(NekoLang)
 
 set(CMAKE_CXX_STANDARD 23)
 
+set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
 add_executable(NekoLang main.cpp
         common/opcodes.cpp
         common/opcodes.h
@@ -41,6 +45,7 @@ add_executable(NekoLang main.cpp
         runtime/vm/NekoStack.h
 
         headers.h
+        utils.h
 
         common/libs/miniz/miniz.c
         common/libs/miniz/miniz.h)
