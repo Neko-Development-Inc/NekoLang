@@ -36,12 +36,12 @@ public:
             return;
         } else if constexpr (std::is_arithmetic<T>::value) {
             auto num = static_cast<long double>(obj);
-            _stack.emplace(std::move(std::make_unique<NekoBase*>(new NekoNumber(num))));
+            _stack.emplace(std::make_unique<NekoBase*>(new NekoNumber(num)));
             stackTypes.emplace(type);
             return;
         } else if constexpr (std::is_same<T, string>::value) {
             auto str = static_cast<string>(obj);
-            _stack.emplace(std::move(std::make_unique<NekoBase*>(new NekoString(str))));
+            _stack.emplace(std::make_unique<NekoBase*>(new NekoString(str)));
             stackTypes.emplace(type);
             return;
         } else if constexpr (std::is_same<T, const char *>::value) {

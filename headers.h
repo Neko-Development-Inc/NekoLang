@@ -47,7 +47,6 @@ namespace ops {
     class NekoOpCs;
     class NekoOpDup;
     class NekoOpOut;
-    class NekoOpErr;
     class NekoOpNop;
     class NekoOpPop;
     class NekoOpNumber;
@@ -86,6 +85,7 @@ using namespace vm;
 
 // < NORMAL HEADERS
 #include "common/opcodes.h"
+#include "utils.h"
 // NORMAL HEADERS >
 
 #endif //HEADERS_H

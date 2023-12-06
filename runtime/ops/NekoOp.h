@@ -41,7 +41,7 @@ public:
 
     bool hasArg(int n = 0) {
         if (args.empty()) return false;
-        return n < args.size();
+        return n < (int)args.size();
     }
 
     bool argIsType(int n, const std::type_info& type) {

@@ -37,15 +37,17 @@ int main() {
 #ifdef RUNTIME
 
     // Set up runtime env
-    Runtime r(o);
-    r.init();
+    Runtime r(o); {
+        r.init();
+    }
 
     // Create class
     NekoClass clz("Default"); {
         // Create fun main
-        NekoFunction fun("main", clz, o);
-        // Initialize fun main
-        fun.init(r);
+        NekoFunction fun("main", clz, o); {
+            // Initialize fun main
+            fun.init(r);
+        }
 
         // Add fun main to default class
         clz.addFunction(fun);
