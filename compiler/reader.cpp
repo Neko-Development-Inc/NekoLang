@@ -105,7 +105,7 @@ namespace compiler {
 
     bool Reader::isAlphanumeric(int i) {
         char16_t c = peekNext(i);
-        if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'z')
+        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'z'))
             return true;
         if (c >= '0' && c <= '9')
             return true;
@@ -237,7 +237,7 @@ namespace compiler {
             }
         }
         // Reset reader
-        auto len = str.length();
+        auto len = (int)str.length();
         if (_index > len) _index = len;
         index = _index;
         str = out;
@@ -449,7 +449,7 @@ namespace compiler {
         trimEnd();
         if (currentString().length() == 0) {
             indexAfter = _end;
-            return { END, i, index, 0 };
+            return { END, static_cast<int>(i), static_cast<int>(index), 0 };
         }
         end = _end;
 
@@ -467,7 +467,7 @@ namespace compiler {
                     int len = indexAfter - i;
                     if (len < 0) len = 0;
                     if (indexAfter < i) indexAfter = i;
-                    return { BOX, i, indexAfter, len };
+                    return { BOX, static_cast<int>(i), indexAfter, len };
                 }
                 // Alphanumeric, but not box
 
@@ -478,7 +478,7 @@ namespace compiler {
                     int len = indexAfter - i;
                     if (len < 0) len = 0;
                     if (indexAfter < i) indexAfter = i;
-                    return { FUN, i, indexAfter, len };
+                    return { FUN, static_cast<int>(i), indexAfter, len };
                 }
                 // Alphanumeric, but not fun
 
@@ -488,7 +488,7 @@ namespace compiler {
                         s.substr(0, max), "`");
                 int len = index - 1;
                 if (len < 0) len = 0;
-                return { UNKNOWN, i, index, len };
+                return { UNKNOWN, static_cast<int>(i), static_cast<int>(index), len };
             }
 //        } else if (c == '!') {
 //            // Either: Box metadata, or static functions
@@ -514,7 +514,7 @@ namespace compiler {
             set(i, false, false);
             int len = indexAfter - 1;
             if (indexAfter < i) indexAfter = i;
-            return { CAT_FLAP, i, indexAfter, len };
+            return { CAT_FLAP, static_cast<int>(i), indexAfter, len };
         } else if (isAlphanumeric()) {
             const auto& s = currentString();
             int jump = 0;
@@ -524,7 +524,7 @@ namespace compiler {
                 int len = indexAfter - i;
                 if (len < 0) len = 0;
                 if (indexAfter < i) indexAfter = i;
-                return { VAR, i, indexAfter, len };
+                return { VAR, static_cast<int>(i), indexAfter, len };
             }
             // Alphanumeric, but not owo/var/uwu
 
@@ -535,17 +535,17 @@ namespace compiler {
                 int len = indexAfter - i;
                 if (len < 0) len = 0;
                 if (indexAfter < i) indexAfter = i;
-                return { SCAWY_SPOOPY, i, indexAfter, len };
+                return { SCAWY_SPOOPY, static_cast<int>(i), indexAfter, len };
             }
             // Alphanumeric, but not scawy/spoopy
 
             // Not owo/var/uwu, but alphanumeric
-            return { UNKNOWN, i, index, 0 };
+            return { UNKNOWN, static_cast<int>(i), static_cast<int>(index), 0 };
         }
 
         int len = index - 1;
         if (len < 0) len = 0;
-        return { UNKNOWN, i, index, len };
+        return { UNKNOWN, static_cast<int>(i), static_cast<int>(index), len };
     }
 
 }
