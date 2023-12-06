@@ -66,7 +66,7 @@ public:
             // reversed order
             auto peek = s.peek();
             if (peek == T_NONE || peek == T_UNKNOWN) {
-                cerr << "Error: NekoOpConcat: CONCAT_N: peekN(" << (n+1) << ") failed\n";
+                cerr << "Error: NekoOpConcat: peekN(" << (n+1) << ") failed\n";
                 exit(1);
             }
             switch (peek) {

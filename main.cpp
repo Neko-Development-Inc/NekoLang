@@ -3,6 +3,7 @@
 #define RUNTIME
 //#define STACK
 
+#include "utils.h"
 #include "headers.h"
 #include "common/opcodes.h"
 
@@ -21,9 +22,10 @@
 #endif
 
 int main() {
+    Timer timer("main.cpp");
 
     // Set up all opcodes
-    ops::Opcodes o;
+    Opcodes o;
 
 #ifdef COMPILE
 
@@ -39,18 +41,18 @@ int main() {
     r.init();
 
     // Create class
-    NekoClass clz("default");
+    NekoClass clz("Default"); {
+        // Create fun main
+        NekoFunction fun("main", clz, o);
+        // Initialize fun main
+        fun.init(r);
 
-    // Create fun main
-    NekoFunction fun("main", clz, o);
-    // Initialize fun main
-    fun.init(r);
+        // Add fun main to default class
+        clz.addFunction(fun);
 
-    // Add fun main to default class
-    clz.addFunction(fun);
-
-    // Execute fun main
-    fun.execute(r);
+        // Execute fun main
+        fun.execute(r);
+    }
 
 #endif
 
@@ -277,4 +279,30 @@ int main() {
 *      // Else here
 *  >
 *
+*/
+
+/**
+Interesting stuff below:
+
+WINDOWS:
+    The maximum value for an 'int' is:        2147483647
+    The maximum value for a 'long int' is:    2147483647
+    The maximum value for a 'long' is:        2147483647
+    The maximum value for a 'long long' is:   9223372036854775807
+
+    Size of 'int':        32 bits
+    Size of 'long int':   32 bits
+    Size of 'long':       32 bits
+    Size of 'long long':   64 bits
+
+LINUX (WSL on Windows):
+    The maximum value for an 'int' is:        2147483647
+    The maximum value for a 'long int' is:    9223372036854775807
+    The maximum value for a 'long' is:        9223372036854775807
+    The maximum value for a 'long long' is:   9223372036854775807
+
+    Size of 'int':        32 bits
+    Size of 'long int':    64 bits
+    Size of 'long':        64 bits
+    Size of 'long long':   64 bits
 */

@@ -42,11 +42,11 @@ namespace runtime {
         unique_ptr<NekoOp> createImplT(short op, T&& first, Args&&... rest) {
             auto a = impls[ops[op]]->clone();
             addArg(a, first, rest...);
-            return std::move(a);
+            return a;
         }
 
         unique_ptr<NekoOp> createImplT(short op) {
-            return std::move(impls[ops[op]]->clone());
+            return impls[ops[op]]->clone();
         }
 
     };

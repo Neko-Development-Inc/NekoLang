@@ -17,20 +17,22 @@ public:
         args.emplace_back(arg);
     }
 
+#define toLd(x) static_cast<long double>(x)
+
     long double getArgNumber(int n = 0) {
-        const auto& type = args[n].type();
+        any arg = args[n];
+        const auto& type = arg.type();
         if (type == typeid(int))
-            return std::any_cast<int>(args[n]);
+            return toLd(std::any_cast<int>(arg));
         else if (type == typeid(long))
-            return std::any_cast<long>(args[n]);
+            return toLd(std::any_cast<long>(arg));
         else if (type == typeid(double))
-            return std::any_cast<double>(args[n]);
+            return toLd(std::any_cast<double>(arg));
         else if (type == typeid(long double))
-            return std::any_cast<long double>(args[n]);
+            return toLd(std::any_cast<long double>(arg));
         else if (type == typeid(long long))
-            return std::any_cast<long long>(args[n]);
-        else if (type == typeid(long long int))
-            return std::any_cast<long long int>(args[n]);
+            return toLd(std::any_cast<long long>(arg));
+        throw std::runtime_error("Unknown number type");
     }
 
     string getArgString(int n = 0) {
