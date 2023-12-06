@@ -10,11 +10,14 @@ namespace vm {
 class NekoClass {
 
 public:
-    string name;
+    string path, name;
     map<string, const NekoFunction*> functions;
 
-    explicit NekoClass(string name) :
-        name(std::move(name)) { }
+    explicit NekoClass(const string& name) : NekoClass("", name) { }
+
+    explicit NekoClass(const string& path, const string& name) :
+        path(path),
+        name(name) { }
 
     void addFunction(const NekoFunction&);
 

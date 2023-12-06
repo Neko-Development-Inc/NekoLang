@@ -6,8 +6,8 @@ namespace vm {
         functions.insert(std::make_pair(func.name, &func));
     }
 
-    void NekoClass::removeFunction(const string& s) {
-        functions.erase(s);
+    void NekoClass::removeFunction(const string& name) {
+        functions.erase(name);
     }
 
 }
