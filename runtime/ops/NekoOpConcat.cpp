@@ -56,9 +56,12 @@ public:
         } else if (opcode == CONCAT_ALL) {
             n = s.count();
             if (n > 100) {
-                cout << "Warning: NekoOpConcat: CONCAT_N: N was over 100 "
+                cout << "Warning: NekoOpConcat: CONCAT_ALL: N was over 100 "
                         "(N: " << n << "), did you mean to do that?\n";
             }
+        } else {
+            cerr << "Error: NekoOpConcat: Unknown opcode: " << opcode << "\n";
+            exit(1);
         }
 
         vector<string> strings(n);
