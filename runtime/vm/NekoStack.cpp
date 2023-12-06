@@ -3,11 +3,11 @@
 namespace vm {
 
     bool NekoStack::has() {
-        return !_stack.empty();
+        return size > 0;
     }
 
     size_t NekoStack::count() {
-        return _stack.size();
+        return size;
     }
 
     ObjectType NekoStack::peek() {
@@ -27,30 +27,25 @@ namespace vm {
 
         stackTypes.pop();
         _stack.pop();
+        size--;
 
         return Result { true,
-            std::move(item),
-            type
+            std::move(item), type
         };
     }
 
     void NekoStack::clear() {
         while (!_stack.empty())
             _stack.pop();
+        size = 0;
     }
 
     void NekoStack::process() {
-        while (true) {
-            auto result = pop();
-            if (!result.success) break;
-            if (result.type == ObjectType::T_NUMBER) {
-                auto num = reinterpret_cast<NekoNumber*>(*result.obj->get());
-                println("Number: ", num->get());
-            }
-            else if (result.type == ObjectType::T_STRING) {
-                auto str = reinterpret_cast<NekoString*>(*result.obj->get());
-                println("String: '", str->get(), "'");
-            }
+        while (has()) {
+            auto result = peek();
+            if (result == T_NONE || result == T_UNKNOWN) break;
+            if (result == T_NUMBER) println(*popNumber());
+            else if (result == T_STRING) println(*popString());
         }
     }
 

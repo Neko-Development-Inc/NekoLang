@@ -23,6 +23,7 @@ private:
     stack<ObjectType> stackTypes;
     stack<std::unique_ptr<NekoBase*>> _stack;
     std::mutex _mutex;
+    size_t size;
 
 public:
 
@@ -34,20 +35,24 @@ public:
             auto n = static_cast<NekoBase*>(obj);
             _stack.emplace(std::move(&n));
             stackTypes.emplace(type);
+            size++;
             return;
         } else if constexpr (std::is_arithmetic<TT>::value) {
             auto num = static_cast<long double>(obj);
             _stack.emplace(std::make_unique<NekoBase*>(new NekoNumber(num)));
             stackTypes.emplace(type);
+            size++;
             return;
         } else if constexpr (std::is_same<TT, string>::value) {
             auto str = static_cast<string>(obj);
             _stack.emplace(std::make_unique<NekoBase*>(new NekoString(str)));
             stackTypes.emplace(type);
+            size++;
             return;
         } else if constexpr (std::is_same<TT, const char *>::value) {
             _stack.emplace(std::make_unique<NekoBase*>(new NekoString(obj)));
             stackTypes.emplace(type);
+            size++;
             return;
         }
         errorln("Error: NekoStack: Unknown type: ", typeInfo.name());
