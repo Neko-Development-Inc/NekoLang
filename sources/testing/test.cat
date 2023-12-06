@@ -23,7 +23,9 @@ event < test read e >.<
         test < 3 / 0 > // try setting test to 3 divided by 0,
                        // which is impossible, so it will throw an error
                        // and the events 'test changing/changed' will not be called
-    >_<
+    > oof <
+        // catch the error
+    > ah <
         // finally
     >
 
