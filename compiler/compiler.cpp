@@ -3,7 +3,7 @@
 namespace compiler {
 
     void Compiler::parseFile(string filePath) {
-        cout << "Hello world from Compiler\n";
+        println("Hello world from Compiler");
 
         std::ifstream stream("../sources/" + filePath);
         std::ostringstream ss;

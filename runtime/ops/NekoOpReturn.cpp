@@ -17,7 +17,7 @@ public:
     }
 
     long int execute(Runtime& r, NekoStack& s, size_t& i) override {
-        cout << "NekoOpReturn\n";
+        println("NekoOpReturn");
         return -1; // stop function
     }
 

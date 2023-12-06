@@ -17,14 +17,14 @@ public:
     }
 
     long int execute(Runtime& r, NekoStack& s, size_t& i) override {
-        cout << "NekoOpNumber\n";
+        println("NekoOpNumber");
         if (args.empty()) {
-            cerr << "Error: NekoOpNumber args was empty\n";
+            errorln("Error: NekoOpNumber args was empty");
             exit(1);
         }
         auto first = args[0];
         if (!first.has_value()) {
-            cerr << "Error: NekoOpNumber args was empty\n";
+            errorln("Error: NekoOpNumber args was empty");
             exit(1);
         }
         const auto& type = first.type();
@@ -52,8 +52,8 @@ public:
             s.add(any_cast<long int>(first), T_NUMBER);
             return 0;
         }
-        cerr << "Error: NekoOpNumber args[0] wasn't a number, "
-                "it was: '" << type.name() << "'\n";
+        errorln("Error: NekoOpNumber args[0] wasn't a number, ",
+                "it was: '", type.name(), "'");
         exit(1);
     }
 

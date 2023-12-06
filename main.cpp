@@ -74,13 +74,13 @@ int main() {
     );
 
     int count = _stack.count();
-    cout << "Count: " << count << "\n";
+    println("Count: ", count);
 
-    cout << "String: " << *_stack.popString() << "\n";
-    cout << "String: " << *_stack.popString() << "\n";
+    println("String: ", *_stack.popString());
+    println("String: ", *_stack.popString());
 
     auto num = *_stack.popNumber();
-    cout << "Number: " << num << ", isSame: " << (num == (9223372036854775807L - 1L) ? "true" : "false") << "\n";
+    println("Number: ", num, ", isSame: ", (num == (9223372036854775807L - 1L) ? "true" : "false"));
 
 #endif
 

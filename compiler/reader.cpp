@@ -483,9 +483,9 @@ namespace compiler {
                 // Alphanumeric, but not fun
 
                 int max = 25;
-                if (max > s.length()) max = s.length();
-                cerr << "Error: Unknown alphanumeric text inside '<': `" <<
-                        s.substr(0, max) << "`\n";
+                if (max > (int)s.length()) max = s.length();
+                errorln("Error: Unknown alphanumeric text inside '<': `",
+                        s.substr(0, max), "`");
                 int len = index - 1;
                 if (len < 0) len = 0;
                 return { UNKNOWN, i, index, len };
@@ -503,10 +503,10 @@ namespace compiler {
             const auto& s = currentString();
             int jump = 0;
             if ((jump = search("^(catflap|cat-flap)(\\s*|$)", s)) == -1) {
-                cerr << "Error: Expected `catflap` or `cat-flap` after `:3`\n";
+                errorln("Error: Expected `catflap` or `cat-flap` after `:3`");
                 exit(1);
             }
-            cout << "Found catflap. Jump: " << jump << "\n";
+            println("Found catflap. Jump: ", jump);
 
             // TODO: Mark current box as entrypoint
 

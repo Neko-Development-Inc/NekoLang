@@ -19,11 +19,11 @@ public:
     }
 
     long int execute(Runtime& r, NekoStack& s, size_t& i) override {
-        cout << "NekoOpConcat\n";
+        println("NekoOpConcat");
 
         auto peek1 = s.peek();
         if (peek1 == T_NONE || peek1 == T_UNKNOWN) {
-            cerr << "Error: NekoOpConcat: peek1 failed\n";
+            errorln("Error: NekoOpConcat: peek1 failed");
             exit(1);
         }
 
@@ -38,29 +38,29 @@ public:
                 n = 1;
         } else if (opcode == CONCAT_N) {
             if (!hasArg(0)) {
-                cerr << "Error: NekoOpConcat: CONCAT_N: args[0] not found\n";
+                errorln("Error: NekoOpConcat: CONCAT_N: args[0] not found");
                 exit(1);
             }
             if (!argIsType(0, typeid(int))) {
-                cerr << "Error: NekoOpConcat: CONCAT_N: args[0] wasn't a number\n";
+                errorln("Error: NekoOpConcat: CONCAT_N: args[0] wasn't a number");
                 exit(1);
             }
             n = getArgNumber(0);
             if (n < 1) {
-                cerr << "Error: NekoOpConcat: CONCAT_N: N was below 1\n";
+                errorln("Error: NekoOpConcat: CONCAT_N: N was below 1");
                 exit(1);
             } else if (n > 100) {
-                cout << "Warning: NekoOpConcat: CONCAT_N: N was over 100 "
-                        "(N: " << n << "), did you mean to do that?\n";
+                println("Warning: NekoOpConcat: CONCAT_N: N was over 100 ",
+                        "(N: ", n, "), did you mean to do that?");
             }
         } else if (opcode == CONCAT_ALL) {
             n = s.count();
             if (n > 100) {
-                cout << "Warning: NekoOpConcat: CONCAT_ALL: N was over 100 "
-                        "(N: " << n << "), did you mean to do that?\n";
+                println("Warning: NekoOpConcat: CONCAT_ALL: N was over 100 ",
+                        "(N: ", n, "), did you mean to do that?");
             }
         } else {
-            cerr << "Error: NekoOpConcat: Unknown opcode: " << opcode << "\n";
+            errorln("Error: NekoOpConcat: Unknown opcode: ", opcode);
             exit(1);
         }
 
@@ -69,7 +69,7 @@ public:
             // reversed order
             auto peek = s.peek();
             if (peek == T_NONE || peek == T_UNKNOWN) {
-                cerr << "Error: NekoOpConcat: peekN(" << (n+1) << ") failed\n";
+                errorln("Error: NekoOpConcat: peekN(", (n+1), ") failed");
                 exit(1);
             }
             switch (peek) {

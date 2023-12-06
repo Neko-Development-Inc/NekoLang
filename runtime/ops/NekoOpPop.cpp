@@ -17,27 +17,27 @@ public:
     }
 
     long int execute(Runtime& r, NekoStack& s, size_t& i) override {
-        cout << "NekoOpPop\n";
+        println("NekoOpPop");
         int n = 1;
         if (!args.empty()) {
             auto first = args[0];
             if (!first.has_value()) {
-                cerr << "Error: NekoOpPop args was empty\n";
+                errorln("Error: NekoOpPop args was empty");
                 exit(1);
             }
             const auto& type = first.type();
             if (type != typeid(int)) {
-                cerr << "Error: NekoOpPop args[0] wasn't a number, "
-                        "it was: '" << type.name() << "'\n";
+                errorln("Error: NekoOpPop args[0] wasn't a number, "
+                        "it was: '", type.name(), "'");
                 exit(1);
             }
             n = std::any_cast<int>(first);
         }
-        cout << "\tRunning pops " << n << " times\n";
+        errorln("\tRunning pops ", n, " times");
         while (n--) {
             auto result = s.pop(); // Pop the top of the stack, and discard it
             if (!result.success) {
-                cerr << "Error: NekoOpPop: Stack is already empty, can't pop again.\n";
+                errorln("Error: NekoOpPop: Stack is already empty, can't pop again.");
                 exit(1);
             }
         }

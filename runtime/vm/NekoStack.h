@@ -49,7 +49,7 @@ public:
             stackTypes.emplace(type);
             return;
         }
-        cerr << "Error: NekoStack: Unknown type: " << typeInfo.name() << "\n";
+        errorln("Error: NekoStack: Unknown type: ", typeInfo.name());
         exit(1);
     }
 

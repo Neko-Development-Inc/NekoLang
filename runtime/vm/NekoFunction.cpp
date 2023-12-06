@@ -29,7 +29,7 @@ namespace vm {
             long int next = insn->execute(r, stack, i);
             if (next == -1) {
                 // Return from function
-                cout << "Return from function\n";
+                println("Return from function");
                 break;
             }
             if (tmp == i)

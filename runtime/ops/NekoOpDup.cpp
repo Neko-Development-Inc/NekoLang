@@ -22,7 +22,7 @@ public:
     };
 
     long int execute(Runtime& r, NekoStack& s, size_t& i) override {
-        cout << "NekoOpDup\n";
+        println("NekoOpDup");
 
         int n;
         if (opcode == DUP) n = 1;
@@ -30,23 +30,23 @@ public:
         else if (opcode == DUP_3) n = 3;
         else if (opcode == DUP_N) {
             if (args.empty()) {
-                cerr << "Error: NekoOpDup: DUP_N args was empty\n";
+                errorln("Error: NekoOpDup: DUP_N args was empty");
                 exit(1);
             }
             auto first = args[0];
             if (!first.has_value()) {
-                cerr << "Error: NekoOpDup: DUP_N args was empty\n";
+                errorln("Error: NekoOpDup: DUP_N args was empty");
                 exit(1);
             }
             const auto& type = first.type();
             if (type != typeid(int)) {
-                cerr << "Error: NekoOpDup args[0] wasn't a number, "
-                        "it was: '" << type.name() << "'\n";
+                errorln("Error: NekoOpDup args[0] wasn't a number, ",
+                        "it was: '", type.name(), "'");
                 exit(1);
             }
             n = std::any_cast<int>(first);
         } else {
-            cerr << "Error: NekoOpDup: Unknown DUP opcode: " << opcode << "\n";
+            errorln("Error: NekoOpDup: Unknown DUP opcode: ", opcode);
             exit(1);
         }
 
@@ -66,7 +66,7 @@ public:
                 } break;
                 case T_NONE:
                 case T_UNKNOWN:
-                    cerr << "Error: NekoOpDup: Unknown peek type: " << (int)type << "\n";
+                    errorln("Error: NekoOpDup: Unknown peek type: ", (int)type);
                     exit(1);
             }
         }

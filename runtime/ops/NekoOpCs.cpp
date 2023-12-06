@@ -17,10 +17,10 @@ public:
     }
 
     long int execute(Runtime& r, NekoStack& s, size_t& i) override {
-        cout << "NekoOpCs\n";
-        cout << "NekoOpCs: Stack size before CS: " << s.count() << "\n";
+        println("NekoOpCs");
+        println("NekoOpCs: Stack size before CS: ", s.count());
         s.clear();
-        cout << "NekoOpCs: Stack size after CS: " << s.count() << "\n";
+        println("NekoOpCs: Stack size after CS: ", s.count());
         return 0;
     }
 

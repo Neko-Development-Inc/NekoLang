@@ -54,22 +54,23 @@ public:
     virtual long int execute(Runtime&, NekoStack&, size_t&) = 0;
 
     void debugArguments() {
-        cout << "\targs count: " << args.size() << "\n";
+        println("\targs count: ", args.size());
         for (auto arg: args) {
-            if (arg.has_value()) {
-                const auto& argType = arg.type();
-                if (argType == typeid(int))
-                    cout << "\t" << std::any_cast<int>(arg) << " (int)\n";
-                else if (argType == typeid(string))
-                    cout << "\t" << std::any_cast<string>(arg) << " (string)\n";
-                else if (argType == typeid(const char*))
-                    cout << "\t" << std::any_cast<const char*>(arg) << " (const char *)\n";
-                else if (argType == typeid(bool))
-                    cout << "\t" << (std::any_cast<bool>(arg) ? "true" : "false") << " (bool)\n";
-                else
-                    cout << "\t" << "unknown" << "\n";
-            } else
-                cout << "\t" << "null" << "\n";
+            if (!arg.has_value()) {
+                println("\t", "null");
+                continue;
+            }
+            const auto& argType = arg.type();
+            if (argType == typeid(int))
+                println("\t", std::any_cast<int>(arg), " (int)");
+            else if (argType == typeid(string))
+                println("\t", std::any_cast<string>(arg), " (string)");
+            else if (argType == typeid(const char*))
+                println("\t", std::any_cast<const char*>(arg), " (const char *)");
+            else if (argType == typeid(bool))
+                println("\t", (std::any_cast<bool>(arg) ? "true" : "false"), " (bool)");
+            else
+                println("\t", "unknown");
         }
     }
 

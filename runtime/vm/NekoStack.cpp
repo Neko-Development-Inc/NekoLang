@@ -45,11 +45,11 @@ namespace vm {
             if (!result.success) break;
             if (result.type == ObjectType::T_NUMBER) {
                 auto num = reinterpret_cast<NekoNumber*>(*result.obj->get());
-                cout << "Number: " << num->get() << "\n";
+                println("Number: ", num->get());
             }
             else if (result.type == ObjectType::T_STRING) {
                 auto str = reinterpret_cast<NekoString*>(*result.obj->get());
-                cout << "String: '" << str->get() << "'\n";
+                println("String: '", str->get(), "'");
             }
         }
     }
@@ -64,12 +64,14 @@ namespace vm {
                 auto s = dynamic_cast<NekoNumber*>(*(&opt->value())->get());
                 return std::make_unique<string>(to_string(s->get()));
             }
+            errorln("popNumber: no value");
         } else if (result.type == ObjectType::T_STRING) {
             auto opt = &result.obj;
             if (opt->has_value()) {
                 auto s = dynamic_cast<NekoString*>(*(&opt->value())->get());
                 return std::make_unique<string>(s->get());
             }
+            errorln("popString: no value");
         }
         return nullptr;
     }
@@ -82,7 +84,7 @@ namespace vm {
                 auto s = dynamic_cast<NekoNumber*>(*(&opt->value())->get());
                 return std::make_unique<long double>(s->get());
             }
-            cerr << "popNumber: no value\n";
+            errorln("popNumber: no value");
         }
         return nullptr;
     }
@@ -95,7 +97,7 @@ namespace vm {
                 auto s = dynamic_cast<NekoString*>(*(&opt->value())->get());
                 return std::make_unique<string>(s->get());
             }
-            cerr << "popString: no value\n";
+            errorln("popString: no value");
         }
         return nullptr;
     }

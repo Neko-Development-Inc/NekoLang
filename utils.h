@@ -9,31 +9,48 @@
 #define SP15 std::setprecision(15)
 
 template<typename T, typename... Arg>
-inline void print(T&& first, Arg&&... rest) {
+inline void _print(std::ostream& s, T&& first, Arg&&... rest) {
     using TT = std::decay_t<T>;
     if constexpr (std::is_same<TT, bool>::value)
-        cout << (first ? "true" : "false");
+        s << (first ? "true" : "false");
     else if constexpr (std::is_arithmetic<TT>::value)
-        cout << SP15 << first;
+        s << SP15 << first;
     else if constexpr (std::is_same<TT, NekoString>::value  || std::is_same<TT, NekoNumber>::value  ||
                        std::is_same<TT, NekoString*>::value || std::is_same<TT, NekoNumber*>::value ||
                        std::is_same<TT, NekoString&>::value || std::is_same<TT, NekoNumber&>::value)
-        cout << first.get();
+        s << first.get();
     else if constexpr (std::is_same<TT, NekoString**>::value || std::is_same<TT, NekoNumber**>::value)
-        cout << (**first).get();
+        s << (**first).get();
     else if constexpr (std::is_same<TT, string>::value ||
                        std::is_same<TT, const char *>::value ||
                        std::is_convertible<TT, string>::value)
-        cout << first;
+        s << first;
     else
-        cout << "{UnknownType:" << typeid(T).name() << "}";
+        s << "{UnknownType:" << typeid(T).name() << "}";
     if constexpr (sizeof...(rest) > 0)
-        print(std::forward<Arg>(rest)...);
+        _print(s, std::forward<Arg>(rest)...);
+}
+template<typename T, typename... Arg>
+inline void _println(std::ostream& s, T&& first, Arg&&... rest) {
+    _print(s, std::forward<T>(first), std::forward<Arg>(rest)..., '\n');
 }
 
 template<typename T, typename... Arg>
+inline void print(T&& first, Arg&&... rest) {
+    _print(cout, std::forward<T>(first), std::forward<Arg>(rest)...);
+}
+template<typename T, typename... Arg>
 inline void println(T&& first, Arg&&... rest) {
-    print(std::forward<T>(first), std::forward<Arg>(rest)..., '\n');
+    _print(cout, std::forward<T>(first), std::forward<Arg>(rest)..., '\n');
+}
+
+template<typename T, typename... Arg>
+inline void error(T&& first, Arg&&... rest) {
+    _print(cerr, std::forward<T>(first), std::forward<Arg>(rest)...);
+}
+template<typename T, typename... Arg>
+inline void errorln(T&& first, Arg&&... rest) {
+    _print(cerr, std::forward<T>(first), std::forward<Arg>(rest)..., '\n');
 }
 
 class Timer {
