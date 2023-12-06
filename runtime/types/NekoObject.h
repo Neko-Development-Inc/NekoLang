@@ -43,12 +43,14 @@ namespace types {
     };
 
     template<class T>
-    void NekoObject<T>::set(T) {
-        // By default, do nothing
+    void NekoObject<T>::set(T t) {
+        value = t;
     }
 
     template<class T>
-    T NekoObject<T>::get() {}
+    T NekoObject<T>::get() {
+        return value;
+    }
 }
 
 #endif //NEKO_OBJECT_H
