@@ -30,7 +30,7 @@ namespace runtime {
 
         template <typename T, typename... Args>
         void addArg(unique_ptr<NekoOp>& a, T&& first, Args&&... rest) {
-            if constexpr (std::is_arithmetic<T>::value)
+            if constexpr (std::is_arithmetic<std::decay_t<T>>::value)
                 a->addArg(static_cast<long double>(first));
             else
                 a->addArg(first);
