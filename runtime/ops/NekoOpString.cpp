@@ -1,8 +1,3 @@
-#pragma once
-
-#ifndef NEKO_OP_STRING_H
-#define NEKO_OP_STRING_H
-
 #include "NekoOp.h"
 
 namespace ops {
@@ -42,5 +37,3 @@ public:
 
 };
 }
-
-#endif //NEKO_OP_STRING_H

@@ -1,8 +1,3 @@
-#pragma once
-
-#ifndef NEKO_OP_NUMBER_H
-#define NEKO_OP_NUMBER_H
-
 #include "NekoOp.h"
 
 namespace ops {
@@ -59,5 +54,3 @@ public:
 
 };
 }
-
-#endif //NEKO_OP_NUMBER_H

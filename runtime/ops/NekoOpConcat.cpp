@@ -1,8 +1,3 @@
-#pragma once
-
-#ifndef NEKO_OP_CONCAT_H
-#define NEKO_OP_CONCAT_H
-
 #include "NekoOp.h"
 
 namespace ops {
@@ -100,5 +95,3 @@ public:
 
 };
 }
-
-#endif //NEKO_OP_CONCAT_H
