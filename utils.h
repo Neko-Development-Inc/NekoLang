@@ -68,11 +68,10 @@ public:
         start_time(std::chrono::high_resolution_clock::now()) { }
 
     ~Timer() {
-        if (Stop())
-            println("\n[", name, "] Time taken: ", milliseconds, "ms");
+        Stop();
     }
 
-    bool Stop() {
+    bool Stop(bool doPrint = true) {
         if (hasStopped) return false;
         hasStopped = true;
         auto end_time = std::chrono::high_resolution_clock::now();
@@ -80,7 +79,13 @@ public:
         auto end = std::chrono::time_point_cast<std::chrono::microseconds>(end_time).time_since_epoch().count();
         auto duration = end - start;
         milliseconds = duration * 0.001;
+        if (doPrint)
+            print();
         return true;
+    }
+
+    void print() {
+        println("[", name, "] Time taken: ", milliseconds, "ms");
     }
 
     void reset() {

@@ -1,40 +1,65 @@
 
 //#define COMPILE
-#define RUNTIME
-//#define STACK
+//#define RUNTIME
+#define STACK
 
-#include "utils.h"
+
+
+#define DEBUG 1
+
+#if DEBUG
+    #define TIMER(var, name) Timer var(name);
+    #define STOP_TIMER(var) var.Stop();
+#else
+    #define TIMER(a, b)
+    #define STOP_TIMER(a)
+#endif
+
+
+
 #include "headers.h"
 #include "common/opcodes.h"
+
+
 
 #ifdef COMPILE
 #include "compiler/compiler.h"
 #endif
+
+
 
 #ifdef RUNTIME
 #include "runtime/runtime.h"
 #include "runtime/vm/NekoClass.h"
 #endif
 
+
+
 #ifdef STACK
-#include "runtime/types/NekoObject.h"
 #include "runtime/vm/NekoStack.h"
 #endif
 
-int main() {
-    Timer timer("main.cpp");
 
+
+int main() {
+TIMER(timer, "main.cpp")
+
+TIMER(timerOpcodes, "opcodes")
     // Set up all opcodes
     Opcodes o;
+STOP_TIMER(timerOpcodes)
 
 #ifdef COMPILE
+TIMER(timerCompiler, "compiler")
 
     Compiler c(o);
     c.parseFile("testing/test.cat");
 
+STOP_TIMER(timerCompiler)
 #endif
 
 #ifdef RUNTIME
+TIMER(timerRuntime, "runtime")
 
     // Set up runtime env
     Runtime r(o); {
@@ -56,9 +81,11 @@ int main() {
         fun.execute(r);
     }
 
+STOP_TIMER(timerRuntime)
 #endif
 
 #ifdef STACK
+TIMER(timerStack, "stack")
 
     NekoStack _stack;
 
@@ -75,15 +102,18 @@ int main() {
         T_STRING
     );
 
-    int count = _stack.count();
-    println("Count: ", count);
+    _stack.process();
 
-    println("String: ", *_stack.popString());
-    println("String: ", *_stack.popString());
+//    size_t count = _stack.count();
+//    println("Count: ", count);
+//
+//    println("String: ", *_stack.popString());
+//    println("String: ", *_stack.popString());
+//
+//    auto num = *_stack.popNumber();
+//    println("Number: ", num, ", isSame: ", (num == (9223372036854775807L - 1L) ? "true" : "false"));
 
-    auto num = *_stack.popNumber();
-    println("Number: ", num, ", isSame: ", (num == (9223372036854775807L - 1L) ? "true" : "false"));
-
+STOP_TIMER(timerStack)
 #endif
 
     return 0;
