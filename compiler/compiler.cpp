@@ -13,7 +13,7 @@ namespace compiler {
         stream.close();
 
         Reader reader(str);
-        cout << "file: `" << reader.currentString() << "`\n\n";
+        println("file: `", reader.currentString(), "`\n");
         parse(reader);
     }
 
@@ -21,7 +21,7 @@ namespace compiler {
         while (true) {
             int afterIndex{0};
             auto next = reader.whatIsNext(afterIndex);
-//            cout << "What is next: " << WhatMap::whatName(next.what) << "\n";
+//            println("What is next: ", WhatMap::whatName(next.what));
             switch (next.what) {
                 case BOX:
                 case FUN: {
@@ -30,7 +30,7 @@ namespace compiler {
                     // Find <> range
                     auto [start, end, len] = reader.findRange('<');
                     if (start == -1 || end == -1) {
-                        cerr << "Expected " << which << " header\n";
+                        errorln("Expected ", which, " header");
                         exit(1);
                     }
                     auto inner = reader.getRange(start, len);
@@ -48,7 +48,7 @@ namespace compiler {
                     reader.trimStart();
                     auto c = reader.curr();
                     if (c != '.' && c != 'w' && c != '_') {
-                        cerr << "Expected `.`, `w` or `_` after " << which << " header\n";
+                        errorln("Expected `.`, `w` or `_` after ", which, " header");
                         exit(1);
                     }
 
@@ -57,7 +57,7 @@ namespace compiler {
 
                     auto [start2, end2, len2] = reader.findRange('<');
                     if (start2 == -1 || end2 == -1) {
-                        cerr << "Expected " << which << " body\n";
+                        errorln("Expected ", which, " body");
                         exit(1);
                     }
                     auto bodyInner = reader.getRange(start2, len2);
@@ -76,7 +76,7 @@ namespace compiler {
                     // Find var <> range
                     auto [start, end, len] = reader.findRange('<');
                     if (start == -1 || end == -1) {
-                        cerr << "Expected var body\n";
+                        errorln("Expected var body");
                         exit(1);
                     }
                     auto header = reader.getRange(0, start);
@@ -112,10 +112,10 @@ namespace compiler {
                     reader.set(afterIndex, true, false);
                 } goto continue_loop;
                 case END:
-                    cout << "End of reader\n";
+                    println("End of reader");
                     goto end_loop;
                 case UNKNOWN:
-                    cerr << "Unknown. Current string: `" << reader.currentString() << "`\n";
+                    errorln("Unknown. Current string: `", reader.currentString(), "`");
                     goto end_loop;
             }
             continue_loop:;
@@ -124,25 +124,25 @@ namespace compiler {
     }
 
     void Compiler::parseBoxHeader(Reader& reader) {
-        cout << "\nbox header: `" << reader.currentString() << "`\n";
+        println("\nbox header: `", reader.currentString(), "`");
     }
     void Compiler::parseBoxBody(Reader& reader) {
-        cout << "box body: `" << reader.currentString() << "`\n\n";
+        println("box body: `", reader.currentString(), "`\n");
         parse(reader);
     }
 
     void Compiler::parseVarHeader(Reader& reader) {
-        cout << "\nvar header: `" << reader.currentString() << "`\n";
+        println("\nvar header: `", reader.currentString(), "`");
     }
     void Compiler::parseVarBody(Reader& reader) {
-        cout << "var body: `" << reader.currentString() << "`\n\n";
+        println("var body: `", reader.currentString(), "`\n");
     }
 
     void Compiler::parseFunHeader(Reader& reader) {
-        cout << "\nfun header: `" << reader.currentString() << "`\n";
+        println("\nfun header: `", reader.currentString(), "`");
     }
     void Compiler::parseFunBody(Reader& reader) {
-        cout << "fun body: `" << reader.currentString() << "`\n\n";
+        println("fun body: `", reader.currentString(), "`\n");
     }
 
 } // compiler

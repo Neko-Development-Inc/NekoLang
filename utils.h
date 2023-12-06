@@ -8,6 +8,13 @@
 
 #define SP15 std::setprecision(15)
 
+inline void flushOut() {
+    std::cout << std::flush;
+}
+inline void flushErr() {
+    std::cerr << std::flush;
+}
+
 template<typename T, typename... Arg>
 inline void _print(std::ostream& s, T&& first, Arg&&... rest) {
     using TT = std::decay_t<T>;
@@ -37,20 +44,20 @@ inline void _println(std::ostream& s, T&& first, Arg&&... rest) {
 
 template<typename T, typename... Arg>
 inline void print(T&& first, Arg&&... rest) {
-    _print(cout, std::forward<T>(first), std::forward<Arg>(rest)...);
+    _print(std::cout, std::forward<T>(first), std::forward<Arg>(rest)...);
 }
 template<typename T, typename... Arg>
 inline void println(T&& first, Arg&&... rest) {
-    _print(cout, std::forward<T>(first), std::forward<Arg>(rest)..., '\n');
+    _print(std::cout, std::forward<T>(first), std::forward<Arg>(rest)..., '\n');
 }
 
 template<typename T, typename... Arg>
 inline void error(T&& first, Arg&&... rest) {
-    _print(cerr, std::forward<T>(first), std::forward<Arg>(rest)...);
+    _print(std::cerr, std::forward<T>(first), std::forward<Arg>(rest)...);
 }
 template<typename T, typename... Arg>
 inline void errorln(T&& first, Arg&&... rest) {
-    _print(cerr, std::forward<T>(first), std::forward<Arg>(rest)..., '\n');
+    _print(std::cerr, std::forward<T>(first), std::forward<Arg>(rest)..., '\n');
 }
 
 class Timer {

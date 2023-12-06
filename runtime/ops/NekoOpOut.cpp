@@ -50,19 +50,19 @@ public:
             auto num = dynamic_cast<NekoNumber*>(*a.obj->get())->get();
             if (!isErr) {
                 println(num);
-                if (doFlush) cout << std::flush;
+                if (doFlush) flushOut();
             } else {
                 errorln(num);
-                if (doFlush) cerr << std::flush;
+                if (doFlush) flushErr();
             }
         } else if (a.type == ObjectType::T_STRING) {
             auto str = dynamic_cast<NekoString*>(*a.obj->get())->get();
             if (!isErr) {
                 println(str);
-                if (doFlush) cout << std::flush;
+                if (doFlush) flushOut();
             } else {
                 errorln(str);
-                if (doFlush) cerr << std::flush;
+                if (doFlush) flushErr();
             }
         }
         return 0;
