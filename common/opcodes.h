@@ -6,14 +6,24 @@
 #include <map>
 
 const short
-       NOP   = 0
-     , POP   = 1
-     , POP_N = 2
-     , DUP   = 3
-     , DUP_2 = 4
-     , DUP_3 = 5
-     , DUP_N = 6
-     , CS    = 7
+       NOP     = 0
+
+     , POP     = 1
+     , POP_N   = 2
+
+     , DUP     = 3
+     , DUP_2   = 4
+     , DUP_3   = 5
+     , DUP_N   = 6
+     , DUP_ALL = 7
+
+     , NDUP     = 8
+     , NDUP_2   = 9
+     , NDUP_3   = 10
+     , NDUP_N   = 11
+     , NDUP_ALL = 12
+
+     , CS      = 20
 
      , LABEL  = 1000
      , RETURN = 1001
@@ -34,8 +44,13 @@ const short
      , REPEAT_LL   = 4002
      , REPEAT_LL_N = 4003
 
+     , NREPEAT = 4004
+     , NREPEAT_N = 4005
+
      , OUT = 5000
-     , ERR = 5001
+     , OUT_ALL = 5001
+     , ERR = 5002
+     , ERR_ALL = 5003
 ;
 
 namespace ops {

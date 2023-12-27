@@ -4,7 +4,7 @@ Uses my very own custom instruction-set; no copy-pasted code from elsewhere, oth
 
 ## Preview
 <sub><sup>
-    This preview might differ from the text inside [main.cpp (at the bottom)](https://github.com/Neko-Development-Inc/NekoLang/blob/master/main.cpp#L78),
+    This preview might differ from the text inside [main.cpp (at the bottom)](https://github.com/Neko-Development-Inc/NekoLang/blob/master/main.cpp#L122),
     but I'll try to keep it up-to-date.
 </sup></sub>
 ```js
@@ -12,6 +12,8 @@ Uses my very own custom instruction-set; no copy-pasted code from elsewhere, oth
  * NekoLang
  * .cat - source file
  * .neko - compiled file
+ * .mew - runnable executable (zip file)
+ * .exe - packed runnable executable (can't be opened as zip)
  *
  * :3 catflap  - entrypoint
  * :3 cat-flap - entrypoint
@@ -19,17 +21,25 @@ Uses my very own custom instruction-set; no copy-pasted code from elsewhere, oth
  * pls x - includes x.cat
  * pls x as y - includes x.cat as reference y
  *
- * box - class
- * owo --v
- * var - variable
- * uwu --^
- * fun - function
+ * box  - class
+ * owo  --v
+ * var  - variable
+ * uwu  --^
+ * fun  - function
+ * pls  - include
+ * psps --^
  *
  * // comment
  * \/\* comment \*\/
  *
  * box syntax:
- *   < box Name >.<
+ *   < box Name1 >.<
+ *     // code here
+ *   >
+ *   < box path/here/Name2 >^.^<
+ *     // code here
+ *   >
+ *   < box path/here/Name3 / Name1 >^.^<
  *     // code here
  *   >
  *
@@ -41,7 +51,7 @@ Uses my very own custom instruction-set; no copy-pasted code from elsewhere, oth
  *   box-type = <path/name> - any box type
  *   array    = A - array of any type
  *   empty    = E - empty type
- *   null     = E - alias for the above empty type
+ *   null     = E - ^ alias for the above empty type
  *
  * Types examples:
  *   single object: *
@@ -69,12 +79,27 @@ Uses my very own custom instruction-set; no copy-pasted code from elsewhere, oth
  *  POP          = 1 - pop last element from Stack
  *  POP_N        = 2 - pop last N elements from Stack
  *    <n>            Number
- *  DUP          = 3 - duplicate the last element on the Stack
- *  DUP_2        = 4 - duplicate the last 2 elements on the Stack
- *  DUP_3        = 5 - duplicate the last 3 elements on the Stack
- *  DUP_N        = 6 - duplicate the last N elements on the Stack
- *    <n>            Number
- *  CS           = 7 - clear the stack
+ *
+ *  DUP          = 3  - duplicate the last element on the Stack
+ *  DUP_2        = 4  - duplicate the last 2 elements on the Stack
+ *  DUP_3        = 5  - duplicate the last 3 elements on the Stack
+ *  DUP_N        = 6  - duplicate the last N elements on the Stack
+ *    <n>             Number
+ *  DUP_ALL      = 7  - duplicate all the elements on the Stack
+ *
+ *  NDUP         = 8  - duplicate the last element on the Stack, N times
+ *    <n>             Number of times to duplicate
+ *  NDUP_2       = 9  - duplicate the last 2 elements on the Stack, N times
+ *    <n>             Number of times to duplicate
+ *  NDUP_3       = 10 - duplicate the last 3 elements on the Stack, N times
+ *    <n>             Number of times to duplicate
+ *  NDUP_N       = 11 - duplicate the last N elements on the Stack, N times
+ *    <n1>             Number of elements from the stack to duplicate
+ *    <n2>             Number of times to duplicate
+ *  NDUP_ALL     = 12 - duplicate all the elements on the Stack, N times
+ *    <n>             Number of times to duplicate
+ *
+ *  CS           = 20 - clear the stack
  *
  *  LABEL        = 1000 - label, a specific point in an instruction-set
  *    <id>              Number
@@ -102,6 +127,8 @@ Uses my very own custom instruction-set; no copy-pasted code from elsewhere, oth
  *  CONCAT_N     = 3003 - concatenates the last N elements on the Stack, and
  *                        puts the Result back on the Stack
  *    <n>               Number -- number of elements to concatenate
+ *  CONCAT_ALL   = 3004 - concatenates all the elements on the Stack, and
+ *                        puts the Result back on the Stack
  *
  *  REPEAT       = 4000 - repeat the last instruction once
  *  REPEAT_N     = 4001 - repeat the last instruction N times
@@ -116,10 +143,22 @@ Uses my very own custom instruction-set; no copy-pasted code from elsewhere, oth
  *    <n2>              Number -- index of second Label
  *    <n>               Number -- number of times to repeat
  *
+ *  NREPEAT      = 4004 - repeat the last N instructions once
+ *    <n>               Number of times to duplicate
+ *  NREPEAT_N    = 4005 - repeat the last N instruction N times
+ *    <n1>              Number of elements from the stack to repeat
+ *    <n2>              Number of times to repeat
+ *
  *  OUT          = 5000 - prints the last value on the Stack to
  *                        the active output stream (stdout by default)
  *    <bool>            Bool -- force flush or not -- optional
- *  ERR          = 5001 - prints the last value on the Stack to
+ *  OUT_ALL      = 5001 - prints all the last values on the Stack to
+ *                        the active output stream (stdout by default)
+ *    <bool>            Bool -- force flush or not -- optional
+ *  ERR          = 5010 - prints the last value on the Stack to
+ *                        the active error output stream (stderr by default)
+ *    <bool>            Bool -- force flush or not -- optional
+ *  ERR_ALL      = 5011 - prints all the last values on the Stack to
  *                        the active error output stream (stderr by default)
  *    <bool>            Bool -- force flush or not -- optional
  *
@@ -160,9 +199,9 @@ Uses my very own custom instruction-set; no copy-pasted code from elsewhere, oth
  *
  *  // Json example:
  *  owo json <{
- *      testKey: 'parseFile value'
+ *      testKey: 'test value'
  *  }>
- *  print(json.testKey) // prints 'parseFile value'
+ *  print(json.testKey) // prints 'test value'
  *  json.testKey <'OwO'>
  *  print(json.testKey) // prints 'OwO'
  *
@@ -171,8 +210,8 @@ Uses my very own custom instruction-set; no copy-pasted code from elsewhere, oth
  *  var b < a + 1 >     // 4
  *  uwu c < a++ >       // 3 - assigns value 'a' THEN increments afterwards
  *  var d < ++a >       // 4 - increments first THEN assigns value 'a'
- *  owo e < a++ + a >   // 3 + 3 - assigns value 'a' + 'a' = 6, THEN increments afterwards
- *  var f < a++ + ++a > // 3 + 4 - assigns value 'a' + 'a=a+1' = 7
+ *  owo e < a++ + a >   // 3 + 4 - assigns value 'a' + 'a' = 7
+ *  var f < a++ + ++a > // 3 + 5 - assigns value 'a' + 'a=a+1' = 8
  *
  *  booleans:
  *  fact - true
@@ -198,5 +237,78 @@ Uses my very own custom instruction-set; no copy-pasted code from elsewhere, oth
  *      // Else here
  *  >
  *
+ */
+
+/**
+ *  How NekoLang works (:D)
+ *
+ *  1. Say you have these files:
+ *    a. main.cat
+ *    b. test.cat
+ *    c. utils.cat
+ *
+ *  2. Inside main.cat, it includes test.cat and utils.cat
+ *    a. pls test
+ *    b. pls utils
+ *
+ *  3. The compiler will read this, and copy-paste the contents
+ *      of test.cat and utils.cat into main.cat, at those exact places.
+ *
+ *  4. Ways to use boxes from other files:
+ *    a. You can include the box by using a filepath, using pls,
+ *        this will copy-paste the contents of it at this very place in the code,
+ *        unless you do `as X`.
+ *      - pls f1/f2/CatFileHere  -- assuming CatFileHere.cat (or .neko) is in the folder `f1/f2/`
+ *      - pls utils              -- assuming utils.cat (or .neko) is in the same folder
+ *      - pls utils.cat as u     -- ^. This won't copy-paste, but make a reference accessible by 'u'.
+ *
+ *    b. You can access boxes from other files, by using their direct box paths (not filepaths),
+ *         and you won't need to `pls` them first:
+ *      - create a/b/c/Box1()
+ *      - create a.b.c/Box1()
+ *
+ *  5. If you write Code/Function directly in a .cat file, without surrounding it with a box:
+ *    a. Code: It will be put into a box called "Default" automatically.
+ *             A default box will be created if it doesn't exist.
+ *    b. Function: It will be put into the "Default" box's functions table.
+ *                 A default init function will be created if it doesn't exist.
+ *
+ *  6. If you have multiple .cat files with code (without a box), it will all
+ *      be included in the "Default" box automatically, appending itself.
+ *
+ *  7. The order of fields and functions in a box is not important.
+ *    a. Fields and Functions can be in any order, above or below each other.
+ *    b. The place where you include another file (the pls word), DOES matter.
+ *
+ *  8. If you define a function or a box inside a function (or in the root of a file),
+ *    a. Function: The function will be moved to the current Box (perhaps Default)
+ *    b. Box: The box will be globally available, just like any other.
+ *
+ */
+
+/**
+ Interesting stuff below:
+
+ WINDOWS:
+ The maximum value for an 'int' is:        2147483647
+ The maximum value for a 'long int' is:    2147483647
+ The maximum value for a 'long' is:        2147483647
+ The maximum value for a 'long long' is:   9223372036854775807
+
+ Size of 'int':        32 bits
+ Size of 'long int':   32 bits
+ Size of 'long':       32 bits
+ Size of 'long long':   64 bits
+
+ LINUX (WSL on Windows):
+ The maximum value for an 'int' is:        2147483647
+ The maximum value for a 'long int' is:    9223372036854775807
+ The maximum value for a 'long' is:        9223372036854775807
+ The maximum value for a 'long long' is:   9223372036854775807
+
+ Size of 'int':        32 bits
+ Size of 'long int':    64 bits
+ Size of 'long':        64 bits
+ Size of 'long long':   64 bits
  */
 ```
