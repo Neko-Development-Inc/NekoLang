@@ -16,40 +16,38 @@
 #include "ops/NekoOpConcat.cpp"
 #include "ops/NekoOpReturn.cpp"
 
-namespace runtime {
-    class Runtime {
+class runtime::Runtime {
 
-    private:
-        Opcodes& ops;
-        map<short, unique_ptr<NekoOp>> impls;
+private:
+    Opcodes& ops;
+    map<short, unique_ptr<NekoOp>> impls;
 
-    public:
-        explicit Runtime(Opcodes& ops) : ops(ops) { }
+public:
+    explicit Runtime(Opcodes& ops) : ops(ops) { }
 
-        void init();
+    void init();
 
-        template <typename T, typename... Args>
-        void addArg(unique_ptr<NekoOp>& a, T&& first, Args&&... rest) {
-            if constexpr (std::is_arithmetic<std::decay_t<T>>::value)
-                a->addArg(static_cast<long double>(first));
-            else
-                a->addArg(first);
-            if constexpr (sizeof...(rest) > 0)
-                addArg(a, std::forward<Args>(rest)...);
-        }
+    template <typename T, typename... Args>
+    void addArg(unique_ptr<NekoOp>& a, T&& first, Args&&... rest) {
+        if constexpr (std::is_arithmetic<std::decay_t<T>>::value)
+            a->addArg(static_cast<long double>(first));
+        else
+            a->addArg(first);
+        if constexpr (sizeof...(rest) > 0)
+            addArg(a, std::forward<Args>(rest)...);
+    }
 
-        template <typename T, typename... Args>
-        unique_ptr<NekoOp> createImplT(short op, T&& first, Args&&... rest) {
-            auto a = impls[ops[op]]->clone();
-            addArg(a, first, rest...);
-            return a;
-        }
+    template <typename T, typename... Args>
+    unique_ptr<NekoOp> createImplT(short op, T&& first, Args&&... rest) {
+        auto a = impls[ops[op]]->clone();
+        addArg(a, first, rest...);
+        return a;
+    }
 
-        unique_ptr<NekoOp> createImplT(short op) {
-            return impls[ops[op]]->clone();
-        }
+    unique_ptr<NekoOp> createImplT(short op) {
+        return impls[ops[op]]->clone();
+    }
 
-    };
-} // runtime
+};
 
 #endif //RUNTIME_H
