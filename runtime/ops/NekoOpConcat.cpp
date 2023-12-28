@@ -36,7 +36,7 @@ public:
                 errorln("Error: NekoOpConcat: CONCAT_N: args[0] not found");
                 exit(1);
             }
-            if (!argIsType(0, typeid(int))) {
+            if (!argIsType(0, typeid(long double))) {
                 errorln("Error: NekoOpConcat: CONCAT_N: args[0] wasn't a number");
                 exit(1);
             }

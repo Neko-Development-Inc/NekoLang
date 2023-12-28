@@ -21,12 +21,12 @@ public:
                 exit(1);
             }
             const auto& type = first.type();
-            if (type != typeid(int)) {
+            if (type != typeid(long double)) {
                 errorln("Error: NekoOpPop args[0] wasn't a number, "
                         "it was: '", type.name(), "'");
                 exit(1);
             }
-            n = std::any_cast<int>(first);
+            n = std::any_cast<long double>(first);
         }
         errorln("\tRunning pops ", n, " times");
         while (n--) {
