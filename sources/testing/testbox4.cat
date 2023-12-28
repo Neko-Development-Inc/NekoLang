@@ -1,0 +1,18 @@
+
+< box Box1 >.<
+
+    < !fun test1 >.<
+        uwu owo < 3 >
+        var uwu < owo >
+        owo var < uwu >
+        println(var) // 3
+    >
+
+    < !fun test2 >.<
+        uwu uwu < 'uwu' >
+        var var < uwu >
+        owo owo < var >
+        println(owo) // 'uwu'
+    >
+
+>

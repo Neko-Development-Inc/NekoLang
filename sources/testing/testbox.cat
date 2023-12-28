@@ -1,16 +1,16 @@
 
 < box Box2 >.<
     <-- read-only fields -->
-    angy var a, b, c;
+    angy var a, b, c
 >
 
 < box Box1("Abc", 'Def', `Ghi`) / Box2 >^.^<
 
     <-- Constructor -->
     < fun Box1(a, b, c) >.<
-        this a <a> <-- Assign argument 'a' to class field 'a' -->
-        this b <b> <-- Assign argument 'b' to class field 'b' -->
-        this c <c> <-- Assign argument 'c' to class field 'c' -->
+        this:a <a> <-- Assign argument 'a' to class field 'a' -->
+        this:b <b> <-- Assign argument 'b' to class field 'b' -->
+        this:c <c> <-- Assign argument 'c' to class field 'c' -->
     >
 
     < fun getA >.< ret a > <-- Returns variable 'a' from class -->
