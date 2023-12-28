@@ -44,6 +44,13 @@ add_executable(NekoLang main.cpp
         runtime/vm/NekoStack.cpp
         runtime/vm/NekoStack.h
 
+        common/files/NekoWriter.cpp
+        common/files/NekoWriter.h
+        common/files/NekoReader.cpp
+        common/files/NekoReader.h
+        common/files/NekoFile.cpp
+        common/files/NekoFile.h
+
         headers.h
         utils.h
 

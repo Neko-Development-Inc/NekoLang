@@ -39,6 +39,11 @@ using std::unique_ptr,
 // USING =========== >
 
 // < FORWARD DECLARATIONS
+namespace files {
+    class NekoFile;
+    class NekoReader;
+    class NekoWriter;
+}
 namespace ops {
     class Opcodes;
     class NekoOp;
@@ -74,6 +79,7 @@ namespace vm {
 // FORWARD DECLARATIONS >
 
 // < USING FORWARD DECLARATIONS
+using namespace files;
 using namespace ops;
 using namespace runtime;
 using namespace compiler;
