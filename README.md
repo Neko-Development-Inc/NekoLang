@@ -298,6 +298,58 @@ Uses my very own custom instruction-set; no copy-pasted code from elsewhere, oth
  */
 
 /**
+ *  The .neko file binary structure:
+ *       / =============+===================================================+=========================== \
+ *       | Num of bytes | Description                                       | Restrictions               |
+ *       | =============+===================================================+=========================== |
+ *  #1   | 4            | Magic number (hex for meow)                       | 'meow', not case-sensitive |
+ *  #2   | 4            | 32 bits of useful metadata (endianness, etc)      | 0x00000000 <-> 0x7fffffff  |
+ *  #3   | 4            | Major version number                              | 0 <-> 2,147,483,647        |
+ *  #4   | 4            | Minor version number                              | 0 <-> 2,147,483,647        |
+ *  #5   | 4            | Lenght of .neko file (used for file verification) | 0 <-> 2,147,483,647        |
+ *  #6   | 32           | SHA-256 of .neko file after these 32 bytes (^)    | must be a valid sha-256    |
+ *       | =============+===================================================+=========================== |
+ *  #7   | 2            | Number of hidden fields                           | 0 <-> 65,535               |
+ *       | --- loop --- for every box:                                      |                            |
+ *  #8   | - 1          | Hidden field key length                           | 1 <-> 255                  |
+ *  #9   | - n          | Hidden field key content                          | alphanumeric               |
+ *  #10  | - 1          | Hidden field value length                         | 1 <-> 255                  |
+ *  #11  | - n          | Hidden field value content                        |                            |
+ *       | =============+===================================================+=========================== |
+ *  #12  | 1            | Boolean: Is this a box (1), or boxless code (0)?  | 0 or 1                     |
+ *  #13  | 4            | Length of boxless code content                    | 0 <-> n                    |
+ *  #14  | n            | Boxless code                                      |                            |
+ *       | =============+===================================================+=========================== |
+ *  #15  | 2            | Number of boxes                                   | 0 <-> 65,535               |
+ *       | --- loop --- for every box:                                      |                            |
+ *  #16  | - 4          | 32 bits of box metadata (access, etc)             | 0x00000000 <-> 0x7fffffff  |
+ *  #17  | - 1          | Box name length                                   | 1 <-> 255                  |
+ *  #18  | - n          | Box name                                          | alphanumeric, /            |
+ *  #19  | - 1          | Box parent name length                            | 1 <-> 255                  |
+ *  #20  | - n          | Box parent name                                   | alphanumeric, /            |
+ *  #21  | - 4          | Number of fields                                  | 0 <-> 2,147,483,647        |
+ *  #22  | - 4          | Number of functions                               | 0 <-> 2,147,483,647        |
+ *       | --- loop --- for each box, for every field:                      |                            |
+ *  #23  | -- 4         | 32 bits of field metadata (access, etc)           | 0x00000000 <-> 0x7fffffff  |
+ *  #24  | -- 1         | Field name length                                 | 1 <-> 255                  |
+ *  #25  | -- n         | Field name                                        | alphanumeric               |
+ *  #26  | -- 1         | Field default value type                          | 1 <-> 255                  |
+ *  #27  | -- 1         | Field default value length                        | 1 <-> 255                  |
+ *  #28  | -- n         | Field default value                               |                            |
+ *       | --- loop --- for each box, for every function:                   |                            |
+ *  #29  | -- 4         | 32 bits of box metadata (access, etc)             | 0x00000000 <-> 0x7fffffff  |
+ *  #30  | -- 1         | Function name length                              | 1 <-> 255                  |
+ *  #31  | -- n         | Function name                                     | alphanumeric               |
+ *  #32  | -- 1         | Function signature length                         | 1 <-> 255                  |
+ *  #33  | -- n         | Function signature                                |                            |
+ *  #34  | -- 8         | Function code length                              | 1 <-> 9223372036854775807  |
+ *  #35  | -- n         | Function code                                     | 0 <-> n                    |
+ *       | =============+===================================================+=========================== |
+ *  #36  | --- the byte counter here should be equal to the file length --- | see #5                     |
+ *       \ =============+===================================================+=========================== /
+ */
+
+/**
  Interesting stuff below:
 
  WINDOWS:
