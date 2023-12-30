@@ -23,15 +23,15 @@ const short
      , NDUP_N   = 11
      , NDUP_ALL = 12
 
-     , CS      = 20
+     , CS       = 20
 
-     , LABEL  = 1000
-     , RETURN = 1001
-     , JUMP   = 1002
+     , LABEL    = 1000
+     , RETURN   = 1001
+     , JUMP     = 1002
 
-     , CREATE = 2000
-     , TYPE   = 2001
-     , CALL   = 2002
+     , CREATE   = 2000
+     , TYPE     = 2001
+     , CALL     = 2002
 
      , NUMBER     = 3000
      , STRING     = 3001
@@ -44,13 +44,13 @@ const short
      , REPEAT_LL   = 4002
      , REPEAT_LL_N = 4003
 
-     , NREPEAT = 4004
+     , NREPEAT   = 4004
      , NREPEAT_N = 4005
 
-     , OUT = 5000
-     , OUT_ALL = 5001
-     , ERR = 5002
-     , ERR_ALL = 5003
+     , OUT       = 5000
+     , OUT_ALL   = 5001
+     , ERR       = 5002
+     , ERR_ALL   = 5003
 ;
 
 namespace ops {
