@@ -15,11 +15,21 @@ Uses my very own custom instruction-set; no copy-pasted code from elsewhere, oth
  * .mew - runnable executable (zip file)
  * .exe - packed runnable executable (can't be opened as zip)
  *
+ * Commandline stuff:
+ *  Main command: neko / neko.exe
+ * Examples:
+ *  neko -i main.cat -o main.neko             -- compile single file into a binary format
+ *  neko -i main test utils -o myprogram.mew  -- compile multiple files into a zipped format
+ *  neko -r myprogram.mew                     -- execute the zipped neko program
+ * Arguments:
+ *  -i <file> - Choose one or more input file(s)
+ *  -r        - Run a program
+ *
  * :3 catflap  - entrypoint
  * :3 cat-flap - entrypoint
  *
- * pls x - includes x.cat
- * pls x as y - includes x.cat as reference y
+ * pls x      - includes x.cat (by copy paste)
+ * pls x as y - includes x.cat (as reference y)
  *
  * box  - class
  * owo  --v
@@ -94,8 +104,8 @@ Uses my very own custom instruction-set; no copy-pasted code from elsewhere, oth
  *  NDUP_3       = 10 - duplicate the last 3 elements on the Stack, N times
  *    <n>             Number of times to duplicate
  *  NDUP_N       = 11 - duplicate the last N elements on the Stack, N times
- *    <n1>             Number of elements from the stack to duplicate
- *    <n2>             Number of times to duplicate
+ *    <n1>            Number of elements from the stack to duplicate
+ *    <n2>            Number of times to duplicate
  *  NDUP_ALL     = 12 - duplicate all the elements on the Stack, N times
  *    <n>             Number of times to duplicate
  *
@@ -210,13 +220,14 @@ Uses my very own custom instruction-set; no copy-pasted code from elsewhere, oth
  *  var b < a + 1 >     // 4
  *  uwu c < a++ >       // 3 - assigns value 'a' THEN increments afterwards
  *  var d < ++a >       // 4 - increments first THEN assigns value 'a'
- *  owo e < a++ + a >   // 3 + 4 - assigns value 'a' + 'a' = 7
- *  var f < a++ + ++a > // 3 + 5 - assigns value 'a' + 'a=a+1' = 8
+ *  owo e < a++ + a >   // 3 + 4 - assigns value 'a' + '1+a' = 7
+ *  var f < a++ + ++a > // 3 + 5 - assigns value 'a' + '1+1+a' = 8
+ *  var g < ++a + ++a > // 4 + 5 - assigns value '1+a' + '1+a' = 9
  *
  *  booleans:
- *  fact - true
- *  fake - false
- *  idfk - maybe
+ *   fact - true
+ *   fake - false
+ *   idfk - maybe -- will probably be scrapped as it makes no sense :D
  *
  *  if < expression is fact >.<
  *      println("noice")
