@@ -132,20 +132,23 @@ STOP_TIMER(timerStack)
 *  neko -i main.cat -o main.neko             -- compile single file into a binary format
 *  neko -i main test utils -o myprogram.mew  -- compile multiple files into a zipped format
 *  neko -r myprogram.mew                     -- execute the zipped neko program
+*  neko -r myprogram.cat                     -- execute the source code file
 * Arguments:
 *  -i <file> - Choose one or more input file(s)
 *  -r        - Run a program
 *
-* :3 catflap  - entrypoint
-* :3 cat-flap - entrypoint
+* Macro stuff:
+*  #catflap :3  - entrypoint
+*  #cat-flap :3 - entrypoint
 *
-* pls x      - includes x.cat (by copy paste)
-* pls x as y - includes x.cat (as reference y)
+*  #pls x      - includes x.cat (by copy paste)
+*  #pls x as y - includes x.cat (as reference y)
 *
 * box  - class
-* owo  --v
 * var  - variable
-* uwu  --^
+* owo  - variable
+* uwu  - variable
+* angy - read-only variable
 * fun  - function
 * pls  - include
 * psps --^
@@ -165,14 +168,14 @@ STOP_TIMER(timerStack)
 *   >
 *
 * Bytecode types:
-*   object   = * - object, any type below
-*   number   = N - int or decimal (always 64-bit)
-*   string   = S - character array
-*   bool     = B - true/false/maybe
-*   box-type = <path/name> - any box type
-*   array    = A - array of any type
-*   empty    = E - empty type
-*   null     = E - ^ alias for the above empty type
+*   [0] empty    = E - empty type
+*   [0] null     = E - ^ alias for the above empty type
+*   [1] object   = * - object, any type below
+*   [2] number   = N - int or decimal (always 64-bit)
+*   [3] string   = S - character array
+*   [4] bool     = B - true/false
+*   [5] box-type = <path/name> - any box type
+*   [6] array    = A - array of any type
 *
 * Types examples:
 *   single object: *
@@ -199,26 +202,26 @@ STOP_TIMER(timerStack)
 *  NOP          = 0 - do nothing
 *  POP          = 1 - pop last element from Stack
 *  POP_N        = 2 - pop last N elements from Stack
-*    <n>            Number
+*    <N>            Number
 *
 *  DUP          = 3  - duplicate the last element on the Stack
 *  DUP_2        = 4  - duplicate the last 2 elements on the Stack
 *  DUP_3        = 5  - duplicate the last 3 elements on the Stack
 *  DUP_N        = 6  - duplicate the last N elements on the Stack
-*    <n>             Number
+*    <N>             Number
 *  DUP_ALL      = 7  - duplicate all the elements on the Stack
 *
 *  NDUP         = 8  - duplicate the last element on the Stack, N times
-*    <n>             Number of times to duplicate
+*    <N>             Number of times to duplicate
 *  NDUP_2       = 9  - duplicate the last 2 elements on the Stack, N times
-*    <n>             Number of times to duplicate
+*    <N>             Number of times to duplicate
 *  NDUP_3       = 10 - duplicate the last 3 elements on the Stack, N times
-*    <n>             Number of times to duplicate
+*    <N>             Number of times to duplicate
 *  NDUP_N       = 11 - duplicate the last N elements on the Stack, N times
-*    <n1>            Number of elements from the stack to duplicate
-*    <n2>            Number of times to duplicate
+*    <L1>            Number of elements from the stack to duplicate
+*    <L2>            Number of times to duplicate
 *  NDUP_ALL     = 12 - duplicate all the elements on the Stack, N times
-*    <n>             Number of times to duplicate
+*    <N>             Number of times to duplicate
 *
 *  CS           = 20 - clear the stack
 *
@@ -247,28 +250,28 @@ STOP_TIMER(timerStack)
 *                        puts the Result back on the Stack
 *  CONCAT_N     = 3003 - concatenates the last N elements on the Stack, and
 *                        puts the Result back on the Stack
-*    <n>               Number -- number of elements to concatenate
+*    <N>               Number -- number of elements to concatenate
 *  CONCAT_ALL   = 3004 - concatenates all the elements on the Stack, and
 *                        puts the Result back on the Stack
 *
 *  REPEAT       = 4000 - repeat the last instruction once
 *  REPEAT_N     = 4001 - repeat the last instruction N times
-*    <n>               Number -- number of times to repeat
+*    <N>               Number -- number of times to repeat
 *  REPEAT_LL    = 4002 - repeats the instructions between two Labels
 *                      - L stands for Label
-*    <n1>              Number -- index of first Label
-*    <n2>              Number -- index of second Label
+*    <L1>              Number -- index of first Label
+*    <L2>              Number -- index of second Label
 *  REPEAT_LL_N  = 4003 - repeats the instructions between two Labels N times
 *                      - L stands for Label
-*    <n1>              Number -- index of first Label
-*    <n2>              Number -- index of second Label
-*    <n>               Number -- number of times to repeat
+*    <L1>              Number -- index of first Label
+*    <L2>              Number -- index of second Label
+*    <N>               Number -- number of times to repeat
 *
 *  NREPEAT      = 4004 - repeat the last N instructions once
-*    <n>               Number of times to duplicate
+*    <N>               Number of times to duplicate
 *  NREPEAT_N    = 4005 - repeat the last N instruction N times
-*    <n1>              Number of elements from the stack to repeat
-*    <n2>              Number of times to repeat
+*    <L1>              Number of elements from the stack to repeat
+*    <L2>              Number of times to repeat
 *
 *  OUT          = 5000 - prints the last value on the Stack to
 *                        the active output stream (stdout by default)
@@ -338,16 +341,12 @@ STOP_TIMER(timerStack)
 *  booleans:
 *   fact - true
 *   fake - false
-*   idfk - maybe -- will probably be scrapped as it makes no sense :D
 *
 *  if < expression is fact >.<
 *      println("noice")
 *  >
 *  if < expression is fake >.<
 *      println("oops")
-*  >
-*  if < expression is maybe >.<
-*      println("wtf?")
 *  >
 *
 *  if/else-if/else:
@@ -414,47 +413,48 @@ STOP_TIMER(timerStack)
 *       | Num of bytes | Description                                       | Restrictions               |
 *       | =============+===================================================+=========================== |
 *  #1   | 4            | Magic number (hex for meow)                       | 'meow', not case-sensitive |
+*  #    | 1            | General encryption key (everything below uses it) | 0 <-> 255 (0 = not in use) |
 *  #2   | 4            | 32 bits of useful metadata (endianness, etc)      | 0x00000000 <-> 0x7fffffff  |
 *  #3   | 4            | Major version number                              | 0 <-> 2,147,483,647        |
 *  #4   | 4            | Minor version number                              | 0 <-> 2,147,483,647        |
 *  #5   | 4            | Lenght of .neko file (used for file verification) | 0 <-> 2,147,483,647        |
 *  #6   | 32           | SHA-256 of .neko file after these 32 bytes (^)    | must be a valid sha-256    |
 *       | =============+===================================================+=========================== |
-*  #7   | 2            | Number of hidden fields                           | 0 <-> 65,535               |
-*       | --- loop --- for every box:                                      |                            |
-*  #8   | - 1          | Hidden field key length                           | 1 <-> 255                  |
-*  #9   | - n          | Hidden field key content                          | alphanumeric               |
-*  #10  | - 1          | Hidden field value length                         | 1 <-> 255                  |
-*  #11  | - n          | Hidden field value content                        |                            |
+*  #7   | 2            | Number of hidden fields K                         | 0 <-> 65,535               |
+*       | --- loop --- for every K box:                                    |                            |
+*  #8   | - 1          | Hidden field key length N                         | 1 <-> 255                  |
+*  #9   | - N          | Hidden field key content                          | alphanumeric & 1 <-> N     |
+*  #10  | - 1          | Hidden field value length N                       | 1 <-> 255                  |
+*  #11  | - N          | Hidden field value content                        | 1 <-> N                    |
 *       | =============+===================================================+=========================== |
 *  #12  | 1            | Boolean: Is this a box (1), or boxless code (0)?  | 0 or 1                     |
-*  #13  | 4            | Length of boxless code content                    | 0 <-> n                    |
-*  #14  | n            | Boxless code                                      |                            |
+*  #13  | 4            | Length of boxless code content N                  | 0 <-> N                    |
+*  #14  | N            | Boxless code                                      |                            |
 *       | =============+===================================================+=========================== |
-*  #15  | 2            | Number of boxes                                   | 0 <-> 65,535               |
-*       | --- loop --- for every box:                                      |                            |
+*  #15  | 2            | Number of boxes K                                 | 0 <-> 65,535               |
+*       | --- loop --- for every K box:                                    |                            |
 *  #16  | - 4          | 32 bits of box metadata (access, etc)             | 0x00000000 <-> 0x7fffffff  |
-*  #17  | - 1          | Box name length                                   | 1 <-> 255                  |
-*  #18  | - n          | Box name                                          | alphanumeric, /            |
-*  #19  | - 1          | Box parent name length                            | 1 <-> 255                  |
-*  #20  | - n          | Box parent name                                   | alphanumeric, /            |
+*  #17  | - 1          | Box name length N                                 | 1 <-> 255                  |
+*  #18  | - N          | Box name                                          | alphanumeric, /            |
+*  #19  | - 1          | Box parent name length N                          | 1 <-> 255                  |
+*  #20  | - N          | Box parent name                                   | alphanumeric, /            |
 *  #21  | - 4          | Number of fields                                  | 0 <-> 2,147,483,647        |
 *  #22  | - 4          | Number of functions                               | 0 <-> 2,147,483,647        |
 *       | --- loop --- for each box, for every field:                      |                            |
 *  #23  | -- 4         | 32 bits of field metadata (access, etc)           | 0x00000000 <-> 0x7fffffff  |
-*  #24  | -- 1         | Field name length                                 | 1 <-> 255                  |
-*  #25  | -- n         | Field name                                        | alphanumeric               |
-*  #26  | -- 1         | Field default value type                          | 1 <-> 255                  |
-*  #27  | -- 1         | Field default value length                        | 1 <-> 255                  |
-*  #28  | -- n         | Field default value                               |                            |
+*  #24  | -- 1         | Field name length N                               | 1 <-> 255                  |
+*  #25  | -- N         | Field name                                        | alphanumeric               |
+*  #26  | -- 1         | Field default value type                          | 0 <-> 255                  |
+*  #27  | -- 1         | Field default value length N                      | 0 <-> 255                  |
+*  #28  | -- N         | Field default value                               |                            |
 *       | --- loop --- for each box, for every function:                   |                            |
 *  #29  | -- 4         | 32 bits of box metadata (access, etc)             | 0x00000000 <-> 0x7fffffff  |
-*  #30  | -- 1         | Function name length                              | 1 <-> 255                  |
-*  #31  | -- n         | Function name                                     | alphanumeric               |
-*  #32  | -- 1         | Function signature length                         | 1 <-> 255                  |
-*  #33  | -- n         | Function signature                                |                            |
-*  #34  | -- 8         | Function code length                              | 1 <-> 9223372036854775807  |
-*  #35  | -- n         | Function code                                     | 0 <-> n                    |
+*  #30  | -- 1         | Function name length N                            | 1 <-> 255                  |
+*  #31  | -- N         | Function name                                     | alphanumeric               |
+*  #32  | -- 1         | Function signature length N                       | 1 <-> 255                  |
+*  #33  | -- N         | Function signature                                |                            |
+*  #34  | -- 8         | Function code length N                            | 1 <-> 9223372036854775807  |
+*  #35  | -- N         | Function code                                     | 0 <-> N                    |
 *       | =============+===================================================+=========================== |
 *  #36  | --- the byte counter here should be equal to the file length --- | see #5                     |
 *       \ =============+===================================================+=========================== /
