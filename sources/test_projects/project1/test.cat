@@ -1,0 +1,14 @@
+#pls once :3
+
+// this is test.cat
+// UWUWUWUWUWU
+// cats go meow
+
+< box TestBox >.<
+    < !fun test(arg1, arg2) >.<
+        testFunction(arg1 + arg2)
+    >
+    < !fun testFunction(s) >.<
+        println('#<s>!')
+    >
+>

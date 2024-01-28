@@ -1,36 +1,28 @@
-:3 cat-flap
+#cat-flap :3
 // Defines entrypoint
 
 // Include 'test.cat' into this file
-pls test
+#pls test
 
 // Create variable test_N with the value 3
 uwu test_N < 3 >
 
 // Include 'utils.cat' into a variable called 'u'
-pls 'utils.cat' as u
+#pls 'utils.cat' as u
 
 // Include 'test.cat' into this file, 3 times
-pls test
-pls test
-pls test
+#pls test
+#pls test
+#pls test
 
-// Create string variable
-//  and assign an on-change event
-var str <
-    "hello<#test_N>" * test_N
->^.^<
-    println("String changed from " + old + " to " + new)
-    // Re-assign the current reassignment.
-    // This will not trigger another on-change event call.
-    new < "owo" >
+var text < "hello" >.< event changed e >.<
+    // changed event stuff here
 >
+text < "trigger an on-change event" >
 
 owo b < fact, fake >
 
-// floof
-
-u.Baggy()
+u:Baggy()
 // Execute the 'Baggy' function from 'utils'
 
 // Class example
@@ -57,9 +49,9 @@ This is a comment
 This is a comment
 -->
 
--region_name->
-Code inside a region
-<-region_name-
+// This is a comment
+
+-- This is a comment
 
 // Class example, using Box1 as parent box
 < box Box3 / Box1 >w<
@@ -80,19 +72,21 @@ angy o < 3 >
 // try-catch basically
 scawy < <-- or spoopy -->
     o < 1 > // reassign o to 1 - throws exception, because o is angy
->.<
+> oof <
+    // catch the error
     println("SCAWY!!!")
->#<
+> ah <
+    // finally
     println("Finally :)")
 >
 
-// Json example:
+// Json example (using real json functionality):
 owo json <{
     testKey: 'test value'
 }>
-print(json.testKey) // prints 'test value'
-json.testKey <'OwO'>
-print(json.testKey) // prints 'OwO'
+print(json:testKey) // prints 'test value'
+json:testKey <'OwO'>
+print(json:testKey) // prints 'OwO'
 
 // math example:
 owo a < 3 >         // 3

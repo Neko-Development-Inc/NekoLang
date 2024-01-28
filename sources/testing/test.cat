@@ -1,20 +1,29 @@
-:3 cat-flap < main > // declare the current file as a cat-flap (entrypoint)
-:3 path < a/b/c >    // declare the current file under the path a/b/c
-:3 box < Box1 >      // declare the current file as a box named Box1
+#cat-flap < main(#args) > :3 // declare the current file as a cat-flap (entrypoint)
+#path < a/b/c >           :3 // declare the current file under the path a/b/c
+#box < Box1 >             :3 // declare the current file as a box named Box1
 
-owo test // declare variable with default value 'empty'
+// declare variable with default value 'empty'
+owo test
+// add event listeners for 'test' after it was made (not during creation):
 
+// 'test changing' is called before the variable is changed
 event < test changing e >.<
     // the variable 'test' is changing
-    e.cancel() // cancel the event
+    e:cancel() // cancel the event
 >
 
+// 'test changed' is called after the variable is changed
 event < test changed e >.<
     // the variable 'test' was changed
 >
 
+// 'test read' is called while the variable is being read.
+// we can override the read value by setting e:new to a new value
 event < test read e >.<
     // the variable 'test' is being read
+
+    // set the new value to 5
+    e:new < 5 >
 >
 
 < fun main(args) >w<

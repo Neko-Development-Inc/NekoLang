@@ -2,14 +2,14 @@
 < box Box1 >.<
 
     < !fun testThreadFunc(i) >.<
-        println("I'm running in a thread! i: " + i) // i = 123, then 234, then 345 - at the same time
+        println("I'm running in a thread! i: " + i) // i = 123, then 234, then 345 - basically at the same time
     >
 
     < !fun test >.<
         owo t < testThreadFunc >
-        t.thread().run(123) // run thread 1
-        t.thread().run(234) // run thread 2
-        t.thread().run(345) // run thread 3
+        t:thread():run(123) // run thread 1
+        t:thread():run(234) // run thread 2
+        t:thread():run(345) // run thread 3
     >
 
 >

@@ -1,0 +1,14 @@
+#pls other.cat
+#pls test.cat
+
+#catflap :3
+
+< box Box1 / OtherBox >.<
+    < fun Main >.<
+        #pls free-standing-code
+        #pls free-standing-code
+        #pls free-standing-code
+
+        TestBox:test('Hello', ' World')
+    >
+>

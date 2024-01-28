@@ -1,21 +1,21 @@
 
 < box Box2 >.<
     <-- read-only fields -->
-    angy var a, b, c
+    angy a, b, c
 >
 
 < box Box1("Abc", 'Def', `Ghi`) / Box2 >^.^<
 
     <-- Constructor -->
     < fun Box1(a, b, c) >.<
-        this:a <a> <-- Assign argument 'a' to class field 'a' -->
-        this:b <b> <-- Assign argument 'b' to class field 'b' -->
-        this:c <c> <-- Assign argument 'c' to class field 'c' -->
+        this:a <a> <-- Assign argument 'a' to box variable 'a' -->
+        this:b <b> <-- Assign argument 'b' to box variable 'b' -->
+        this:c <c> <-- Assign argument 'c' to box variable 'c' -->
     >
 
-    < fun getA >.< ret a > <-- Returns variable 'a' from class -->
-    < fun getB >.< ret b > <-- Returns variable 'b' from class -->
-    < fun getC >.< ret c > <-- Returns variable 'c' from class -->
+    < fun getA >.< ret a > <-- Returns variable 'a' -->
+    < fun getB >.< ret b > <-- Returns variable 'b' -->
+    < fun getC >.< ret c > <-- Returns variable 'c' -->
 
     <-- Function to multi-return all class fields -->
     < fun getABC >.<
@@ -24,11 +24,23 @@
             // If here
         > uhm < expression >.<
             // Else-if here
+        > uhm < another_expression >.<
+            // Else-if here
         > oh <
             // Else here
         >
 
+        // Multi-return
         ret ( a, b, c )
+
+        // OR:
+
+        // Json-return
+        ret {
+            "a": a,
+            "b": b,
+            "c": c
+        }
     >
 
 >

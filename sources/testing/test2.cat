@@ -1,12 +1,11 @@
-:3cat-flap#keyword<over>with<more> // replace orange keywords with a custom keyword,
-                                   // which then can be used in the code
+#cat-flap :3
 
 <-- Implement code at compile-time -->
 #def PRINTLN(s) print('#<s>\n')
 
-#def TEST(n) <<!
+#def TEST(n) <<#
     #assert < n is num > // make sure n is an integer
-    #if < n is uoe 0 >
+    #if < n is under or 0 >
         #end // end the macro
     < fun test_#<n>() >.<
         #if < n is 3 >
@@ -16,7 +15,7 @@
     #if < n is over 0 >.<
         #call TEST(n - 1)
     >
-!>>
+#>>
 
 < fun main(args) >w<
 
@@ -35,7 +34,7 @@
 
     event < test changing e >.<
         // the variable 'test' is changing
-        e.cancel() // cancel the event
+        e:cancel() // cancel the event
     >
 
     event < test changed e >.<
@@ -50,8 +49,12 @@
         test < 3 / 0 > // try setting test to 3 divided by 0,
                        // which is impossible, so it will throw an error
                        // and the events 'test changing/changed' will not be called
-    >_<
+    > oof <
+        // catch the error
+        println("error o.o")
+    > ah <
         // finally
+        println("Finally :)")
     >
 
 >

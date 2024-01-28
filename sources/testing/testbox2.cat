@@ -6,8 +6,8 @@
         scawy <
             owo a < 3 / 0 > <-- try to divide by zero -->
             println('this should never print')
-        >.<
-            println(e.error) <-- print error -->
+        > oof <
+            println(e:error) <-- print error -->
         >
     >
 
