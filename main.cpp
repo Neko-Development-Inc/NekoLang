@@ -141,8 +141,10 @@ STOP_TIMER(timerStack)
 *  #catflap :3  - entrypoint
 *  #cat-flap :3 - entrypoint
 *
-*  #pls x      - includes x.cat (by copy paste)
-*  #pls x as y - includes x.cat (as reference y)
+*  #pls x       - includes x.cat (by copy paste)
+*  #pls x as y  - includes x.cat (as reference y) -- might remove this
+*
+*  #<name>      - insert a literal value
 *
 * box  - class
 * var  - variable
@@ -286,6 +288,16 @@ STOP_TIMER(timerStack)
 *                        the active error output stream (stderr by default)
 *    <bool>            Bool -- force flush or not -- optional
 *
+* Example problem using REPEAT_LL and REPEAT_LL_N:
+*  We have an opcode REPEAT_LL_N that is designed to loop 10 times,
+*   but we manually halt it at 5 iterations.
+*  The challenge here is to devise a logic that can accurately instruct
+*   the REPEAT opcode to cease looping.
+*  A potential solution could be to maintain a stack that holds a reference
+*   to each REPEAT_LL or REPEAT_LL_N opcode every time we enter one.
+*  This way, we can introduce a new opcode that can stop or abort the
+*   most recent REPEAT_LL or REPEAT_LL_N by using the reference at the top of the stack.
+*
 * Example program 1 (opcodes):
 *    JUMP 1
 *  LABEL 0
@@ -297,8 +309,79 @@ STOP_TIMER(timerStack)
 *    OUT true
 *  LABEL 1
 *    REPEAT_LL_N 0 1 10
+*    -- this is the end of the program
 *
 * Example program 2 (opcodes):
+*    NUMBER 1
+*    PLACE 0                    -- place the number 1 on the local variable table at index 0
+*    JUMP LBL_1
+*  LABEL LBL_0
+*    STRING 'Hello '            -- push the string 'Hello ' to the stack
+*    NUMBER 420                 -- push the number 420 to the stack
+*    CONCAT                     -- concatenate the last two elements on the stack
+*    STRING ' :)\n'             -- push the string ' :)\n' to the stack
+*    CONCAT                     -- concatenate the last two elements on the stack
+*    OUT true                   -- print the string 'Hello 420 :)' to stdout
+*    FETCH 0                    -- fetch the number 1 from the local variable table at index 0
+*                               -- and place it on the top of the stack
+*    CMP_EQ 5 LBL_END           -- If the top of the stack is equal to 5, jump to LBL_END
+*                               -- otherwise continue to the next instruction
+*    INC 0                      -- increment the number at index 0 on the local variable table
+*  LABEL LBL_1
+*    REPEAT_LL_N LBL_0 LBL_1 10 -- repeat the instructions between LBL_0 and LBL_1 10 times
+*  LABEL LBL_END
+*    -- this is the end of the program
+*
+* Example program 3 (opcodes):
+*    NUMBER 1
+*    PLACE 0
+*    JUMP LBL_1
+*  LABEL LBL_0
+*    STRING 'Hello '
+*    NUMBER 420
+*    CONCAT
+*    STRING ' :)\n'
+*    CONCAT
+*    OUT true                      -- Print the stack first
+*    JUMP TEST_2                   -- Jump immediately to TEST_2 below
+*  LABEL TEST_1
+*    STRING 'OWO'
+*    OUT true
+*  LABEL TEST_2
+*    REPEAT_LL_N TEST_1 TEST_2 100 -- Start an internal loop within the already
+*                                  -- existing loop, and repeat it 100 times
+*    FETCH 0
+*    CMP_EQ 5 LBL_END              -- End the outer loop after 5 iterations
+*    INC 0
+*  LABEL LBL_1
+*    REPEAT_LL_N LBL_0 LBL_1 10    -- Start an outer loop, and repeat it 10 times
+*  LABEL LBL_END
+*    -- this is the end of the program
+*
+* Example program 4 (opcodes):
+* |        NUMBER 1
+* |        PLACE 0
+* |        JUMP TEST_4 >--------------------->|
+* |                                           |
+* |  |>->LABEL TEST_1                         |
+* |  |                                        |
+* |  |  |>->LABEL TEST_2                      |
+* |  |  |     STRING 'OWO'                    |
+* |  |  |     OUT true                        |
+* |  |  |>->LABEL TEST_3                      |
+* |  |  |<--< REPEAT_LL_N TEST_2 TEST_3 100   |
+* |  |                                        |
+* |  |     FETCH 0                            |
+* |  |     CMP_EQ 5 LBL_END >---------------> | >->|
+* |  |     INC 0                              |    |
+* |  |                                        |    |
+* |  |>->LABEL TEST_4 <----------------------<|    |
+* |  |<--< REPEAT_LL_N TEST_1 TEST_4 10            |
+* |                                                |
+* |      LABEL LBL_END <--------------------------<|
+* |        -- this is the end of the program
+*
+* Example program 5 (opcodes):
 *    JUMP 1
 *  LABEL 0
 *    STRING 'abc' -- argument 1 (S)
@@ -311,6 +394,7 @@ STOP_TIMER(timerStack)
 *    REPEAT_LL_N 0 1 3 -- call a/b/c/Box1.function_test(SN) three times,
 *                      -- using 'abc' and 123 as the arguments.
 *                      -- automatically pop call result from the stack.
+*    -- this is the end of the program
 *
 * Example program (using NekoLang):
 *  for <from 1 to 10 inclusive as i>.<
@@ -413,50 +497,51 @@ STOP_TIMER(timerStack)
 *       | Num of bytes | Description                                       | Restrictions               |
 *       | =============+===================================================+=========================== |
 *  #1   | 4            | Magic number (hex for meow)                       | 'meow', not case-sensitive |
-*  #    | 1            | General encryption key (everything below uses it) | 0 <-> 255 (0 = not in use) |
-*  #2   | 4            | 32 bits of useful metadata (endianness, etc)      | 0x00000000 <-> 0x7fffffff  |
-*  #3   | 4            | Major version number                              | 0 <-> 2,147,483,647        |
-*  #4   | 4            | Minor version number                              | 0 <-> 2,147,483,647        |
-*  #5   | 4            | Lenght of .neko file (used for file verification) | 0 <-> 2,147,483,647        |
-*  #6   | 32           | SHA-256 of .neko file after these 32 bytes (^)    | must be a valid sha-256    |
+*  #2   | 1            | General encryption key (everything below uses it) | 0 <-> 255 (0 = not in use) |
+*  #3   | 4            | 32 bits of useful metadata (endianness, etc)      | 0x00000000 <-> 0x7fffffff  |
+*  #4   | 4            | Major version number                              | 0 <-> 2,147,483,647        |
+*  #5   | 4            | Minor version number                              | 0 <-> 2,147,483,647        |
+*  #6   | 4            | Lenght of .neko file (used for file verification) | 0 <-> 2,147,483,647        |
+*  #7   | 32           | SHA-256 of .neko file after these 32 bytes (^)    | must be a valid sha-256    |
+*  #8   | 1            | Opcode key                                        | 0 <-> 255 (0 = not in use) |
 *       | =============+===================================================+=========================== |
-*  #7   | 2            | Number of hidden fields K                         | 0 <-> 65,535               |
+*  #9   | 2            | Number of hidden fields K                         | 0 <-> 65,535               |
 *       | --- loop --- for every K box:                                    |                            |
-*  #8   | - 1          | Hidden field key length N                         | 1 <-> 255                  |
-*  #9   | - N          | Hidden field key content                          | alphanumeric & 1 <-> N     |
-*  #10  | - 1          | Hidden field value length N                       | 1 <-> 255                  |
-*  #11  | - N          | Hidden field value content                        | 1 <-> N                    |
+*  #10  | - 1          | Hidden field key length N                         | 1 <-> 255                  |
+*  #11  | - N          | Hidden field key content                          | alphanumeric & 1 <-> N     |
+*  #12  | - 1          | Hidden field value length N                       | 1 <-> 255                  |
+*  #13  | - N          | Hidden field value content                        | 1 <-> N                    |
 *       | =============+===================================================+=========================== |
-*  #12  | 1            | Boolean: Is this a box (1), or boxless code (0)?  | 0 or 1                     |
-*  #13  | 4            | Length of boxless code content N                  | 0 <-> N                    |
-*  #14  | N            | Boxless code                                      |                            |
+*  #14  | 1            | Boolean: Is this a box (1), or boxless code (0)?  | 0 or 1                     |
+*  #15  | 4            | Length of boxless code content N                  | 0 <-> N                    |
+*  #16  | N            | Boxless code                                      |                            |
 *       | =============+===================================================+=========================== |
-*  #15  | 2            | Number of boxes K                                 | 0 <-> 65,535               |
+*  #17  | 2            | Number of boxes K                                 | 0 <-> 65,535               |
 *       | --- loop --- for every K box:                                    |                            |
-*  #16  | - 4          | 32 bits of box metadata (access, etc)             | 0x00000000 <-> 0x7fffffff  |
-*  #17  | - 1          | Box name length N                                 | 1 <-> 255                  |
-*  #18  | - N          | Box name                                          | alphanumeric, /            |
-*  #19  | - 1          | Box parent name length N                          | 1 <-> 255                  |
-*  #20  | - N          | Box parent name                                   | alphanumeric, /            |
-*  #21  | - 4          | Number of fields                                  | 0 <-> 2,147,483,647        |
-*  #22  | - 4          | Number of functions                               | 0 <-> 2,147,483,647        |
+*  #18  | - 4          | 32 bits of box metadata (access, etc)             | 0x00000000 <-> 0x7fffffff  |
+*  #19  | - 1          | Box name length N                                 | 1 <-> 255                  |
+*  #20  | - N          | Box name                                          | alphanumeric, /            |
+*  #21  | - 1          | Box parent name length N                          | 1 <-> 255                  |
+*  #22  | - N          | Box parent name                                   | alphanumeric, /            |
+*  #23  | - 4          | Number of fields                                  | 0 <-> 2,147,483,647        |
+*  #24  | - 4          | Number of functions                               | 0 <-> 2,147,483,647        |
 *       | --- loop --- for each box, for every field:                      |                            |
-*  #23  | -- 4         | 32 bits of field metadata (access, etc)           | 0x00000000 <-> 0x7fffffff  |
-*  #24  | -- 1         | Field name length N                               | 1 <-> 255                  |
-*  #25  | -- N         | Field name                                        | alphanumeric               |
-*  #26  | -- 1         | Field default value type                          | 0 <-> 255                  |
-*  #27  | -- 1         | Field default value length N                      | 0 <-> 255                  |
-*  #28  | -- N         | Field default value                               |                            |
+*  #25  | -- 4         | 32 bits of field metadata (access, etc)           | 0x00000000 <-> 0x7fffffff  |
+*  #26  | -- 1         | Field name length N                               | 1 <-> 255                  |
+*  #27  | -- N         | Field name                                        | alphanumeric               |
+*  #28  | -- 1         | Field default value type                          | 0 <-> 255                  |
+*  #29  | -- 1         | Field default value length N                      | 0 <-> 255                  |
+*  #30  | -- N         | Field default value                               |                            |
 *       | --- loop --- for each box, for every function:                   |                            |
-*  #29  | -- 4         | 32 bits of box metadata (access, etc)             | 0x00000000 <-> 0x7fffffff  |
-*  #30  | -- 1         | Function name length N                            | 1 <-> 255                  |
-*  #31  | -- N         | Function name                                     | alphanumeric               |
-*  #32  | -- 1         | Function signature length N                       | 1 <-> 255                  |
-*  #33  | -- N         | Function signature                                |                            |
-*  #34  | -- 8         | Function code length N                            | 1 <-> 9223372036854775807  |
-*  #35  | -- N         | Function code                                     | 0 <-> N                    |
+*  #31  | -- 4         | 32 bits of box metadata (access, etc)             | 0x00000000 <-> 0x7fffffff  |
+*  #32  | -- 1         | Function name length N                            | 1 <-> 255                  |
+*  #33  | -- N         | Function name                                     | alphanumeric               |
+*  #34  | -- 1         | Function signature length N                       | 1 <-> 255                  |
+*  #35  | -- N         | Function signature                                |                            |
+*  #36  | -- 8         | Function code length N                            | 1 <-> 9223372036854775807  |
+*  #37  | -- N         | Function code                                     | 0 <-> N                    |
 *       | =============+===================================================+=========================== |
-*  #36  | --- the byte counter here should be equal to the file length --- | see #5                     |
+*  #38  | --- the byte counter here should be equal to the file length --- | see #7                     |
 *       \ =============+===================================================+=========================== /
 */
 

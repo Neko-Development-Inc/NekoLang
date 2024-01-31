@@ -5,16 +5,16 @@
 
 #def TEST(n) <<#
     #assert < n is num > // make sure n is an integer
-    #if < n is under or 0 >
+    #if < n is 0 >
         #end // end the macro
+    // define a function called 'test_#<n>'
     < fun test_#<n>() >.<
         #if < n is 3 >
             println('OwO')
         println('test_#<n> called')
     >
-    #if < n is over 0 >.<
+    #if < n is over 0 >
         #call TEST(n - 1)
-    >
 #>>
 
 < fun main(args) >w<
