@@ -1,0 +1,52 @@
+# Name of the project
+project: 'Test Project'
+
+# ID of the project
+id: 'testproject'
+
+# Version of the project
+version: '1.0.0'
+
+# The main file of the project
+main: 'main.cat'
+
+# Files to include in the project
+includes: [
+    'src',
+    'other/specific_file.cat'
+]
+
+# Files to exclude from the project
+# (Will even be forcefully exluced if any source files tries to include these)
+excludes: [
+    'src/other_file.cat'
+]
+
+# Build settings
+build:
+    # SingleNekoFile   --  single .neko file
+    # MeowFileArchive  --  can be opened as zip
+    # Executable       --  runnable .exe file
+    type: 'SingleNekoFile'
+
+    # The output executable file of the project
+    output: 'build/testproject{.neko/.meow/.exe}'
+
+    # Exe file settings
+    exe:
+        # The icon of the project (only for .exe)
+        icon: 'exe-icon.png'
+
+# Libraries
+libs: [
+    'https://github.com/nekoware/catlib', # Example library remotely
+    'C:/Users/nekoware/Desktop/catlib',   # Example library locally
+    'D:/catlib/catlib.neko'               # Example library locally
+]
+
+# Required libraries
+requires: [
+    'catlib@1.0.0',
+    'otherlib@4.2.0'
+]
+
