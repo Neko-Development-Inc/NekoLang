@@ -220,15 +220,15 @@ STOP_TIMER(timerStack)
 *  NDUP_3       = 10 - duplicate the last 3 elements on the Stack, N times
 *    <N>             Number of times to duplicate
 *  NDUP_N       = 11 - duplicate the last N elements on the Stack, N times
-*    <L1>            Number of elements from the stack to duplicate
-*    <L2>            Number of times to duplicate
+*    <N1>            Number of elements from the stack to duplicate
+*    <N2>            Number of times to duplicate
 *  NDUP_ALL     = 12 - duplicate all the elements on the Stack, N times
 *    <N>             Number of times to duplicate
 *
 *  CS           = 20 - clear the stack
 *
 *  LABEL        = 1000 - label, a specific point in an instruction-set
-*    <id>              Number
+*    <id>              Number/String
 *  RETURN       = 1001 - return from function
 *  JUMP         = 1002 - jump to label instruction
 *    <lbl id>          Number
@@ -509,7 +509,7 @@ STOP_TIMER(timerStack)
 *       | --- loop --- for every K box:                                    |                            |
 *  #10  | - 1          | Hidden field key length N                         | 1 <-> 255                  |
 *  #11  | - N          | Hidden field key content                          | alphanumeric & 1 <-> N     |
-*  #12  | - 1          | Hidden field value length N                       | 1 <-> 255                  |
+*  #12  | - 2          | Hidden field value length N                       | 1 <-> 65,535               |
 *  #13  | - N          | Hidden field value content                        | 1 <-> N                    |
 *       | =============+===================================================+=========================== |
 *  #14  | 1            | Boolean: Is this a box (1), or boxless code (0)?  | 0 or 1                     |
@@ -533,7 +533,7 @@ STOP_TIMER(timerStack)
 *  #29  | -- 1         | Field default value length N                      | 0 <-> 255                  |
 *  #30  | -- N         | Field default value                               |                            |
 *       | --- loop --- for each box, for every function:                   |                            |
-*  #31  | -- 4         | 32 bits of box metadata (access, etc)             | 0x00000000 <-> 0x7fffffff  |
+*  #31  | -- 4         | 32 bits of function metadata (access, etc)        | 0x00000000 <-> 0x7fffffff  |
 *  #32  | -- 1         | Function name length N                            | 1 <-> 255                  |
 *  #33  | -- N         | Function name                                     | alphanumeric               |
 *  #34  | -- 1         | Function signature length N                       | 1 <-> 255                  |
@@ -541,7 +541,7 @@ STOP_TIMER(timerStack)
 *  #36  | -- 8         | Function code length N                            | 1 <-> 9223372036854775807  |
 *  #37  | -- N         | Function code                                     | 0 <-> N                    |
 *       | =============+===================================================+=========================== |
-*  #38  | --- the byte counter here should be equal to the file length --- | see #7                     |
+*  #38  | --- the byte counter here should be equal to the file length --- | see #6                     |
 *       \ =============+===================================================+=========================== /
 */
 
