@@ -67,6 +67,13 @@ namespace vm {
                 return std::make_unique<string>(s->get());
             }
             errorln("popString: no value");
+        } else if (result.type == ObjectType::T_BOOL) {
+            auto opt = &result.obj;
+            if (opt->has_value()) {
+                auto b = dynamic_cast<NekoBool*>(*(&opt->value())->get());
+                return std::make_unique<string>(to_string(b->get()));
+            }
+            errorln("popBool: no value");
         }
         return nullptr;
     }
@@ -91,6 +98,19 @@ namespace vm {
             if (opt->has_value()) {
                 auto s = dynamic_cast<NekoString*>(*(&opt->value())->get());
                 return std::make_unique<string>(s->get());
+            }
+            errorln("popString: no value");
+        }
+        return nullptr;
+    }
+
+    std::unique_ptr<bool> NekoStack::popBool() {
+        auto result = pop();
+        if (result.success && result.type == ObjectType::T_BOOL) {
+            auto opt = &result.obj;
+            if (opt->has_value()) {
+                auto s = dynamic_cast<NekoBool*>(*(&opt->value())->get());
+                return std::make_unique<bool>(s->get());
             }
             errorln("popString: no value");
         }

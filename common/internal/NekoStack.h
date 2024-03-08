@@ -5,9 +5,10 @@
 
 #include "../../headers.h"
 
-#include "../types/NekoObject.h"
-#include "../types/NekoNumber.h"
-#include "../types/NekoString.h"
+#include "../../runtime/types/NekoObject.h"
+#include "../../runtime/types/NekoNumber.h"
+#include "../../runtime/types/NekoString.h"
+#include "../../runtime/types/NekoBool.h"
 
 namespace vm {
 
@@ -49,6 +50,12 @@ public:
             stackTypes.emplace(type);
             size++;
             return;
+        } else if constexpr (std::is_same<TT, bool>::value) {
+            auto b = static_cast<bool>(obj);
+            _stack.emplace(std::make_unique<NekoBase*>(new NekoBool(b)));
+            stackTypes.emplace(type);
+            size++;
+            return;
         } else if constexpr (std::is_same<TT, const char *>::value) {
             _stack.emplace(std::make_unique<NekoBase*>(new NekoString(obj)));
             stackTypes.emplace(type);
@@ -69,6 +76,7 @@ public:
     std::unique_ptr<string> popToString();
     std::unique_ptr<long double> popNumber();
     std::unique_ptr<string> popString();
+    std::unique_ptr<bool> popBool();
 
 };
 }
