@@ -25,9 +25,16 @@ excludes: [
 # Build settings
 build:
     # SingleNekoFile   --  single .neko file
-    # MeowFileArchive  --  can be opened as zip
+    # MewFileArchive   --  .mew file that can be opened as zip
     # Executable       --  runnable .exe file
+    #                      (will include the whole nekolang runtime)
     type: 'SingleNekoFile'
+
+    # Compile the project, or just pack the source files
+    compile: 'true'
+
+    # Include the source files in the output file
+    includeSrc: 'true'
 
     # The output executable file of the project
     output: 'build/testproject{.neko/.meow/.exe}'
