@@ -29,6 +29,7 @@ add_executable(NekoLang main.cpp
         runtime/ops/NekoOpNumber.cpp
         runtime/ops/NekoOpString.cpp
         runtime/ops/NekoOpConcat.cpp
+        runtime/ops/NekoOpLabel.cpp
         runtime/ops/NekoOpReturn.cpp
 
         runtime/types/NekoObject.h
@@ -36,13 +37,15 @@ add_executable(NekoLang main.cpp
         runtime/types/NekoNumber.h
         runtime/types/NekoString.cpp
         runtime/types/NekoString.h
+        runtime/types/NekoBool.cpp
+        runtime/types/NekoBool.h
 
-        runtime/vm/NekoFunction.cpp
-        runtime/vm/NekoFunction.h
-        runtime/vm/NekoClass.cpp
-        runtime/vm/NekoClass.h
-        runtime/vm/NekoStack.cpp
-        runtime/vm/NekoStack.h
+        common/internal/NekoFunction.cpp
+        common/internal/NekoFunction.h
+        common/internal/NekoBox.cpp
+        common/internal/NekoBox.h
+        common/internal/NekoStack.cpp
+        common/internal/NekoStack.h
 
         common/files/NekoWriter.cpp
         common/files/NekoWriter.h

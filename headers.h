@@ -54,7 +54,9 @@ namespace ops {
     class NekoOpPop;
     class NekoOpNumber;
     class NekoOpString;
+    class NekoOpBool;
     class NekoOpConcat;
+    class NekoOpLabel;
     class NekoOpReturn;
 }
 namespace runtime {
@@ -69,12 +71,14 @@ namespace types {
     class NekoBase;
     class NekoNumber;
     class NekoString;
+    class NekoBool;
 }
 namespace vm {
     struct Result;
     class NekoStack;
-    class NekoClass;
+    class NekoBox;
     class NekoFunction;
+    class NekoVariable;
 }
 // FORWARD DECLARATIONS >
 

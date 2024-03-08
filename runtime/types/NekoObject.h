@@ -10,7 +10,8 @@ namespace types {
         T_NONE = 0,
         T_UNKNOWN = 1,
         T_NUMBER = 2,
-        T_STRING = 3
+        T_STRING = 3,
+        T_BOOL = 4
     };
 
     class NekoBase {
@@ -37,6 +38,8 @@ namespace types {
                 return "Number";
             if (type == typeid(ObjectType::T_STRING))
                 return "String";
+            if (type == typeid(ObjectType::T_BOOL))
+                return "Bool";
             return "Unknown";
         }
 

@@ -36,7 +36,7 @@
 
 
 #ifdef STACK
-#include "runtime/vm/NekoStack.h"
+#include "common/internal/NekoStack.h"
 #endif
 
 
