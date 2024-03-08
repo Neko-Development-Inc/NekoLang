@@ -1,6 +1,8 @@
 # NekoLang - cat-ish programming language  
 Takes inspiration from multiple languages, including: Java, JavaScript, Python, PHP.  
-Uses my very own custom instruction-set; no copy-pasted code from elsewhere, otherwise specifically commented.  
+Uses my very own custom instruction-set; no copy-pasted code from elsewhere, otherwise specifically commented.
+
+[![wakatime](https://wakatime.com/badge/user/6e87c2b1-00e5-48ff-98b5-35a00438ef4f/project/018ba990-51e3-402e-8e1a-268cfe099cc3.svg)](https://wakatime.com/badge/user/6e87c2b1-00e5-48ff-98b5-35a00438ef4f/project/018ba990-51e3-402e-8e1a-268cfe099cc3)
 
 ## Preview
 <sub><sup>
