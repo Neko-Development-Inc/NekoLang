@@ -13,7 +13,9 @@
 #include "ops/NekoOpDup.cpp"
 #include "ops/NekoOpNumber.cpp"
 #include "ops/NekoOpString.cpp"
+#include "ops/NekoOpBool.cpp"
 #include "ops/NekoOpConcat.cpp"
+#include "ops/NekoOpLabel.cpp"
 #include "ops/NekoOpReturn.cpp"
 
 class runtime::Runtime {

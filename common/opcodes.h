@@ -25,32 +25,34 @@ const short
 
      , CS       = 20
 
-     , LABEL    = 1000
-     , RETURN   = 1001
-     , JUMP     = 1002
+     , LABEL     = 1000
+     , RETURN    = 1001
+     , JUMP      = 1002
 
-     , CREATE   = 2000
-     , TYPE     = 2001
-     , CALL     = 2002
+     , CREATE    = 2000
+     , TYPE      = 2001
+     , CALL      = 2002
 
      , NUMBER     = 3000
      , STRING     = 3001
-     , CONCAT     = 3002
-     , CONCAT_N   = 3003
-     , CONCAT_ALL = 3004
+     , BOOL       = 3002
 
-     , REPEAT      = 4000
-     , REPEAT_N    = 4001
-     , REPEAT_LL   = 4002
-     , REPEAT_LL_N = 4003
+     , CONCAT     = 4000
+     , CONCAT_N   = 4001
+     , CONCAT_ALL = 4002
 
-     , NREPEAT   = 4004
-     , NREPEAT_N = 4005
+     , REPEAT      = 5000
+     , REPEAT_N    = 5001
+     , REPEAT_LL   = 5002
+     , REPEAT_LL_N = 5003
 
-     , OUT       = 5000
-     , OUT_ALL   = 5001
-     , ERR       = 5002
-     , ERR_ALL   = 5003
+     , NREPEAT     = 5004
+     , NREPEAT_N   = 5005
+
+     , OUT       = 10000
+     , OUT_ALL   = 10001
+     , ERR       = 10002
+     , ERR_ALL   = 10003
 ;
 
 namespace ops {

@@ -3,78 +3,52 @@
 namespace runtime {
 
     void Runtime::init() {
-        // NOP                       = 0 - do nothing
-        impls.emplace(ops[NOP],    std::make_unique<NekoOpNop>());
+        /*     0 */ impls.emplace(ops[NOP],    std::make_unique<NekoOpNop>(ops[NOP]));
+        /*     1 */ impls.emplace(ops[POP],    std::make_unique<NekoOpPop>(ops[POP]));
+        /*     2 */ impls.emplace(ops[POP_N],  std::make_unique<NekoOpPop>(ops[POP_N]));
 
+        /*     3 */ impls.emplace(ops[DUP],    std::make_unique<NekoOpDup>(ops[DUP]));
+        /*     4 */ impls.emplace(ops[DUP_2],  std::make_unique<NekoOpDup>(ops[DUP_2]));
+        /*     5 */ impls.emplace(ops[DUP_3],  std::make_unique<NekoOpDup>(ops[DUP_3]));
+        /*     6 */ impls.emplace(ops[DUP_N],  std::make_unique<NekoOpDup>(ops[DUP_N]));
+        /*     7 */ impls.emplace(ops[DUP_ALL], std::make_unique<NekoOpDup>(ops[DUP_ALL]));
 
+        /*     8 */ impls.emplace(ops[NDUP],    std::make_unique<NekoOpDup>(ops[NDUP]));
+        /*     9 */ impls.emplace(ops[NDUP_2],  std::make_unique<NekoOpDup>(ops[NDUP_2]));
+        /*    10 */ impls.emplace(ops[NDUP_3],  std::make_unique<NekoOpDup>(ops[NDUP_3]));
+        /*    11 */ impls.emplace(ops[NDUP_N],  std::make_unique<NekoOpDup>(ops[NDUP_N]));
+        /*    12 */ impls.emplace(ops[NDUP_ALL], std::make_unique<NekoOpDup>(ops[NDUP_ALL]));
 
-        // POP                       = 1 - pop last element from Stack
-        impls.emplace(ops[POP],    std::make_unique<NekoOpPop>());
+        /*    20 */ impls.emplace(ops[CS],       std::make_unique<NekoOpCs>(ops[CS]));
 
-        // POP_N                     = 2 - pop last N elements from Stack
-        //   <n>                         Number
-        impls.emplace(ops[POP_N],  std::make_unique<NekoOpPop>());
+        /*  1000 */ impls.emplace(ops[LABEL],    std::make_unique<NekoOpLabel>(ops[LABEL]));
+        /*  1001 */ impls.emplace(ops[RETURN],   std::make_unique<NekoOpReturn>(ops[RETURN]));
+//        /*  1002 */ impls.emplace(ops[JUMP],     std::make_unique<NekoOpJump>(ops[JUMP]));
 
+//        /*  2000 */ impls.emplace(ops[CREATE],     std::make_unique<NekoOpCreate>(ops[CREATE]));
+//        /*  2001 */ impls.emplace(ops[TYPE],     std::make_unique<NekoOpType>(ops[TYPE]));
+//        /*  2002 */ impls.emplace(ops[CALL],     std::make_unique<NekoOpCall>(ops[CALL]));
 
+        /*  3000 */ impls.emplace(ops[NUMBER], std::make_unique<NekoOpNumber>(ops[NUMBER]));
+        /*  3001 */ impls.emplace(ops[STRING], std::make_unique<NekoOpString>(ops[STRING]));
+        /*  3002 */ impls.emplace(ops[BOOL], std::make_unique<NekoOpBool>(ops[BOOL]));
 
-        // DUP                       = 3 - duplicate the last element on the Stack
-        impls.emplace(ops[DUP],    std::make_unique<NekoOpDup>());
+        /*  4000 */ impls.emplace(ops[CONCAT], std::make_unique<NekoOpConcat>(ops[CONCAT]));
+        /*  4001 */ impls.emplace(ops[CONCAT_N], std::make_unique<NekoOpConcat>(ops[CONCAT_N]));
+        /*  4002 */ impls.emplace(ops[CONCAT_ALL], std::make_unique<NekoOpConcat>(ops[CONCAT_ALL]));
 
-        //  DUP_2                    = 4 - duplicate the last 2 elements on the Stack
-        impls.emplace(ops[DUP_2],  std::make_unique<NekoOpDup>());
+//        /*  5000 */ impls.emplace(ops[REPEAT], std::make_unique<NekoOpRepeat>(ops[REPEAT]));
+//        /*  5001 */ impls.emplace(ops[REPEAT_N], std::make_unique<NekoOpRepeat>(ops[REPEAT_N]));
+//        /*  5002 */ impls.emplace(ops[REPEAT_LL], std::make_unique<NekoOpRepeat>(ops[REPEAT_LL]));
+//        /*  5003 */ impls.emplace(ops[REPEAT_LL_N], std::make_unique<NekoOpRepeat>(ops[REPEAT_LL_N]));
 
-        //  DUP_3                    = 5 - duplicate the last 3 elements on the Stack
-        impls.emplace(ops[DUP_3],  std::make_unique<NekoOpDup>());
+//        /*  5004 */ impls.emplace(ops[NREPEAT], std::make_unique<NekoOpRepeat>(ops[NREPEAT]));
+//        /*  5005 */ impls.emplace(ops[NREPEAT_N], std::make_unique<NekoOpRepeat>(ops[NREPEAT_N]));
 
-        //  DUP_N                    = 6 - duplicate the last N elements on the Stack
-        //    <n>                        Number
-        impls.emplace(ops[DUP_N],  std::make_unique<NekoOpDup>());
-
-
-
-        //  CS                       = 7 - clear the stack
-        impls.emplace(ops[CS],     std::make_unique<NekoOpCs>());
-
-
-
-        //  NUMBER                   = 3000 - add Number to the Stack
-        //    <n>                           Number
-        impls.emplace(ops[NUMBER], std::make_unique<NekoOpNumber>());
-
-        //  STRING                   = 3001 - add String to the Stack
-        //    <str>                         String
-        impls.emplace(ops[STRING], std::make_unique<NekoOpString>());
-
-        //  CONCAT                   = 3002 - concatenates the last two elements
-        //                                    on the Stack, and puts the Result
-        //                                    back on the Stack
-        impls.emplace(ops[CONCAT], std::make_unique<NekoOpConcat>());
-
-        //  CONCAT_N                 = 3003 - concatenates the last N elements
-        //                                    on the Stack, and puts the Result
-        //                                    back on the Stack
-        //    <n>                           Number
-        impls.emplace(ops[CONCAT_N], std::make_unique<NekoOpConcat>(CONCAT_N));
-
-        //  CONCAT_ALL               = 3004 - concatenates all the elements
-        //                                    on the Stack, and puts the Result
-        //                                    back on the Stack
-        impls.emplace(ops[CONCAT_ALL], std::make_unique<NekoOpConcat>(CONCAT_ALL));
-
-
-
-        //  RETURN                   = 1001 - return from function
-        impls.emplace(ops[RETURN], std::make_unique<NekoOpReturn>());
-
-
-
-        //  OUT                      = 5000 - prints the last value on the Stack to
-        //                                    the active output stream (stdout by default)
-        impls.emplace(ops[OUT], std::make_unique<NekoOpOut>());
-
-        //  ERR                      = 5001 - prints the last value on the Stack to
-        //                                    the active error output stream (stderr by default)
-        impls.emplace(ops[ERR], std::make_unique<NekoOpOut>(ERR));
+        /* 10000 */ impls.emplace(ops[OUT], std::make_unique<NekoOpOut>(ops[OUT]));
+        /* 10001 */ impls.emplace(ops[OUT_ALL], std::make_unique<NekoOpOut>(ops[OUT_ALL]));
+        /* 10010 */ impls.emplace(ops[ERR], std::make_unique<NekoOpOut>(ops[ERR]));
+        /* 10011 */ impls.emplace(ops[ERR_ALL], std::make_unique<NekoOpOut>(ops[ERR_ALL]));
     }
 
 } // runtime
