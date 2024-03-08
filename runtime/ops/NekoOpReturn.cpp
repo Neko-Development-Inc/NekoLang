@@ -7,13 +7,16 @@ public:
     explicit NekoOpReturn()
             : NekoOp(RETURN) {}
 
+    explicit NekoOpReturn(short opcode)
+            : NekoOp(opcode) {}
+
     std::unique_ptr<NekoOp> clone() const override {
         return std::make_unique<NekoOpReturn>(*this);
     }
 
-    long int execute(Runtime& r, NekoStack& s, size_t& i) override {
+    long long execute(Runtime& r, NekoStack& s, size_t& i) override {
         println("NekoOpReturn");
-        return -1; // stop function
+        return HALT_EXECUTION;
     }
 
 };

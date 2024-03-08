@@ -6,6 +6,7 @@ class NekoOpOut : public NekoOp {
 public:
     explicit NekoOpOut()
             : NekoOp(OUT) {}
+
     explicit NekoOpOut(short opcode)
             : NekoOp(opcode) {}
 
@@ -13,7 +14,7 @@ public:
         return std::make_unique<NekoOpOut>(*this);
     }
 
-    long int execute(Runtime& r, NekoStack& s, size_t& i) override {
+    long long execute(Runtime& r, NekoStack& s, size_t& i) override {
         println("NekoOpOut");
         auto size = s.count();
         auto a = s.pop();
@@ -60,7 +61,7 @@ public:
                 if (doFlush) flushErr();
             }
         }
-        return 0;
+        return CONTINUE_EXECUTION;
     }
 
 };

@@ -6,6 +6,7 @@ class NekoOpConcat : public NekoOp {
 public:
     explicit NekoOpConcat()
             : NekoOp(CONCAT) {}
+
     explicit NekoOpConcat(short opcode)
             : NekoOp(opcode) {}
 
@@ -13,7 +14,7 @@ public:
         return std::make_unique<NekoOpConcat>(*this);
     }
 
-    long int execute(Runtime& r, NekoStack& s, size_t& i) override {
+    long long execute(Runtime& r, NekoStack& s, size_t& i) override {
         println("NekoOpConcat");
 
         auto peek1 = s.peek();
@@ -79,6 +80,10 @@ public:
                     auto str = *s.popString();
                     strings.emplace_back(str);
                 } break;
+                case T_BOOL: {
+                    auto b = *s.popBool();
+                    strings.emplace_back(b ? NekoBool::TRUE : NekoBool::FALSE);
+                } break;
                 case T_NONE:
                 case T_UNKNOWN:
                     break;
@@ -90,7 +95,7 @@ public:
 
         s.add(result, T_STRING);
 
-        return 0;
+        return CONTINUE_EXECUTION;
     }
 
 };

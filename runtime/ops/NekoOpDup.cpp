@@ -7,6 +7,9 @@ public:
     explicit NekoOpDup()
         : NekoOp(DUP) {}
 
+    explicit NekoOpDup(short opcode)
+            : NekoOp(opcode) {}
+
     std::unique_ptr<NekoOp> clone() const override {
         return std::make_unique<NekoOpDup>(*this);
     }
@@ -16,7 +19,7 @@ public:
         ObjectType type;
     };
 
-    long int execute(Runtime& r, NekoStack& s, size_t& i) override {
+    long long execute(Runtime& r, NekoStack& s, size_t& i) override {
         println("NekoOpDup");
 
         int n;
@@ -84,7 +87,7 @@ public:
             }
         }
 
-        return 0;
+        return CONTINUE_EXECUTION;
     }
 
 };

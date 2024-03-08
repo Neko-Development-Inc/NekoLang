@@ -1,10 +1,14 @@
 #pragma once
 
 #include "../../headers.h"
-#include "../vm/NekoStack.h"
+#include "../../common/internal/NekoStack.h"
 
 namespace ops {
 class NekoOp {
+public:
+    static const long long CONTINUE_EXECUTION = 0;
+    static const long long HALT_EXECUTION = -1;
+
 public:
 
     const short opcode;
@@ -32,11 +36,17 @@ public:
             return toLd(std::any_cast<long double>(arg));
         else if (type == typeid(long long))
             return toLd(std::any_cast<long long>(arg));
+        else if (type == typeid(long int))
+            return toLd(std::any_cast<long int>(arg));
         throw std::runtime_error("Unknown number type");
     }
 
     string getArgString(int n = 0) {
         return std::any_cast<string>(args[n]);
+    }
+
+    bool getArgBool(int n = 0) {
+        return std::any_cast<bool>(args[n]);
     }
 
     bool hasArg(int n = 0) {
@@ -49,9 +59,10 @@ public:
         return obj.type() == type;
     }
 
+    // TODO: Test if cloning also clones the custom opcode (if changed)
     virtual unique_ptr<NekoOp> clone() const = 0;
 
-    virtual long int execute(Runtime&, NekoStack&, size_t&) = 0;
+    virtual long long execute(Runtime&, NekoStack&, size_t&) = 0;
 
     void debugArguments() {
         println("\targs count: ", args.size());

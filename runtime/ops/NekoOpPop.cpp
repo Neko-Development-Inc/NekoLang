@@ -7,11 +7,14 @@ public:
     explicit NekoOpPop()
         : NekoOp(POP) {}
 
+    explicit NekoOpPop(short opcode)
+            : NekoOp(opcode) {}
+
     std::unique_ptr<NekoOp> clone() const override {
         return std::make_unique<NekoOpPop>(*this);
     }
 
-    long int execute(Runtime& r, NekoStack& s, size_t& i) override {
+    long long execute(Runtime& r, NekoStack& s, size_t& i) override {
         println("NekoOpPop");
         int n = 1;
         if (!args.empty()) {
@@ -36,7 +39,7 @@ public:
                 exit(1);
             }
         }
-        return 0;
+        return CONTINUE_EXECUTION;
     }
 
 };
