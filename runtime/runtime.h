@@ -32,7 +32,7 @@ public:
     template <typename T, typename... Args>
     void addArg(unique_ptr<NekoOp>& a, T&& first, Args&&... rest) {
         if constexpr (std::is_arithmetic<std::decay_t<T>>::value)
-            a->addArg(static_cast<long double>(first));
+            a->addArg(static_cast<_NekoNumberType_>(first));
         else
             a->addArg(first);
         if constexpr (sizeof...(rest) > 0)

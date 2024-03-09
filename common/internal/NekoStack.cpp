@@ -78,13 +78,13 @@ namespace vm {
         return nullptr;
     }
 
-    std::unique_ptr<long double> NekoStack::popNumber() {
+    std::unique_ptr<_NekoNumberType_> NekoStack::popNumber() {
         auto result = pop();
         if (result.success && result.type == ObjectType::T_NUMBER) {
             auto opt = &result.obj;
             if (opt->has_value()) {
                 auto s = dynamic_cast<NekoNumber*>(*(&opt->value())->get());
-                return std::make_unique<long double>(s->get());
+                return std::make_unique<_NekoNumberType_>(s->get());
             }
             errorln("popNumber: no value");
         }

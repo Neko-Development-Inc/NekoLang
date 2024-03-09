@@ -9,14 +9,14 @@
 #include "NekoString.h"
 
 namespace types {
-class NekoNumber : public NekoObject<long double> {
+class NekoNumber : public NekoObject<_NekoNumberType_> {
 
 public:
-    explicit NekoNumber(long double num) :
+    explicit NekoNumber(_NekoNumberType_ num) :
         NekoObject(num) {}
 
-    long double get() override;
-    void set(long double) override;
+    _NekoNumberType_ get() override;
+    void set(_NekoNumberType_) override;
 
     bool hasDecimals();
 

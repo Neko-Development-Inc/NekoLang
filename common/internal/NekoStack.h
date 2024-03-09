@@ -45,7 +45,7 @@ public:
             size++;
             return;
         } else if constexpr (std::is_arithmetic<TT>::value) {
-            auto num = static_cast<long double>(obj);
+            auto num = static_cast<_NekoNumberType_>(obj);
             _stack.emplace(std::make_unique<NekoBase*>(new NekoNumber(num)));
             stackTypes.emplace(type);
             size++;
@@ -74,7 +74,7 @@ public:
     void process();
 
     std::unique_ptr<string> popToString();
-    std::unique_ptr<long double> popNumber();
+    std::unique_ptr<_NekoNumberType_> popNumber();
     std::unique_ptr<string> popString();
     std::unique_ptr<bool> popBool();
 

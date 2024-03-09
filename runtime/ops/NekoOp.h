@@ -21,9 +21,9 @@ public:
         args.emplace_back(arg);
     }
 
-#define toLd(x) static_cast<long double>(x)
+#define toLd(x) static_cast<_NekoNumberType_>(x)
 
-    long double getArgNumber(int n = 0) {
+    _NekoNumberType_ getArgNumber(int n = 0) {
         any arg = args[n];
         const auto& type = arg.type();
         if (type == typeid(int))

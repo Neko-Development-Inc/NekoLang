@@ -3,7 +3,7 @@
 #ifndef HEADERS_H
 #define HEADERS_H
 
-// ALL HEADERS IN THE ENTIRE PROJECT
+#define _NekoNumberType_ long double
 
 // DEFAULT LIBS
 #include <any>

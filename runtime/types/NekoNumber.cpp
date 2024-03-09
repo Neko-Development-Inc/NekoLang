@@ -2,11 +2,11 @@
 
 namespace types {
 
-    long double NekoNumber::get() {
+    _NekoNumberType_ NekoNumber::get() {
         return value;
     }
 
-    void NekoNumber::set(long double val) {
+    void NekoNumber::set(_NekoNumberType_ val) {
         value = val;
     }
 
