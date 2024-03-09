@@ -2,7 +2,7 @@
         i -> 0,
         s -> 'default'
 ) >.<
-    print(i + s);
-    println(i + s);
+    print(i + s)
+    println(i + s)
 >
 Baggy(s: 'def', i: 123)

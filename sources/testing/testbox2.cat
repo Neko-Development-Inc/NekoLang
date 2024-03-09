@@ -7,7 +7,7 @@
             owo a < 3 / 0 > <-- try to divide by zero -->
             println('this should never print')
         > oof <
-            println(e:error) <-- print error -->
+            println(e.error) <-- print error -->
         >
     >
 

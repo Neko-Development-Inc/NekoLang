@@ -34,7 +34,7 @@
 
     event < test changing e >.<
         // the variable 'test' is changing
-        e:cancel() // cancel the event
+        e.cancel() // cancel the event
     >
 
     event < test changed e >.<

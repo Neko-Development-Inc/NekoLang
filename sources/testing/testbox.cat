@@ -8,9 +8,9 @@
 
     <-- Constructor -->
     < fun Box1(a, b, c) >.<
-        this:a <a> <-- Assign argument 'a' to box variable 'a' -->
-        this:b <b> <-- Assign argument 'b' to box variable 'b' -->
-        this:c <c> <-- Assign argument 'c' to box variable 'c' -->
+        this.a <a> <-- Assign argument 'a' to box variable 'a' -->
+        this.b <b> <-- Assign argument 'b' to box variable 'b' -->
+        this.c <c> <-- Assign argument 'c' to box variable 'c' -->
     >
 
     < fun getA >.< ret a > <-- Returns variable 'a' -->

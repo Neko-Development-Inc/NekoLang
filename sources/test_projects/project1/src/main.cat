@@ -9,6 +9,6 @@
         #pls free-standing-code
         #pls free-standing-code
 
-        TestBox:test('Hello', ' World')
+        TestBox.test('Hello', ' World')
     >
 >

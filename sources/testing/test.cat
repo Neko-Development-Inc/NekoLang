@@ -9,7 +9,7 @@ owo test
 // 'test changing' is called before the variable is changed
 event < test changing e >.<
     // the variable 'test' is changing
-    e:cancel() // cancel the event
+    e.cancel() // cancel the event
 >
 
 // 'test changed' is called after the variable is changed
@@ -23,7 +23,7 @@ event < test read e >.<
     // the variable 'test' is being read
 
     // set the new value to 5
-    e:new < 5 >
+    e.new < 5 >
 >
 
 < fun main(args) >w<

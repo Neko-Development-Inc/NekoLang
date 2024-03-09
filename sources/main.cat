@@ -22,7 +22,7 @@ text < "trigger an on-change event" >
 
 owo b < fact, fake >
 
-u:Baggy()
+u.Baggy()
 // Execute the 'Baggy' function from 'utils'
 
 // Class example
@@ -84,9 +84,9 @@ scawy < <-- or spoopy -->
 owo json <{
     testKey: 'test value'
 }>
-print(json:testKey) // prints 'test value'
-json:testKey <'OwO'>
-print(json:testKey) // prints 'OwO'
+print(json.testKey) // prints 'test value'
+json.testKey <'OwO'>
+print(json.testKey) // prints 'OwO'
 
 // math example:
 owo a < 3 >         // 3

@@ -7,9 +7,9 @@
 
     < !fun test >.<
         owo t < testThreadFunc >
-        t:thread():run(123) // run thread 1
-        t:thread():run(234) // run thread 2
-        t:thread():run(345) // run thread 3
+        t.thread().run(123) // run thread 1
+        t.thread().run(234) // run thread 2
+        t.thread().run(345) // run thread 3
     >
 
 >
