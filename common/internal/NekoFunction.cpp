@@ -33,7 +33,7 @@ namespace vm {
             auto& insn = instructions[i];
 
             // Execute current instruction
-            long long next = insn->execute(r, stack, i);
+            _OpsNumberIndexType_ next = insn->execute(r, stack, i);
 
             // Check if we returned from the function
             if (next == NekoOp::HALT_EXECUTION) {

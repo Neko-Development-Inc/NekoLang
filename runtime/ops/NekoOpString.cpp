@@ -13,7 +13,7 @@ public:
         return std::make_unique<NekoOpString>(*this);
     }
 
-    long long execute(Runtime& r, NekoStack& s, size_t& i) override {
+    _OpsNumberIndexType_ execute(Runtime& r, NekoStack& s, size_t& i) override {
         println("NekoOpString");
         if (args.empty()) {
             errorln("Error: NekoOpString args was empty");

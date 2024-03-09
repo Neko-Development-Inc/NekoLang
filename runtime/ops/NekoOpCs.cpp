@@ -14,7 +14,7 @@ public:
         return std::make_unique<NekoOpCs>(*this);
     }
 
-    long long execute(Runtime& r, NekoStack& s, size_t& i) override {
+    _OpsNumberIndexType_ execute(Runtime& r, NekoStack& s, size_t& i) override {
         println("NekoOpCs");
         println("NekoOpCs: Stack size before CS: ", s.count());
         s.clear();

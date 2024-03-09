@@ -14,7 +14,7 @@ public:
         return std::make_unique<NekoOpConcat>(*this);
     }
 
-    long long execute(Runtime& r, NekoStack& s, size_t& i) override {
+    _OpsNumberIndexType_ execute(Runtime& r, NekoStack& s, size_t& i) override {
         println("NekoOpConcat");
 
         auto peek1 = s.peek();
@@ -28,16 +28,13 @@ public:
         int n;
         if (opcode == CONCAT) {
             // Last 2 elements
-            if (s.count() >= 2)
-                n = 2;
-            else
-                n = 1;
+            n = s.count() >= 2 ? 2 : 1;
         } else if (opcode == CONCAT_N) {
             if (!hasArg(0)) {
                 errorln("Error: NekoOpConcat: CONCAT_N: args[0] not found");
                 exit(1);
             }
-            if (!argIsType(0, typeid(long double))) {
+            if (!argIsType(0, typeid(_NekoNumberType_))) {
                 errorln("Error: NekoOpConcat: CONCAT_N: args[0] wasn't a number");
                 exit(1);
             }

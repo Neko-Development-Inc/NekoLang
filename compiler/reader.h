@@ -68,8 +68,8 @@ private:
 
 public:
     std::string str;
-    long long index = 0;
-    long long end = 0;
+    _OpsNumberIndexType_ index = 0;
+    _OpsNumberIndexType_ end = 0;
     std::vector<int> mappings;
 
     explicit Reader(const string& s) :

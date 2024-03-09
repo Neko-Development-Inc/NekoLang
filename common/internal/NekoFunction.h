@@ -15,7 +15,7 @@ public:
     NekoBox& owner;
     Opcodes& ops;
     vector<unique_ptr<NekoOp>> instructions;
-    map<string, long long> labels;
+    map<string, _OpsNumberIndexType_> labels;
 
     explicit NekoFunction(const string& name, NekoBox& owner, Opcodes& ops)
         : name(name),

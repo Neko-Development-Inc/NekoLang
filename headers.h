@@ -4,6 +4,7 @@
 #define HEADERS_H
 
 #define _NekoNumberType_ long double
+#define _OpsNumberIndexType_ long long
 
 // DEFAULT LIBS
 #include <any>

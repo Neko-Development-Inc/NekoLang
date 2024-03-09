@@ -3,8 +3,56 @@
 #include "../../headers.h"
 #include "../../common/internal/NekoStack.h"
 
-namespace ops {
-class NekoOp {
+/**
+ * NOP      - Done
+ * POP      - Done
+ * POP_N    - Done
+ * 
+ * DUP      - 
+ * DUP_2    - 
+ * DUP_3    - 
+ * DUP_N    - 
+ * DUP_ALL  - 
+ * 
+ * NDUP     - 
+ * NDUP_2   - 
+ * NDUP_3   - 
+ * NDUP_N   - 
+ * NDUP_ALL - 
+ * 
+ * CS       - 
+ * 
+ * LABEL    - 
+ * RETURN   - 
+ * JUMP     - 
+ * 
+ * CREATE   - 
+ * TYPE     - 
+ * CALL     - 
+ * 
+ * NUMBER   - 
+ * STRING   - 
+ * BOOL     - 
+ * 
+ * CONCAT   - 
+ * CONCAT_N - 
+ * CONCAT_ALL - 
+ * 
+ * REPEAT      - 
+ * REPEAT_N    - 
+ * REPEAT_LL   - 
+ * REPEAT_LL_N - 
+ * 
+ * NREPEAT     - 
+ * NREPEAT_N   - 
+ * 
+ * OUT       - 
+ * OUT_ALL   - 
+ * ERR       - 
+ * ERR_ALL   - 
+ * 
+ */
+
 class ops::NekoOp {
 public:
     static const long long CONTINUE_EXECUTION = 0;
@@ -69,7 +117,7 @@ public:
     // TODO: Test if cloning also clones the custom opcode (if changed)
     virtual unique_ptr<NekoOp> clone() const = 0;
 
-    virtual long long execute(Runtime&, NekoStack&, size_t&) = 0;
+    virtual _OpsNumberIndexType_ execute(Runtime&, NekoStack&, size_t&) = 0;
 
     void debugArguments() {
         println("\targs count: ", args.size());
@@ -82,9 +130,9 @@ public:
             if (argType == typeid(int))
                 println("\t", std::any_cast<int>(arg), " (int)");
             else if (argType == typeid(string))
-                println("\t", std::any_cast<string>(arg), " (string)");
+                println("\t`", std::any_cast<string>(arg), "` (string)");
             else if (argType == typeid(const char*))
-                println("\t", std::any_cast<const char*>(arg), " (const char *)");
+                println("\t`", std::any_cast<const char*>(arg), "` (const char *)");
             else if (argType == typeid(bool))
                 println("\t", (std::any_cast<bool>(arg) ? "true" : "false"), " (bool)");
             else

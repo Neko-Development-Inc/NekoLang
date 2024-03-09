@@ -14,7 +14,7 @@ public:
         return std::make_unique<NekoOpNop>(*this);
     }
 
-    long long execute(Runtime& r, NekoStack& s, size_t& i) override {
+    _OpsNumberIndexType_ execute(Runtime& r, NekoStack& s, size_t& i) override {
         // Do nothing
         println("NekoOpNop");
         return CONTINUE_EXECUTION;
