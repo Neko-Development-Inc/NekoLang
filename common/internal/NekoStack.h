@@ -24,7 +24,7 @@ private:
     stack<ObjectType> stackTypes;
     stack<std::unique_ptr<NekoBase*>> _stack;
     std::mutex _mutex;
-    size_t size;
+    size_t size = 0;
 
 public:
 
@@ -38,6 +38,12 @@ public:
             stackTypes.emplace(type);
             size++;
             return;
+        } else if constexpr (std::is_same<TT, bool>::value) {
+            auto b = static_cast<bool>(obj);
+            _stack.emplace(std::make_unique<NekoBase*>(new NekoBool(b)));
+            stackTypes.emplace(type);
+            size++;
+            return;
         } else if constexpr (std::is_arithmetic<TT>::value) {
             auto num = static_cast<long double>(obj);
             _stack.emplace(std::make_unique<NekoBase*>(new NekoNumber(num)));
@@ -47,12 +53,6 @@ public:
         } else if constexpr (std::is_same<TT, string>::value) {
             auto str = static_cast<string>(obj);
             _stack.emplace(std::make_unique<NekoBase*>(new NekoString(str)));
-            stackTypes.emplace(type);
-            size++;
-            return;
-        } else if constexpr (std::is_same<TT, bool>::value) {
-            auto b = static_cast<bool>(obj);
-            _stack.emplace(std::make_unique<NekoBase*>(new NekoBool(b)));
             stackTypes.emplace(type);
             size++;
             return;
