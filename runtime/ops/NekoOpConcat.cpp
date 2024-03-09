@@ -4,11 +4,11 @@ namespace ops {
 class NekoOpConcat : public NekoOp {
 
 public:
-    explicit NekoOpConcat()
-            : NekoOp(CONCAT) {}
+    explicit NekoOpConcat(Opcodes& ops)
+            : NekoOp(CONCAT, ops) {}
 
-    explicit NekoOpConcat(short opcode)
-            : NekoOp(opcode) {}
+    explicit NekoOpConcat(short opcode, Opcodes& ops)
+            : NekoOp(opcode, ops) {}
 
     std::unique_ptr<NekoOp> clone() const override {
         return std::make_unique<NekoOpConcat>(*this);

@@ -5,17 +5,24 @@
 
 namespace ops {
 class NekoOp {
+class ops::NekoOp {
 public:
     static const long long CONTINUE_EXECUTION = 0;
     static const long long HALT_EXECUTION = -1;
 
-public:
-
     const short opcode;
     vector<any> args;
+    Opcodes& ops;
 
-    explicit NekoOp(const short op) : opcode(op) { }
-    explicit NekoOp(const NekoOp& op) : opcode(op.opcode) { }
+    explicit NekoOp(const short opcode, Opcodes& ops)
+            : opcode(opcode),
+              ops(ops) { }
+
+    explicit NekoOp(const NekoOp& op)
+            : opcode(op.opcode),
+              ops(op.ops) { }
+
+    virtual ~NekoOp() = default;
 
     void addArg(any arg) {
         args.emplace_back(arg);
@@ -85,7 +92,4 @@ public:
         }
     }
 
-    virtual ~NekoOp() = default;
-
 };
-}

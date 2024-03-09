@@ -1,14 +1,13 @@
 #include "NekoOp.h"
 
-namespace ops {
-class NekoOpOut : public NekoOp {
+class ops::NekoOpOut : public NekoOp {
 
 public:
-    explicit NekoOpOut()
-            : NekoOp(OUT) {}
+    explicit NekoOpOut(Opcodes& ops)
+            : NekoOp(OUT, ops) {}
 
-    explicit NekoOpOut(short opcode)
-            : NekoOp(opcode) {}
+    explicit NekoOpOut(short opcode, Opcodes& ops)
+            : NekoOp(opcode, ops) {}
 
     std::unique_ptr<NekoOp> clone() const override {
         return std::make_unique<NekoOpOut>(*this);
@@ -26,7 +25,7 @@ public:
             errorln("Error: NekoOpOut: Optional was empty");
             exit(1);
         }
-        bool isErr = (opcode == ERR);
+        bool isErr = (opcode == ops[ERR] || opcode == ERR_ALL);
         bool doFlush = false;
         if (!args.empty()) {
             auto first = args[0];

@@ -4,11 +4,11 @@ namespace ops {
 class NekoOpLabel : public NekoOp {
 
 public:
-    explicit NekoOpLabel()
-            : NekoOp(LABEL) {}
+    explicit NekoOpLabel(Opcodes& ops)
+            : NekoOp(LABEL, ops) {}
 
-    explicit NekoOpLabel(short opcode)
-            : NekoOp(opcode) {}
+    explicit NekoOpLabel(short opcode, Opcodes& ops)
+            : NekoOp(opcode, ops) {}
 
     std::unique_ptr<NekoOp> clone() const override {
         return std::make_unique<NekoOpLabel>(*this);

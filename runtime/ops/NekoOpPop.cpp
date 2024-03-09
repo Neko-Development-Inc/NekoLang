@@ -4,11 +4,11 @@ namespace ops {
 class NekoOpPop : public NekoOp {
 
 public:
-    explicit NekoOpPop()
-        : NekoOp(POP) {}
+    explicit NekoOpPop(Opcodes& ops)
+            : NekoOp(POP, ops) {}
 
-    explicit NekoOpPop(short opcode)
-            : NekoOp(opcode) {}
+    explicit NekoOpPop(short opcode, Opcodes& ops)
+            : NekoOp(opcode, ops) {}
 
     std::unique_ptr<NekoOp> clone() const override {
         return std::make_unique<NekoOpPop>(*this);
@@ -24,12 +24,12 @@ public:
                 exit(1);
             }
             const auto& type = first.type();
-            if (type != typeid(long double)) {
+            if (type != typeid(_NekoNumberType_)) {
                 errorln("Error: NekoOpPop args[0] wasn't a number, "
                         "it was: '", type.name(), "'");
                 exit(1);
             }
-            n = std::any_cast<long double>(first);
+            n = std::any_cast<_NekoNumberType_>(first);
         }
         errorln("\tRunning pops ", n, " times");
         while (n--) {

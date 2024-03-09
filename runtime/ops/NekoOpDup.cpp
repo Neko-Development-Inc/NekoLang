@@ -4,11 +4,11 @@ namespace ops {
 class NekoOpDup : public NekoOp {
 
 public:
-    explicit NekoOpDup()
-        : NekoOp(DUP) {}
+    explicit NekoOpDup(Opcodes& ops)
+            : NekoOp(DUP, ops) {}
 
-    explicit NekoOpDup(short opcode)
-            : NekoOp(opcode) {}
+    explicit NekoOpDup(short opcode, Opcodes& ops)
+            : NekoOp(opcode, ops) {}
 
     std::unique_ptr<NekoOp> clone() const override {
         return std::make_unique<NekoOpDup>(*this);
@@ -72,7 +72,7 @@ public:
         for (const auto &item: items) {
             switch (item.type) {
                 case T_NUMBER: {
-                    auto num = std::any_cast<long double>(item.obj);
+                    auto num = std::any_cast<_NekoNumberType_>(item.obj);
                     s.add(num, item.type);
                     s.add(num, item.type);
                 } break;

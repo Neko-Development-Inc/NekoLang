@@ -4,11 +4,11 @@ namespace ops {
 class NekoOpCs : public NekoOp {
 
 public:
-    explicit NekoOpCs()
-        : NekoOp(CS) {}
+    explicit NekoOpCs(Opcodes& ops)
+            : NekoOp(CS, ops) {}
 
-    explicit NekoOpCs(short opcode)
-            : NekoOp(opcode) {}
+    explicit NekoOpCs(short opcode, Opcodes& ops)
+            : NekoOp(opcode, ops) {}
 
     std::unique_ptr<NekoOp> clone() const override {
         return std::make_unique<NekoOpCs>(*this);

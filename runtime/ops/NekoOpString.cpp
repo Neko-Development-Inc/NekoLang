@@ -3,11 +3,11 @@
 class ops::NekoOpString : public NekoOp {
 
 public:
-    explicit NekoOpString()
-            : NekoOp(STRING) {}
+    explicit NekoOpString(Opcodes& ops)
+            : NekoOp(STRING, ops) {}
 
-    explicit NekoOpString(short opcode)
-            : NekoOp(opcode) {}
+    explicit NekoOpString(short opcode, Opcodes& ops)
+            : NekoOp(opcode, ops) {}
 
     std::unique_ptr<NekoOp> clone() const override {
         return std::make_unique<NekoOpString>(*this);

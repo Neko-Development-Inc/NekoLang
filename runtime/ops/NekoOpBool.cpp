@@ -3,11 +3,11 @@
 class ops::NekoOpBool : public NekoOp {
 
 public:
-    explicit NekoOpBool()
-            : NekoOp(BOOL) {}
+    explicit NekoOpBool(Opcodes& ops)
+            : NekoOp(BOOL, ops) {}
 
-    explicit NekoOpBool(short opcode)
-            : NekoOp(opcode) {}
+    explicit NekoOpBool(short opcode, Opcodes& ops)
+            : NekoOp(opcode, ops) {}
 
     std::unique_ptr<NekoOp> clone() const override {
         return std::make_unique<NekoOpBool>(*this);

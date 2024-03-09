@@ -3,11 +3,11 @@
 class ops::NekoOpNumber : public NekoOp {
 
 public:
-    explicit NekoOpNumber()
-            : NekoOp(NUMBER) {}
+    explicit NekoOpNumber(Opcodes& ops)
+            : NekoOp(NUMBER, ops) {}
 
-    explicit NekoOpNumber(short opcode)
-            : NekoOp(opcode) {}
+    explicit NekoOpNumber(short opcode, Opcodes& ops)
+            : NekoOp(opcode, ops) {}
 
     std::unique_ptr<NekoOp> clone() const override {
         return std::make_unique<NekoOpNumber>(*this);
@@ -37,8 +37,8 @@ public:
             s.add(any_cast<double>(first), T_NUMBER);
             return CONTINUE_EXECUTION;
         }
-        if (type == typeid(long double)) {
-            s.add(any_cast<long double>(first), T_NUMBER);
+        if (type == typeid(_NekoNumberType_)) {
+            s.add(any_cast<_NekoNumberType_>(first), T_NUMBER);
             return CONTINUE_EXECUTION;
         }
         if (type == typeid(long long)) {
