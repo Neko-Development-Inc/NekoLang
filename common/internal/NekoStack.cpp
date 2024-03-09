@@ -35,6 +35,8 @@ namespace vm {
     }
 
     void NekoStack::clear() {
+        while (!stackTypes.empty())
+            stackTypes.pop();
         while (!_stack.empty())
             _stack.pop();
         size = 0;
@@ -46,6 +48,8 @@ namespace vm {
             if (result == T_NONE || result == T_UNKNOWN) break;
             if (result == T_NUMBER) println(*popNumber());
             else if (result == T_STRING) println(*popString());
+            else if (result == T_BOOL) println(*popBool());
+            else println("Unknown type: ", "Unknown");
         }
     }
 
@@ -112,7 +116,7 @@ namespace vm {
                 auto s = dynamic_cast<NekoBool*>(*(&opt->value())->get());
                 return std::make_unique<bool>(s->get());
             }
-            errorln("popString: no value");
+            errorln("popBool: no value");
         }
         return nullptr;
     }

@@ -5,6 +5,8 @@
 
 #include "headers.h"
 #include "runtime/types/NekoString.h"
+#include "runtime/types/NekoNumber.h"
+#include "runtime/types/NekoBool.h"
 
 #define SP15 std::setprecision(15)
 
@@ -22,15 +24,19 @@ inline void _print(std::ostream& s, T&& first, Arg&&... rest) {
         s << (first ? "true" : "false");
     else if constexpr (std::is_arithmetic<TT>::value)
         s << SP15 << first;
-    else if constexpr (std::is_same<TT, NekoString>::value  || std::is_same<TT, NekoNumber>::value  ||
-                       std::is_same<TT, NekoString*>::value || std::is_same<TT, NekoNumber*>::value ||
-                       std::is_same<TT, NekoString&>::value || std::is_same<TT, NekoNumber&>::value)
+    else if constexpr (std::is_same<TT, NekoString>::value  || std::is_same<TT, NekoNumber>::value  || std::is_same<TT, NekoBool>::value  ||
+                       std::is_same<TT, NekoString*>::value || std::is_same<TT, NekoNumber*>::value || std::is_same<TT, NekoBool*>::value ||
+                       std::is_same<TT, NekoString&>::value || std::is_same<TT, NekoNumber&>::value || std::is_same<TT, NekoBool&>::value)
         s << first.get();
-    else if constexpr (std::is_same<TT, NekoString**>::value || std::is_same<TT, NekoNumber**>::value)
-        s << (**first).get();
-    else if constexpr (std::is_same<TT, string>::value ||
-                       std::is_same<TT, const char *>::value ||
-                       std::is_convertible<TT, string>::value)
+    else if constexpr (std::is_same<TT, NekoString**>::value || std::is_same<TT, NekoNumber**>::value || std::is_same<TT, NekoBool**>::value) {
+        if (first == nullptr)
+            s << "<nullptr>";
+        else
+            s << (**first).get();
+    } else if constexpr (std::is_same<TT, string>::value ||
+                         std::is_same<TT, const char *>::value ||
+                         std::is_convertible<TT, string>::value ||
+                         std::is_convertible<TT, const char *>::value)
         s << first;
     else
         s << "{UnknownType:" << typeid(T).name() << "}";
@@ -71,14 +77,13 @@ public:
         Stop();
     }
 
+#define getCounter(time) std::chrono::time_point_cast<std::chrono::microseconds>(time).time_since_epoch().count()
+
     bool Stop(bool doPrint = true) {
         if (hasStopped) return false;
         hasStopped = true;
-        auto end_time = std::chrono::high_resolution_clock::now();
-        auto start = std::chrono::time_point_cast<std::chrono::microseconds>(start_time).time_since_epoch().count();
-        auto end = std::chrono::time_point_cast<std::chrono::microseconds>(end_time).time_since_epoch().count();
-        auto duration = end - start;
-        milliseconds = duration * 0.001;
+        auto end = getCounter(std::chrono::high_resolution_clock::now());
+        milliseconds = (end - getCounter(start_time)) * 0.001;
         if (doPrint)
             print();
         return true;

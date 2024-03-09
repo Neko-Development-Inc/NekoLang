@@ -98,20 +98,31 @@ TIMER(timerStack, "stack")
         T_STRING
     );
     _stack.add(
+        true,
+        T_BOOL
+    );
+    _stack.add(
         string("hello world 1"),
         T_STRING
     );
 
-    _stack.process();
+    println("String: ", *_stack.popString());
+    println("Bool: ", *_stack.popBool());
+    println("String: ", *_stack.popString());
+    auto num = *_stack.popNumber();
+    println("Number: ", num, ", isSame: ", (num == (9223372036854775807L - 1L) ? "true" : "false"));
 
-//    size_t count = _stack.count();
-//    println("Count: ", count);
+//    println("Count before: ", _stack.count());
+//    _stack.process();
+//    println("Count after: ", _stack.count());
 //
-//    println("String: ", *_stack.popString());
-//    println("String: ", *_stack.popString());
-//
-//    auto num = *_stack.popNumber();
-//    println("Number: ", num, ", isSame: ", (num == (9223372036854775807L - 1L) ? "true" : "false"));
+//    NekoString abc("Test :)");
+//    println(abc);
+//    NekoBase* base = &abc;
+//    println(*base);
+//    NekoString abc2 = *dynamic_cast<NekoString*>(base);
+//    abc2.set("Test OwO");
+//    println(abc2);
 
 STOP_TIMER(timerStack)
 #endif
@@ -135,6 +146,7 @@ STOP_TIMER(timerStack)
 *  neko -r myprogram.cat                     -- execute the source code file
 * Arguments:
 *  -i <file> - Choose one or more input file(s)
+*  -o <file> - Set the output file
 *  -r        - Run a program
 *
 * Macro stuff:
