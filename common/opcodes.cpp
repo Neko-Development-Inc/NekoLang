@@ -12,13 +12,28 @@ namespace ops {
                 DUP, DUP_2, DUP_3, DUP_N, DUP_ALL,
                 NDUP, NDUP_2, NDUP_3, NDUP_N, NDUP_ALL,
 
-                CS,
+                CS, SWAP, NULL,
 
                 LABEL, RETURN, JUMP,
 
-                CREATE, TYPE, CALL,
+                JUMP_IF_EQ, JUMP_IF_NE, JUMP_IF_GT, JUMP_IF_LT,
+                JUMP_IF_GE, JUMP_IF_LE, JUMP_IF_IZ, JUMP_IF_NT,
+                JUMP_IF_HD, JUMP_IF_ND, JUMP_IF_NULL, JUMP_IF_NOT_NULL,
 
-                NUMBER, STRING, CONCAT, CONCAT_N, CONCAT_ALL,
+                STORE, FETCH, ASTORE, AFETCH, ALEN,
+
+                INC, DEC, AINC, ADEC,
+                ADD, SUB, MUL, DIV, MOD, REM, NEG,
+                AND, NOT, OR, XOR, SHL, SHR, USHR, CMP, RMD,
+
+                CREATE, ACREATE, TYPE, CALL,
+                GET, PUT, THROW, IS_INSTANCE,
+
+                LOCK, UNLOCK,
+
+                NUMBER, STRING, BOOL,
+
+                CONCAT, CONCAT_N, CONCAT_ALL,
 
                 REPEAT, REPEAT_N, REPEAT_LL, REPEAT_LL_N,
                 NREPEAT, NREPEAT_N,
@@ -39,13 +54,28 @@ namespace ops {
                 DUP, DUP_2, DUP_3, DUP_N, DUP_ALL,
                 NDUP, NDUP_2, NDUP_3, NDUP_N, NDUP_ALL,
 
-                CS,
+                CS, SWAP, NULL,
 
                 LABEL, RETURN, JUMP,
 
-                CREATE, TYPE, CALL,
+                JUMP_IF_EQ, JUMP_IF_NE, JUMP_IF_GT, JUMP_IF_LT,
+                JUMP_IF_GE, JUMP_IF_LE, JUMP_IF_IZ, JUMP_IF_NT,
+                JUMP_IF_HD, JUMP_IF_ND, JUMP_IF_NULL, JUMP_IF_NOT_NULL,
 
-                NUMBER, STRING, CONCAT, CONCAT_N, CONCAT_ALL,
+                STORE, FETCH, ASTORE, AFETCH, ALEN,
+
+                INC, DEC, AINC, ADEC,
+                ADD, SUB, MUL, DIV, MOD, REM, NEG,
+                AND, NOT, OR, XOR, SHL, SHR, USHR, CMP, RMD,
+
+                CREATE, ACREATE, TYPE, CALL,
+                GET, PUT, THROW, IS_INSTANCE,
+
+                LOCK, UNLOCK,
+
+                NUMBER, STRING, BOOL,
+
+                CONCAT, CONCAT_N, CONCAT_ALL,
 
                 REPEAT, REPEAT_N, REPEAT_LL, REPEAT_LL_N,
                 NREPEAT, NREPEAT_N,
